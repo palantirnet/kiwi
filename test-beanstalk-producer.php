@@ -1,7 +1,12 @@
 <?php
-/* 
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 
-?>
+require_once('pheanstalk/pheanstalk_init.php');
+
+$pheanstalk = new Pheanstalk('beanstalk.palantir.net');
+
+// ----------------------------------------
+// producer (queues jobs)
+
+$pheanstalk
+  ->useTube('testtube')
+  ->put("job payload goes here\n");
