@@ -45,7 +45,7 @@ function parent_process($config) {
     sleep(1);
   }
 
-  for ($i = 0; $i < $config['num_children']; ++$i) {
+  for ($i = 0; $i < $config['num_children'] - 1; ++$i) {
     $pheanstalk->put('KILL', 20);
   }
 
@@ -60,9 +60,17 @@ function child_process($config, $id) {
     $job = $pheanstalk
       ->watch('messages')
       ->ignore('default')
-      ->reserve();
+      ->reserve(5);
+
+    // If FALSE was returned, it means we timed out. In that case we assume
+    // the queue is empty and will stay empty, so just give up.
+    if (!$job) {
+      echo "Child {$id} died of boredom." . PHP_EOL;
+      break;
+    }
 
     $data = $job->getData();
+
 
     if ($data == 'KILL') {
       echo "KILL: Child {$id} is about to commit sepuku." . PHP_EOL;
