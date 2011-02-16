@@ -15,7 +15,7 @@ class KiwiQueryGenerator {
 
   public function getConnection() {
     $server_info = $this->config->getEmuInfo();
-    $session = new KiwiImuSession($server_info['host'], $server_info['port']);
+    $session = new KiwiImuSession($this->config, $server_info['host'], $server_info['port']);
     //$session->host = "66.158.71.71";
     //$session->port = "40000";
     $session->connect();

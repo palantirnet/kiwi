@@ -27,4 +27,10 @@ class KiwiConfiguration {
     );
   }
 
+  function baseTable() {
+    return array(
+      'name' => 'ecatalogue',
+    );
+  }
+
 }
