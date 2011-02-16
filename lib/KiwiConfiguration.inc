@@ -6,6 +6,13 @@
 class KiwiConfiguration {
 
   /**
+   * The QueryPath representation of the configuration file, for easier parsing.
+   *
+   * @var QueryPath
+   */
+  protected $configFile;
+
+  /**
    * Constructor.
    *
    * @param string $file
@@ -14,9 +21,10 @@ class KiwiConfiguration {
   function __construct($file = '') {
 
     if ($file && file_exists($file)) {
-
-      
-
+      $this->configFile = qp($file);
+    }
+    else {
+      throw new Exception('No configuration file found.');
     }
 
   }
@@ -34,8 +42,11 @@ class KiwiConfiguration {
   }
 
   function baseTable() {
+
+    $base_table = $this->configFile->find('base-table')->attr('name');
+
     return array(
-      'name' => 'ecatalogue',
+      'name' => $base_table,
     );
   }
 
