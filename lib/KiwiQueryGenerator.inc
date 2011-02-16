@@ -35,7 +35,6 @@ class KiwiQueryGenerator {
     //$query = new EmuQuery($session, $this->config);
 
     $base_table = $this->config->baseTable();
-    debug($base_table);
     $module = new IMuModules($session);
 
     $module->setModules(array($base_table['name']));
@@ -47,12 +46,8 @@ class KiwiQueryGenerator {
     // specifing terms; that is, you must have a WHERE clause. Bah.
     // @TODO do something else here.
     $terms = array();
-    $columnname = "CatDepartment";
-    $queryvalue = "Zoology";
-    $terms[] = array($columnname, $queryvalue);
-    $columnname = "PrePrepType_tab";
-    $queryvalue = "alcohol";
-    $terms[] = array($columnname, $queryvalue);
+    $terms[] = array('CatDepartment', 'Zoology');
+    //$terms[] = array('PrePrepType_tab', 'alcohol);
 
     $module->findTerms(array('and', $terms));
 
