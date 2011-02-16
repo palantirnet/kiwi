@@ -2,9 +2,6 @@
 <?php
 
 
-
-
-
 function includeEmu() {
   require_once 'emu/imu.php';
   require_once IMu::$lib . '/module.php';
@@ -23,7 +20,7 @@ function includeKiwi() {
 }
 
 function includeQueryPath() {
-
+  require_once('QueryPath/QueryPath.php');
 }
 
 function main() {
