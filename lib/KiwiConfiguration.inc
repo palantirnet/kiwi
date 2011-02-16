@@ -21,7 +21,13 @@ class KiwiConfiguration {
   function __construct($file = '') {
 
     if ($file && file_exists($file)) {
+
+      // Parse the configuration file using QueryPath for easier manipulation.
       $this->configFile = qp($file);
+
+      // Resolve XInclude directives so that config files can be broken up for
+      // easier reuse.
+      $this->configFile->get(0)->ownerDocument->xinclude();
     }
     else {
       throw new Exception('No configuration file found.');
