@@ -14,17 +14,49 @@ require_once IMu::$lib . '/module.php';
 require_once IMu::$lib . '/exception.php';
 require_once IMu::$lib . '/trace.php';
 
-
 date_default_timezone_set('America/Chicago');
 
 IMuTrace::setFile('trace.txt');
 IMuTrace::setLevel(1);
 
+function main() {
+  $config = new KiwiConfiguration('');
+
+  $generator = new KiwiQueryGenerator($config);
+
+  $generator->run();
+
+}
+
+
+/**
+ * Configuration object for a Kiwi execution run.
+ */
+class KiwiConfiguration {
+
+  /**
+   * Constructor.
+   *
+   * @param string $file
+   *   The name of the file with the configuration to load.
+   */
+  function __construct($file = '') {
+
+  }
+
+}
 
 
 class KiwiQueryGenerator {
 
-  public function __construct($config) {
+  /**
+   * The configuration object for this generator.
+   *
+   * @var KiwiConfiguration
+   */
+  protected $config;
+
+  public function __construct(KiwiConfiguration $config) {
     $this->config = $config;
   }
 
@@ -41,7 +73,23 @@ class KiwiQueryGenerator {
 
 class KiwiWorker {
 
-  public function __construct($config, $module_id) {
+  /**
+   * The configuration object for this generator.
+   *
+   * @var KiwiConfiguration
+   */
+  protected $config;
+
+  /**
+   * The module ID we should load.
+   *
+   * This is a unique identifier for the result set object in Emu.
+   *
+   * @var string
+   */
+  protected $moduleId = '';
+
+  public function __construct(KiwiConfiguration $config, $module_id) {
     $this->config = $config;
     $this->moduleId = $module_id;
 
