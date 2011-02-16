@@ -36,8 +36,9 @@ class KiwiQueryGenerator {
 
     $base_table = $this->config->baseTable();
     debug($base_table);
-    $module = new IMuModule($base_table['name'], $session);
+    $module = new IMuModules($session);
 
+    $module->setModules(array($base_table['name']));
 
     // Run initial query as defined by the config object.
     // This may require a query builder.

@@ -9,6 +9,7 @@ require_once 'emu/imu.php';
 ** results
 */
 require_once IMu::$lib . '/module.php';
+require_once IMu::$lib . '/modules.php';
 /* We don't really need these, but they can be useful
 */
 require_once IMu::$lib . '/exception.php';
