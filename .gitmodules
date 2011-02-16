@@ -1,3 +1,6 @@
 [submodule "pheanstalk"]
 	path = pheanstalk
 	url = https://github.com/pda/pheanstalk.git
+[submodule "querypath"]
+	path = querypath
+	url = ./querypath
