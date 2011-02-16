@@ -13,10 +13,24 @@ class KiwiQueryGenerator {
     $this->config = $config;
   }
 
+  public function getConnection() {
+    $server_info = $this->config->getEmuInfo();
+    $session = new KiwiImuSession($server_info['host'], $server_info['port']);
+    //$session->host = "66.158.71.71";
+    //$session->port = "40000";
+    $session->connect();
+
+    // We'll want to suspend later once we start processing.  For now we don't need it.
+    //$session->suspend = true;
+
+    return $session;
+    
+  }
+
   public function run() {
-    debug('Hello', 'World');
     
     // Connect to Emu server.
+    $session = $this->getConnection();
 
     // Run initial query as defined by the config object.
     // This may require a query builder.

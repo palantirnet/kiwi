@@ -15,4 +15,16 @@ class KiwiConfiguration {
 
   }
 
+  /**
+   * Returns the connection information for the Emu server.
+   *
+   * @return array
+   */
+  function getEmuInfo() {
+    return array(
+      'host' => '66.158.71.71',
+      'port' => 40000,
+    );
+  }
+
 }

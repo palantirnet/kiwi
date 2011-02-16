@@ -19,11 +19,12 @@ date_default_timezone_set('America/Chicago');
 IMuTrace::setFile('trace.txt');
 IMuTrace::setLevel(1);
 
-// Include teh Kiwi libraries.
+// Include the Kiwi libraries.
 require_once('lib/util.inc');
 require_once('lib/KiwiConfiguration.inc');
 require_once('lib/KiwiQueryGenerator.inc');
 require_once('lib/KiwiWorker.inc');
+require_once('lib/KiwiImuSession.inc');
 
 
 function main() {
