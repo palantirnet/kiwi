@@ -2,6 +2,13 @@
 
 <config name="test" core="kiwi">
 
+  <base-table name="ecatalogue" />
+
+  <table name="ecatalogue">
+    <field name="foo" index="0" display="1" fulltext="0" />
+  </table>
+
+
   <base name="collection" index="1" display="0" single-attach="Append" multi-attach="Merge">
     <field name="foo" index="0" />
     <field name="bar" index="0" fulltext="1" />

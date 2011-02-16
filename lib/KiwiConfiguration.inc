@@ -13,6 +13,12 @@ class KiwiConfiguration {
    */
   function __construct($file = '') {
 
+    if ($file && file_exists($file)) {
+
+      
+
+    }
+
   }
 
   /**
