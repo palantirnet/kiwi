@@ -24,9 +24,18 @@ class KiwiImuSession extends IMuSession {
     parent::__construct($host, $port);
   }
 
-  public function getModules() {
-    $emutable = 'ecatalogue';
-    $module = new IMuModule($emutable, $this);
+  /**
+   * Returns a new IMuModules object for this configuration.
+   *
+   * @return IMuModules
+   */
+  public function getModulesHandler() {
+    $base_table = $this->config->baseTable();
+    $module = new IMuModules($this);
+
+    $module->setModules(array($base_table['name']));
+
+    return $module;
   }
 
 }
