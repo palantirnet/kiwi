@@ -33,7 +33,9 @@ function main() {
 
   $generator = new KiwiQueryGenerator($config);
 
-  $generator->run();
+  $module_id = $generator->run();
+
+  debug($module_id, 'Module ID');
 
 }
 
