@@ -1,3 +1,4 @@
+#!/usr/bin/php
 <?php
 
 /* First we'll import the base API library
