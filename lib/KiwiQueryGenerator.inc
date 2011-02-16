@@ -14,6 +14,8 @@ class KiwiQueryGenerator {
   }
 
   public function run() {
+    debug('Hello', 'World');
+    
     // Connect to Emu server.
 
     // Run initial query as defined by the config object.
