@@ -1,5 +1,26 @@
 <?php
 
+/* First we'll import the base API library
+*/
+require_once 'emu/imu.php';
+/* Next we'll import the module library, as that will
+** provide useful tools for querying and returning
+** results
+*/
+require_once IMu::$lib . '/module.php';
+/* We don't really need these, but they can be useful
+*/
+require_once IMu::$lib . '/exception.php';
+require_once IMu::$lib . '/trace.php';
+
+
+date_default_timezone_set('America/Chicago');
+
+IMuTrace::setFile('trace.txt');
+IMuTrace::setLevel(1);
+
+
+
 class KiwiQueryGenerator {
 
   public function __construct($config) {
