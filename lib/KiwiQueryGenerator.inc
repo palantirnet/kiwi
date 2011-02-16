@@ -24,7 +24,6 @@ class KiwiQueryGenerator {
     //$session->suspend = true;
 
     return $session;
-    
   }
 
   public function run() {
