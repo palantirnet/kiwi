@@ -30,10 +30,11 @@ class KiwiImuSession extends IMuSession {
    * @return IMuModules
    */
   public function getModulesHandler() {
-    $base_table = $this->config->baseTable();
     $module = new IMuModules($this);
 
-    $module->setModules(array($base_table['name']));
+    $tables = $this->config->getTables('attach');
+
+    $module->setModules($tables);
 
     return $module;
   }

@@ -49,11 +49,26 @@ class KiwiConfiguration {
 
   function baseTable() {
 
-    $base_table = $this->configFile->find('base-table')->attr('name');
+    $base_table = $this->configFile->branch()->find('base-table')->attr('name');
 
     return array(
       'name' => $base_table,
     );
   }
 
+  /**
+   * Returns the names of all tables of the specified type.
+   *
+   * @param string $type
+   *   The type of table to retrieve. Valid values are attach, merge, collapse.
+   * @return array
+   */
+  function getTables($type) {
+    $names = array();
+    $tables = $this->configFile->branch()->find("table[type='{$type}']");
+    foreach ($tables as $table) {
+      $names[] = $table->attr('name');
+    }
+    return $names;
+  }
 }
