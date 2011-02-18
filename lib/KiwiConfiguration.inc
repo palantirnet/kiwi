@@ -93,6 +93,18 @@ class KiwiConfiguration {
    *   The number of child processes we want to spawn.
    */
   function numChildProcesses() {
-    return 3;
+    return $this->configFile->branch()->find('processors')->attr('count');
+  }
+
+  /**
+   * Returns the number of records to process into Solr documents at once.
+   *
+   * Solr supports sending multiple documents to it in a single command,
+   * so this is another performance dial to twiddle.
+   *
+   * @return int
+   */
+  function numDocumentsPerBatch() {
+    return $this->configFile->branch()->find('processors')->attr('batch-size');
   }
 }

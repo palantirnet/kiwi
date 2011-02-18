@@ -39,7 +39,6 @@ class KiwiQueryProcessor {
     $this->session = $session;
 
     $this->module = $this->session->resumeModulesHandler($module_id);
-
   }
 
   /**
@@ -47,14 +46,16 @@ class KiwiQueryProcessor {
    */
   public function run() {
 
+    $position = 'current';
+    $offset = 0;
+    $count = $this->config->numDocumentsPerBatch();
+
+    // @todo This will get replaced with a real value in due time.
+    $columns = FALSE;
+
     // I'm not sure how to fencepost fetch() when it runs out of records.
     // For the time being I'm just hacking around that, but we should call
     // Aaron and find out. :-)
-    $position = 'current';
-    $offset = 0;
-    $count = 1;
-    $columns = FALSE;
-
     for ($i=0; $i < 200; ++$i) {
       $this->module->fetch($position, $offset, $count, $columns);
     }
