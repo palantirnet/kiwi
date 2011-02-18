@@ -39,6 +39,19 @@ class KiwiConfiguration {
    *
    * @return array
    */
+  function getSolrInfo() {
+    $emu = $this->configFile->branch()->find('solr');
+    return array(
+      'host' => $emu->attr('host'),
+      'port' => $emu->attr('port'),
+    );
+  }
+
+  /**
+   * Returns the connection information for the Solr server.
+   *
+   * @return array
+   */
   function getEmuInfo() {
     $emu = $this->configFile->branch()->find('emu');
     return array(

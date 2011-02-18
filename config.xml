@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<config name="test">
-  <solr host="" />
+<config name="ecatalogue">
+  <solr host="solr.palantir.net" core="kiwi" />
   <emu host="66.158.71.71" port="40000" />
 
   <base-table name="ecatalogue" />
