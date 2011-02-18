@@ -49,7 +49,7 @@ function main() {
   unset($generator);
 
   // Spawn off children to do work.
-  for ($child_id = 1; $child_id <= $config->numChildProcesses(); ++$child_id) {
+  for ($child_id = 1, $num_processors = $config->numChildProcesses(); $child_id <= $num_processors; ++$child_id) {
     $pid = pcntl_fork();
     if ($pid == -1) {
       die('could not fork');
