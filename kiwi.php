@@ -41,6 +41,33 @@ function main() {
 
   debug($module_id, 'Module ID');
 
+  // Destroy the generator to get rid of all outstanding resource objects
+  // before we fork.
+  unset($generator);
+
+  // Spawn off children to do work.
+  for ($child_id = 1; $child_id <= $config->numChildProcesses(); ++$child_id) {
+    $pid = pcntl_fork();
+    if ($pid == -1) {
+      die('could not fork');
+    }
+    else if ($pid) {
+      // This is the parent.
+    }
+    else {
+      debug("Child {$child_id} running...");
+      // This is the child.
+      exit(0);
+    }
+  }
+
+  // We are the parent
+  pcntl_wait($status); //Protect against Zombie children
+
+  // Close the result set object.
+
+
+  exit();
 }
 
 main();
