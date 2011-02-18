@@ -1,6 +1,11 @@
 <?php
 
-
+/**
+ * Worker class for processing a result set.
+ *
+ * This class should be run in its own process, and each process should be
+ * more or less self-contained in this class as much as possible.
+ */
 class KiwiQueryProcessor {
 
   /**
@@ -33,6 +38,19 @@ class KiwiQueryProcessor {
    */
   protected $module;
 
+  /**
+   * Constructor.
+   *
+   * @param int $processor_id
+   *   The ID of this processor. It is a simple integer, unique within this
+   *   script run only.
+   * @param string $module_id
+   *   The ID of the module on the Emu to which we want to reconnect.
+   * @param KiwiConfiguration $config
+   *   The configuration object for this processor.
+   * @param KiwiImuSession $session
+   *   The session on which to run all queries.
+   */
   public function __construct($processor_id, $module_id, KiwiConfiguration $config, KiwiImuSession $session) {
     $this->processorId = $processor_id;
     $this->config = $config;

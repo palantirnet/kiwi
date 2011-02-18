@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * Generator class for a processing run.
+ *
+ * This object will only create a result set on the Emu server and return its
+ * ID.  It will not do any processing of that result set.
+ *
+ * @see KiwiQueryProcessor
+ */
 class KiwiQueryGenerator {
 
   /**

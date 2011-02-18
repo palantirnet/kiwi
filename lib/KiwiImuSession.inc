@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * EMu session connection object.
+ *
+ * We are extending the core IMu version so that we can add some utility
+ * methods.  Otherwise there's nothing really interesting about it.
+ */
 class KiwiImuSession extends IMuSession {
 
   /**
@@ -15,8 +21,10 @@ class KiwiImuSession extends IMuSession {
    * This overrides the parent constructor just to let us pass in a config object.
    *
    * @param KiwiConfiguration $config
-   * @param <type> $host
-   * @param <type> $port
+   * @param string $host
+   *   The host name or IP of the Emu server.
+   * @param int $port
+   *   The port on the server to which to connect.
    */
   public function __construct(KiwiConfiguration $config, $host = FALSE, $port = FALSE) {
     $this->config = $config;
@@ -25,7 +33,13 @@ class KiwiImuSession extends IMuSession {
   }
 
   /**
-   * Returns a new IMuModules object for this configuration.
+   * Returns a new IMuModules object for a new handler.
+   *
+   * @see KiwiImuSession::resumeModulesHandler();
+   * @param boolean $destroy
+   *   Whether or not to destroy the server-side result object when the PHP
+   *   object goes out of scope.  The default is to let it be released. This
+   *   must be set to TRUE to allow the result set to be reconnected to later.
    *
    * @return IMuModules
    */
@@ -43,6 +57,14 @@ class KiwiImuSession extends IMuSession {
     return $module;
   }
 
+  /**
+   * Returns a new IMuModules object for an existing handler on the server.
+   *
+   * @param string $module_id
+   *   The ID of the existing module handler on the Emu server to which to
+   *   reconnect.
+   * @return IMuModules
+   */
   public function resumeModulesHandler($module_id) {
     $module = new IMuModules($this);
 
