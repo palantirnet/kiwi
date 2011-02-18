@@ -84,4 +84,14 @@ class KiwiConfiguration {
     }
     return $names;
   }
+
+  /**
+   * Returns the number of child processes we want to spawn for this batch.
+   *
+   * @return int
+   *   The number of child processes we want to spawn.
+   */
+  function numChildProcesses() {
+    return 3;
+  }
 }
