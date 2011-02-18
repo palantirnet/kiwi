@@ -35,7 +35,10 @@ function main() {
 
   $config = new KiwiConfiguration('config.xml');
 
-  $generator = new KiwiQueryGenerator($config);
+  $server_info = $config->getEmuInfo();
+  $session = new KiwiImuSession($config, $server_info['host'], $server_info['port']);
+
+  $generator = new KiwiQueryGenerator($config, $session);
 
   $module_id = $generator->run();
 

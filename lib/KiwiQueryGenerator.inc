@@ -9,21 +9,25 @@ class KiwiQueryGenerator {
    */
   protected $config;
 
-  public function __construct(KiwiConfiguration $config) {
+  /**
+   * The ImuSession object on which to run queries.
+   *
+   * @var KiwiImuSession
+   */
+  protected $session;
+
+  public function __construct(KiwiConfiguration $config, KiwiImuSession $session) {
     $this->config = $config;
+    $this->session = $session;
   }
 
   public function getConnection() {
-    $server_info = $this->config->getEmuInfo();
-    $session = new KiwiImuSession($this->config, $server_info['host'], $server_info['port']);
-    //$session->host = "66.158.71.71";
-    //$session->port = "40000";
-    $session->connect();
+    $this->session->connect();
 
-    // We'll want to suspend later once we start processing.  For now we don't need it.
-    //$session->suspend = true;
+    // Leave the session open for later use when the child processors come by.
+    $this->session->suspend = TRUE;
 
-    return $session;
+    return $this->session;
   }
 
   public function run() {
