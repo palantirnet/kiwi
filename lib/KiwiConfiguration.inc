@@ -32,7 +32,6 @@ class KiwiConfiguration {
     else {
       throw new Exception('No configuration file found.');
     }
-
   }
 
   /**
@@ -41,9 +40,10 @@ class KiwiConfiguration {
    * @return array
    */
   function getEmuInfo() {
+    $emu = $this->configFile->branch()->find('emu');
     return array(
-      'host' => '66.158.71.71',
-      'port' => 40000,
+      'host' => $emu->attr('host'),
+      'port' => $emu->attr('port'),
     );
   }
 
