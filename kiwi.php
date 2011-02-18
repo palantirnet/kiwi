@@ -58,20 +58,24 @@ function main() {
       // This is the parent.
     }
     else {
-      debug("Child {$child_id} running...");
       // This is the child.
+      debug("Child {$child_id} running...");
       $server_info = $config->getEmuInfo();
       $session = new KiwiImuSession($config, $server_info['host'], $server_info['reconnect-port']);
-      $module = $session->resumeModulesHandler($module_id);
+      $processor = new KiwiQueryProcessor($child_id, $module_id, $config, $session);
+
+      $processor->run();
+
       exit(0);
     }
   }
 
-  // We are the parent
+  // We are the parent.
   pcntl_wait($status); //Protect against Zombie children
 
   // Close the result set object.
-
+  // @todo I'm not sure if we need to, since the modules in the children may
+  // do so.  TBD.
 
   exit();
 }
