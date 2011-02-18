@@ -57,6 +57,7 @@ class KiwiConfiguration {
     return array(
       'host' => $emu->attr('host'),
       'port' => $emu->attr('port'),
+      'reconnect-port' => $emu->attr('reconnect-port'),
     );
   }
 

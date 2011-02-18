@@ -60,6 +60,9 @@ function main() {
     else {
       debug("Child {$child_id} running...");
       // This is the child.
+      $server_info = $config->getEmuInfo();
+      $session = new KiwiImuSession($config, $server_info['host'], $server_info['reconnect-port']);
+      $module = $session->resumeModulesHandler($module_id);
       exit(0);
     }
   }
