@@ -108,6 +108,22 @@ class KiwiConfiguration {
     return $this->configFile->branch()->find('processors')->attr('batch-size');
   }
 
+  /**
+   * Returns a list of field directives for the specified table.
+   *
+   * @param string $table
+   *   The name of the table for which we want to get a field list.
+   * @param string $use
+   *   The use of the field, e.g., sortable, displayable, etc.  If set, only
+   *   those fields that have the appropriate attribute set to 1 will be
+   *   returned.  Valid values are:
+   *     - search: The field should be searchable from Solr.
+   *     - display: The field will be retrievable from Solr for display.
+   *     - fulltext: The field should be included in fulltext searches.
+   *     - sort: The field is sortable in Solr.
+   *     - all (default): Do not filter at all; return all fields for this table.
+   * @return QuerPath
+   */
   function getFields($table, $use = 'all') {
     $names = array();
     $fields = $this->configFile->branch()->find("table[name='{$table}'] field");
