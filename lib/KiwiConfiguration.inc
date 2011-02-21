@@ -118,8 +118,8 @@ class KiwiConfiguration {
    *   The use of the field, e.g., sortable, displayable, etc.  If set, only
    *   those fields that have the appropriate attribute set to 1 will be
    *   returned.  Valid values are:
-   *     - search: The field should be searchable from Solr.
-   *     - display: The field will be retrievable from Solr for display.
+   *     - indexed: The field should be searchable from Solr.
+   *     - stored: The field will be retrievable from Solr for display.
    *     - fulltext: The field should be included in fulltext searches.
    *     - sort: The field is sortable in Solr.
    *     - all (default): Do not filter at all; return all fields for this table.

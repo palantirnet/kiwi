@@ -15,8 +15,8 @@
 
   <table name="ecatalogue" type="attach">
     <field name="irn" search="1" display="1" />
-    <field name="ColEarliestDateCollected" search="1" display="1" fulltext="1" sort="1" />
-    <field name="ColLatestDateCollected" search="1" display="1" fulltext="1" sort="0" />
+    <field name="ColEarliestDateCollected" indexed="1" stored="1" fulltext="1" sort="1" />
+    <field name="ColLatestDateCollected" indexed="1" stored="1" fulltext="1" sort="0" />
 <!-- These fields are reporting not found in Emu for some reason.  -->
 <!--    <field name="PriCollectionDate" search="1" display="1" fulltext="1" sort="1" />-->
 <!--    <field name="PriSiteCEDateCollected" search="1" display="1" fulltext="1" sort="0" />-->
