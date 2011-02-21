@@ -1,6 +1,8 @@
 #!/usr/bin/php
 <?php
 
+// Enable OCD pedantic error reporting.
+error_reporting(E_ALL | E_STRICT);
 
 function includeEmu() {
   require_once 'emu/imu.php';
