@@ -53,7 +53,7 @@ class KiwiQueryGenerator {
     // @TODO do something else here.
     $terms = array();
     $terms[] = array('CatDepartment', 'Zoology');
-    //$terms[] = array('PrePrepType_tab', 'alcohol);
+    $terms[] = array('ColEarliestDateCollected', '18/09/1939');
 
     $module->findTerms(array('and', $terms));
 
