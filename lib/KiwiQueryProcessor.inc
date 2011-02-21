@@ -68,20 +68,21 @@ class KiwiQueryProcessor {
     $offset = 0;
     $count = $this->config->numDocumentsPerBatch();
 
-
-
-    $fields = $this->config->fields('attach');
-
-
-    $columns = array('irn', 'ColEarliestDateCollected', 'ColLatestDateCollected', 'CatCatalogNo2');
-
-    //$this->module->addFetchSet('mytestfields', $columns);
+    // Build a list of all of the fields we are going to retrieve at once from
+    // attachment tables.  We need to retrieve a field if we are using it for
+    // any purpose whatsoever.
+    foreach ($this->config->getTables('attach') as $table) {
+      foreach ($this->config->getFields($table) as $field) {
+        $columns[$table][] = $field->attr('name');
+      }
+    }
+    $this->module->addFetchSet('attachFields', $columns);
 
     // I'm not sure how to fencepost fetch() when it runs out of records.
     // For the time being I'm just hacking around that, but we should call
     // Aaron and find out. :-)
     for ($i = 0; $i < 3; ++$i) {
-      $result = $this->module->fetch($position, $offset, $count, $columns);
+      $result = $this->module->fetch($position, $offset, $count, 'attachFields');
       //debug($result);
       foreach ($result->modules as $module => $records) {
         foreach ($records->rows as $row) {

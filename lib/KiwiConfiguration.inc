@@ -108,15 +108,18 @@ class KiwiConfiguration {
     return $this->configFile->branch()->find('processors')->attr('batch-size');
   }
 
-  function fields($type, $use = 'all') {
+  function getFields($table, $use = 'all') {
     $names = array();
-    $fields = $this->configFile->branch()->find("table[type='{$type}'] field");
+    $fields = $this->configFile->branch()->find("table[name='{$table}'] field");
     if ($use != 'all') {
       $fields->filter("[{$use}=1]");
     }
+    return $fields;
+    /*
     foreach ($fields as $field) {
       $names[] = $field->attr('name');
     }
     return $names;
+    */
   }
 }
