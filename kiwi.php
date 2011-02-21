@@ -25,10 +25,17 @@ function includeQueryPath() {
   require_once('QueryPath/QueryPath.php');
 }
 
+function includeSolr() {
+  require_once('SolrPhpClient/Apache/Solr/Service.php');
+  require_once('SolrPhpClient/Apache/Solr/Document.php');
+  require_once('SolrPhpClient/Apache/Solr/Response.php');
+}
+
 function main() {
   includeEmu();
   includeKiwi();
   includeQueryPath();
+  includeSolr();
 
   IMuTrace::setFile('trace.txt');
   IMuTrace::setLevel(1);
@@ -64,7 +71,11 @@ function main() {
       debug("Child {$child_id} running...");
       $server_info = $config->getEmuInfo();
       $session = new KiwiImuSession($config, $server_info['host'], $server_info['reconnect-port']);
-      $processor = new KiwiQueryProcessor($child_id, $module_id, $config, $session);
+
+      $server_info = $config->getSolrInfo();
+      $solr = new Apache_Solr_Service($server_info['host'], $server_info['port'], $server_info['path']);
+
+      $processor = new KiwiQueryProcessor($child_id, $module_id, $config, $session, $solr);
 
       //try {
         $processor->run();

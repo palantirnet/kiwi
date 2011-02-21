@@ -44,6 +44,7 @@ class KiwiConfiguration {
     return array(
       'host' => $emu->attr('host'),
       'port' => $emu->attr('port'),
+      'path' => $emu->attr('path'),
     );
   }
 

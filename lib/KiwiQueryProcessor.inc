@@ -23,6 +23,13 @@ class KiwiQueryProcessor {
   protected $session;
 
   /**
+   * The Solr server to which to add documents.
+   *
+   * @var Apache_Solr_Service
+   */
+  protected $solr;
+
+  /**
    * The ID of this processor.
    *
    * @var int
@@ -51,10 +58,11 @@ class KiwiQueryProcessor {
    * @param KiwiImuSession $session
    *   The session on which to run all queries.
    */
-  public function __construct($processor_id, $module_id, KiwiConfiguration $config, KiwiImuSession $session) {
+  public function __construct($processor_id, $module_id, KiwiConfiguration $config, KiwiImuSession $session, Apache_Solr_Service $solr) {
     $this->processorId = $processor_id;
     $this->config = $config;
     $this->session = $session;
+    $this->solr = $solr;
 
     $this->module = $this->session->resumeModulesHandler($module_id);
   }
