@@ -15,7 +15,7 @@ function includeKiwi() {
   require_once('lib/util.inc');
   require_once('lib/KiwiConfiguration.inc');
   require_once('lib/KiwiQueryGenerator.inc');
-  require_once('lib/KiwiWorker.inc');
+  require_once('lib/KiwiQueryProcessor.inc');
   require_once('lib/KiwiImuSession.inc');
 }
 
