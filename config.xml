@@ -3,7 +3,7 @@
 <config name="ecatalogue">
   <solr host="solr.palantir.net" core="kiwi" />
   <emu host="66.158.71.71" port="40000" reconnect-port="45000" />
-  <processors count="3" batch-size="2" />
+  <processors count="1" batch-size="2" />
 
   <base-table name="ecatalogue" />
 
