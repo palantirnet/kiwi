@@ -88,9 +88,16 @@ class KiwiQueryProcessor {
       $result = $this->module->fetch($position, $offset, $count, 'attachFields');
       //debug($result);
       foreach ($result->modules as $module => $records) {
+        $documents = array();
         foreach ($records->rows as $row) {
           debug($row);
+          $document = new Apache_Solr_Document();
+          $document->id = $row['irn'];
+          $documents[] = $document;
         }
+        // This won't work, of course, until there is a schema waiting for it.
+        //$this->solr->addDocuments($documents);
+
       }
     }
   }

@@ -96,6 +96,17 @@ function main() {
   // @todo I'm not sure if we need to, since the modules in the children may
   // do so.  TBD.
 
+  // Commit any pending changes to the Solr index and tell Solr to optimize itself.
+  // This is mostly just cleanup for performance.  The commit is set to async
+  // (the two FALSE values) so that it can run in the background on its own
+  // without making the user wait.
+  // @todo: It may make sense to make the commit synchronous so that we don't
+  // return until we're for-reals done.  At least for benchmarking.
+  $server_info = $config->getSolrInfo();
+  $solr = new Apache_Solr_Service($server_info['host'], $server_info['port'], $server_info['path']);
+  $solr->commit(TRUE, FALSE, FALSE);
+
+
   exit();
 }
 
