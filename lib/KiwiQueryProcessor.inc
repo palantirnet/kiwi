@@ -71,12 +71,7 @@ class KiwiQueryProcessor {
     // Build a list of all of the fields we are going to retrieve at once from
     // attachment tables.  We need to retrieve a field if we are using it for
     // any purpose whatsoever.
-    foreach ($this->config->getTables('attach') as $table) {
-      foreach ($this->config->getFields($table) as $field) {
-        $columns[$table][] = $field->attr('name');
-      }
-    }
-    $this->module->addFetchSet('attachFields', $columns);
+    $this->module->addFetchSet('attachFields', $this->getAttachFetchSet());
 
     // I'm not sure how to fencepost fetch() when it runs out of records.
     // For the time being I'm just hacking around that, but we should call
@@ -90,5 +85,23 @@ class KiwiQueryProcessor {
         }
       }
     }
+  }
+
+  /**
+   * Returns an array of all tables/fields to retrieve from the main query.
+   *
+   * The double-nested array returned by this method is safe to pass to
+   * IMuModules::addFetchSet().
+   *
+   * @return array
+   */
+  protected function getAttachFetchSet() {
+    $columns = array();
+    foreach ($this->config->getTables('attach') as $table) {
+      foreach ($this->config->getFields($table) as $field) {
+        $columns[$table][] = $field->attr('name');
+      }
+    }
+    return $columns;
   }
 }
