@@ -64,8 +64,14 @@ function main() {
       $session = new KiwiImuSession($config, $server_info['host'], $server_info['reconnect-port']);
       $processor = new KiwiQueryProcessor($child_id, $module_id, $config, $session);
 
-      $processor->run();
-
+      //try {
+        $processor->run();
+      //}
+      //catch(Exception $e) {
+        //debug($e->getTrace());
+        //debug('Error message is: ' . $e->getMessage());
+        //debug('Error code is: ' . $e->getCode());
+      //}
       exit(0);
     }
   }
