@@ -52,8 +52,17 @@ class KiwiQueryGenerator {
     // specifing terms; that is, you must have a WHERE clause. Bah.
     // @TODO do something else here.
     $terms = array();
-    $terms[] = array('CatDepartment', 'Zoology');
-    $terms[] = array('ColEarliestDateCollected', '18/09/1939');
+    //$terms[] = array('CatDepartment', 'Zoology');
+    //$terms[] = array('ColEarliestDateCollected', '18/09/1939');
+
+    $filters = $this->config->getFilters();
+    foreach ($filters as $filter) {
+      $term = array($filter->attr('name'), $filter->attr('value'));
+      if ($operator = $filter->attr('operator')) {
+        $term[] = $operator;
+      }
+      $terms[] = $term;
+    }
 
     $module->findTerms(array('and', $terms));
 

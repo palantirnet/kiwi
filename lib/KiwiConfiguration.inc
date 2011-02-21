@@ -115,11 +115,14 @@ class KiwiConfiguration {
       $fields->filter("[{$use}=1]");
     }
     return $fields;
-    /*
-    foreach ($fields as $field) {
-      $names[] = $field->attr('name');
-    }
-    return $names;
-    */
+  }
+
+  /**
+   * Returns a list of filter directives for the base query.
+   *
+   * @return QueryPath
+   */
+  function getFilters() {
+    return $this->configFile->branch()->find("filters filter");
   }
 }

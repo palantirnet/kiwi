@@ -7,6 +7,12 @@
 
   <base-table name="ecatalogue" />
 
+  <filters>
+    <filter name="AdmPublishWebNoPassword" value="Yes" />
+    <filter name="CatDepartment" value="Zoology" operator="matches" />
+    <filter name="ColEarliestDateCollected" value="18/09/1939" />
+  </filters>
+
   <table name="ecatalogue" type="attach">
     <field name="irn" search="1" display="1" />
     <field name="ColEarliestDateCollected" search="1" display="1" fulltext="1" sort="1" />
