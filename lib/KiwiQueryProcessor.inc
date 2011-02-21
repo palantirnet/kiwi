@@ -86,20 +86,34 @@ class KiwiQueryProcessor {
     // Aaron and find out. :-)
     for ($i = 0; $i < 3; ++$i) {
       $result = $this->module->fetch($position, $offset, $count, 'attachFields');
-      //debug($result);
       foreach ($result->modules as $module => $records) {
         $documents = array();
         foreach ($records->rows as $row) {
-          debug($row);
-          $document = new Apache_Solr_Document();
-          $document->id = $row['irn'];
-          $documents[] = $document;
+          $documents[] = $this->createSolrDocument($row);
         }
         // This won't work, of course, until there is a schema waiting for it.
         //$this->solr->addDocuments($documents);
 
       }
     }
+  }
+
+  /**
+   * Maps a result record to a Solr document.
+   *
+   * This is the meat of the processor.  This routine may call various additional
+   * Emu queries in order to build the complete document.
+   *
+   * @param array $row
+   *   A row of results from an Emu base query.
+   * @return Apache_Solr_Document
+   */
+  protected function createSolrDocument($row) {
+    debug($row);
+    $document = new Apache_Solr_Document();
+    $document->id = $row['irn'];
+
+    return $document;
   }
 
   /**
