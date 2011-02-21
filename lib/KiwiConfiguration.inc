@@ -18,7 +18,7 @@ class KiwiConfiguration {
    * @param string $file
    *   The name of the file with the configuration to load.
    */
-  function __construct($file = '') {
+  public function __construct($file = '') {
 
     if ($file && file_exists($file)) {
 
@@ -39,7 +39,7 @@ class KiwiConfiguration {
    *
    * @return array
    */
-  function getSolrInfo() {
+  public function getSolrInfo() {
     $emu = $this->configFile->branch()->find('solr');
     return array(
       'host' => $emu->attr('host'),
@@ -52,7 +52,7 @@ class KiwiConfiguration {
    *
    * @return array
    */
-  function getEmuInfo() {
+  public function getEmuInfo() {
     $emu = $this->configFile->branch()->find('emu');
     return array(
       'host' => $emu->attr('host'),
@@ -61,7 +61,7 @@ class KiwiConfiguration {
     );
   }
 
-  function baseTable() {
+  public function baseTable() {
 
     $base_table = $this->configFile->branch()->find('base-table')->attr('name');
 
@@ -77,7 +77,7 @@ class KiwiConfiguration {
    *   The type of table to retrieve. Valid values are attach, merge, collapse.
    * @return array
    */
-  function getTables($type) {
+  public function getTables($type) {
     $names = array();
     $tables = $this->configFile->branch()->find("table[type='{$type}']");
     foreach ($tables as $table) {
@@ -92,7 +92,7 @@ class KiwiConfiguration {
    * @return int
    *   The number of child processes we want to spawn.
    */
-  function numChildProcesses() {
+  public function numChildProcesses() {
     return $this->configFile->branch()->find('processors')->attr('count');
   }
 
@@ -104,7 +104,7 @@ class KiwiConfiguration {
    *
    * @return int
    */
-  function numDocumentsPerBatch() {
+  public function numDocumentsPerBatch() {
     return $this->configFile->branch()->find('processors')->attr('batch-size');
   }
 
@@ -124,7 +124,7 @@ class KiwiConfiguration {
    *     - all (default): Do not filter at all; return all fields for this table.
    * @return QuerPath
    */
-  function getFields($table, $use = 'all') {
+  public function getFields($table, $use = 'all') {
     $names = array();
     $fields = $this->configFile->branch()->find("table[name='{$table}'] field");
     if ($use != 'all') {
@@ -138,7 +138,7 @@ class KiwiConfiguration {
    *
    * @return QueryPath
    */
-  function getFilters() {
+  public function getFilters() {
     return $this->configFile->branch()->find("filters filter");
   }
 }
