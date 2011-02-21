@@ -9,7 +9,13 @@
 
   <table name="ecatalogue" type="attach">
     <field name="ColEarliestDateCollected" search="1" display="1" fulltext="1" sort="1" />
+    <field name="ColLatestDateCollected" search="1" display="1" fulltext="1" sort="0" />
+<!-- These fields are reporting not found in Emu for some reason.  -->
+<!--    <field name="PriCollectionDate" search="1" display="1" fulltext="1" sort="1" />-->
+<!--    <field name="PriSiteCEDateCollected" search="1" display="1" fulltext="1" sort="0" />-->
   </table>
+
+
 
   <base name="collection" index="1" display="0" single-attach="Append" multi-attach="Merge">
     <field name="foo" index="0" />
