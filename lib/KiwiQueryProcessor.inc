@@ -68,14 +68,26 @@ class KiwiQueryProcessor {
     $offset = 0;
     $count = $this->config->numDocumentsPerBatch();
 
-    // @todo This will get replaced with a real value in due time.
-    $columns = FALSE;
+
+
+    $fields = $this->config->fields('attach');
+
+
+    $columns = array('irn', 'ColEarliestDateCollected', 'ColLatestDateCollected', 'CatCatalogNo2');
+
+    //$this->module->addFetchSet('mytestfields', $columns);
 
     // I'm not sure how to fencepost fetch() when it runs out of records.
     // For the time being I'm just hacking around that, but we should call
     // Aaron and find out. :-)
-    for ($i=0; $i < 200; ++$i) {
-      $this->module->fetch($position, $offset, $count, $columns);
+    for ($i = 0; $i < 3; ++$i) {
+      $result = $this->module->fetch($position, $offset, $count, $columns);
+      //debug($result);
+      foreach ($result->modules as $module => $records) {
+        foreach ($records->rows as $row) {
+          debug($row);
+        }
+      }
     }
   }
 }
