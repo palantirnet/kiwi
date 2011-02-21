@@ -107,4 +107,16 @@ class KiwiConfiguration {
   function numDocumentsPerBatch() {
     return $this->configFile->branch()->find('processors')->attr('batch-size');
   }
+
+  function fields($type, $use = 'all') {
+    $names = array();
+    $fields = $this->configFile->branch()->find("table[type='{$type}'] field");
+    if ($use != 'all') {
+      $fields->filter("[{$use}=1]");
+    }
+    foreach ($fields as $field) {
+      $names[] = $field->attr('name');
+    }
+    return $names;
+  }
 }
