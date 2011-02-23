@@ -43,27 +43,4 @@
   </table>
 
 
-
-  <base name="collection" index="1" display="0" single-attach="Append" multi-attach="Merge">
-    <field name="foo" index="0" />
-    <field name="bar" index="0" fulltext="1" />
-    <field name="baz" display="1" sort="1" />
-    <field name="stuff_ref" single-attach="Append">
-      <base name="narrative" search="0" index="1" display="0">
-        <field name="narf" index="0" display="1" />
-      </base>
-    </field>
-    <field name="thing_ref" single-attach="Merge">
-      <base name="media">
-
-      </base>
-    </field>
-    <field name="thing_ref" single-attach="Collapse">
-      <base name="media">
-        <field name="thingie" />
-        <field name="stuffie" />
-      </base>
-    </field>
-  </base>
-
 </config>
