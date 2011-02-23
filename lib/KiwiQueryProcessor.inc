@@ -46,6 +46,16 @@ class KiwiQueryProcessor {
   protected $module;
 
   /**
+   * A collection of field handler objects.
+   *
+   * These are stateless and reusable, so we can cache them and only have to
+   * instantiate one of each.
+   *
+   * @var array
+   */
+  protected $handlers = array();
+
+  /**
    * Constructor.
    *
    * @param int $processor_id
@@ -139,7 +149,10 @@ class KiwiQueryProcessor {
   protected function getHandler($table, $field, $type) {
     $class = $this->config->getFieldHandler($table, $field, $type);
     debug($class, 'Handler class');
-    return new $class($this->config);
+    if (empty($this->handlers[$class])) {
+      $this->handlers[$class] = new $class($this->config);
+    }
+    return $this->handlers[$class];
   }
 
   /**
