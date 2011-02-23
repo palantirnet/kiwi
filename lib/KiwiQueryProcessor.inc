@@ -124,7 +124,8 @@ class KiwiQueryProcessor {
     $tables = $this->getAttachFetchSet();
     foreach ($tables as $table => $fields) {
       foreach ($fields as $field) {
-        $document->$field = $row[$field];
+        $solr_field_name = 'ss_' . $field;
+        $document->$solr_field_name = $row[$field];
       }
     }
 
