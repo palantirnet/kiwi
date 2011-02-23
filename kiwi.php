@@ -75,6 +75,11 @@ function main() {
   pcntl_wait($status); //Protect against Zombie children.
   main_cleanup($config);
 
+  // Curiously, this is always returning exactly 3,670,016 bytes, no matter what
+  // the Solr batch size or child count is.  Perhaps it's ignoring the child
+  // processes entirely.
+  print "Maximum memory used (bytes): " . number_format(memory_get_peak_usage(TRUE)) . PHP_EOL;
+
   exit();
 }
 
