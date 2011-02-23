@@ -16,6 +16,26 @@ class KiwiImuSession extends IMuSession {
   protected $config;
 
   /**
+   * Cache of field information from the schema.
+   *
+   * This is mostly to work around ugly ugly nested arrays in the return from
+   * IMuSession::getTableSchema();
+   *
+   * @var array
+   */
+  protected $fieldInfo = array();
+
+  /**
+   * Cache of table schema information.
+   *
+   * This is mostly to work around ugly ugly nested arrays in the return from
+   * IMuSession::getTableSchema();
+   *
+   * @var array
+   */
+  protected $tableInfo = array();
+
+  /**
    * Constructor.
    *
    * This overrides the parent constructor just to let us pass in a config object.
@@ -75,6 +95,42 @@ class KiwiImuSession extends IMuSession {
     $module->setModules($tables);
 
     return $module;
+  }
+
+  /**
+   * Returns schema information for the specified field.
+   *
+   * @param string $table
+   *   The table on which the field exists.
+   * @param string $field
+   *   The field for which we want available schema information.
+   * @return array
+   *   The field schema information for the specified field.
+   */
+  public function getFieldInfo($table, $field) {
+    if (empty($this->fieldInfo[$table][$field])) {
+      $schema = $this->getSchemaInfo($table);
+      $this->fieldInfo[$table][$field] = $schema['schema']['columns'][$field];
+    }
+
+    return $this->fieldInfo[$table][$field];
+  }
+
+  /**
+   * Returns schema information for the specified table.
+   *
+   * This method is mostly just a caching wrapper around IMuSession::getTableSchema().
+   *
+   * @param string $table
+   *   The table for which we want schema information.
+   * @return array
+   *   Full schema information array for the specified table.
+   */
+  public function getSchemaInfo($table) {
+    if (empty($this->tableInfo[$table])) {
+      $this->tableInfo[$table] = $this->getTableSchema($table);
+    }
+    return $this->tableInfo[$table];
   }
 
 }
