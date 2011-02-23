@@ -87,7 +87,7 @@ class KiwiQueryProcessor {
     // Currently, the way this is running it appears that each child process
     // runs through the entire result set, which is seriously not what we want
     // to do.  This will need to be investigated further.
-    for ($i = 0; $i < 10; ++$i) {
+    for ($i = 0; $i < 1; ++$i) {
       $result = $this->module->fetch($position, $offset, $count, 'attachFields');
       foreach ($result->modules as $module => $records) {
         $documents = array();
