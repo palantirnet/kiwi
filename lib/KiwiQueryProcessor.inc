@@ -84,7 +84,10 @@ class KiwiQueryProcessor {
     // I'm not sure how to fencepost fetch() when it runs out of records.
     // For the time being I'm just hacking around that, but we should call
     // Aaron and find out. :-)
-    for ($i = 0; $i < 3; ++$i) {
+    // Currently, the way this is running it appears that each child process
+    // runs through the entire result set, which is seriously not what we want
+    // to do.  This will need to be investigated further.
+    for ($i = 0; $i < 10; ++$i) {
       $result = $this->module->fetch($position, $offset, $count, 'attachFields');
       foreach ($result->modules as $module => $records) {
         $documents = array();
