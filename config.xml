@@ -7,6 +7,13 @@
 
   <base-table name="ecatalogue" />
 
+  <field-types>
+    <field-type name="Text" handler="TextHandler" />
+    <field-type name="Integer" handler="IntegerHandler" />
+    <field-type name="Date" handler="DateHandler" />
+    <field-type name="Float" handler="FloatHandler" />
+  </field-types>
+
   <filters>
     <filter name="AdmPublishWebNoPassword" value="Yes" />
     <filter name="CatDepartment" value="Zoology" operator="matches" />
@@ -14,13 +21,15 @@
   </filters>
 
   <table name="ecatalogue" type="attach">
+    <!-- The PKey, which is also an integer field. -->
     <field name="irn" search="1" display="1" />
-    <!-- Sample date fields. -->
-    <field name="ColEarliestDateCollected" indexed="1" stored="1" fulltext="1" sort="1" />
-    <field name="ColLatestDateCollected" indexed="1" stored="1" fulltext="1" sort="0" />
 
     <!-- Sample text field. -->
     <field name="TypICBNType" indexed="1" stored="1" fulltext="1" sort="1" />
+
+    <!-- Sample date fields. -->
+    <field name="ColEarliestDateCollected" indexed="1" stored="1" fulltext="1" sort="1" />
+    <field name="ColLatestDateCollected" indexed="1" stored="1" fulltext="1" sort="0" />
 
     <!-- Sample floating point field. -->
     <field name="DarCoordinatePrecision" indexed="1" stored="1" fulltext="1" sort="0" />

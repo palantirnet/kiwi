@@ -142,4 +142,8 @@ class KiwiConfiguration {
   public function getFilters() {
     return $this->configFile->branch()->find("filters filter");
   }
+
+  public function getFieldTypes() {
+    return $this->configFile->branch()->find('field-types field-type');
+  }
 }
