@@ -61,9 +61,7 @@ function main() {
       die('could not fork');
     }
     else if ($pid) {
-      // This is the parent.
-      pcntl_wait($status); //Protect against Zombie children.
-      main_cleanup($config);
+      // This is the parent. Do nothing here but let the loop complete.
     }
     else {
       // This is the child.
@@ -72,6 +70,10 @@ function main() {
       exit(0);
     }
   }
+
+  // Wait for all of the spawned children to die.
+  pcntl_wait($status); //Protect against Zombie children.
+  main_cleanup($config);
 
   exit();
 }
