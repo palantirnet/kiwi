@@ -15,8 +15,19 @@
 
   <table name="ecatalogue" type="attach">
     <field name="irn" search="1" display="1" />
+    <!-- Sample date fields. -->
     <field name="ColEarliestDateCollected" indexed="1" stored="1" fulltext="1" sort="1" />
     <field name="ColLatestDateCollected" indexed="1" stored="1" fulltext="1" sort="0" />
+
+    <!-- Sample text field. -->
+    <field name="TypICBNType" indexed="1" stored="1" fulltext="1" sort="1" />
+
+    <!-- Sample floating point field. -->
+    <field name="DarCoordinatePrecision" indexed="1" stored="1" fulltext="1" sort="0" />
+
+    <!-- Sample integer field. -->
+    <field name="CatCatalogueNo" indexed="1" stored="1" fulltext="1" sort="1" />
+
 <!-- These fields are reporting not found in Emu for some reason.  -->
 <!--    <field name="PriCollectionDate" search="1" display="1" fulltext="1" sort="1" />-->
 <!--    <field name="PriSiteCEDateCollected" search="1" display="1" fulltext="1" sort="0" />-->
