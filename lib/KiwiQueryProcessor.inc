@@ -134,10 +134,8 @@ class KiwiQueryProcessor {
     $tables = $this->getAttachFetchSet();
     foreach ($tables as $table => $fields) {
       foreach ($fields as $field) {
-        $field_info = $this->session->getFieldInfo($table, $field);
-        debug($field_info);
+        $handler = $this->getHandler($table, $field);
 
-        $this->getHandler($table, $field, $field_info['DataType']);
         $solr_field_name = 'ss_' . $field;
         $document->$solr_field_name = $row[$field];
       }
@@ -146,8 +144,18 @@ class KiwiQueryProcessor {
     return $document;
   }
 
-  protected function getHandler($table, $field, $type) {
-    $class = $this->config->getFieldHandler($table, $field, $type);
+  /**
+   * Returns a handler object for the specified field.
+   *
+   * @param string $table
+   *   The table to which the field belongs.
+   * @param string $field
+   *   The field we want to be able to map.
+   * @return FieldHandlerInterface
+   */
+  protected function getHandler($table, $field) {
+    $field_info = $this->session->getFieldInfo($table, $field);
+    $class = $this->config->getFieldHandler($table, $field, $field_info['DataType']);
     debug($class, 'Handler class');
     if (empty($this->handlers[$class])) {
       $this->handlers[$class] = new $class($this->config);
@@ -175,7 +183,10 @@ class KiwiQueryProcessor {
 }
 
 
-class HandlerAbstract {
+interface FieldHandlerInterface {}
+
+
+class HandlerAbstract implements FieldHandlerInterface {
 
   /**
    * The configuration object for this processor.
