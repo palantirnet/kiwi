@@ -107,7 +107,7 @@ class KiwiQueryProcessor {
    * @return Apache_Solr_Document
    */
   protected function createSolrDocument(array $row) {
-    debug($row);
+    //debug($row);
     $document = new Apache_Solr_Document();
     $document->id = $row['irn'];
 

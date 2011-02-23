@@ -92,6 +92,8 @@ function main() {
  *   The Module ID of the result set object.
  */
 function main_generator(KiwiConfiguration $config) {
+  print "Generating initial Emu query..." . PHP_EOL;
+
   $server_info = $config->getEmuInfo();
   $session = new KiwiImuSession($config, $server_info['host'], $server_info['port']);
 
@@ -110,6 +112,8 @@ function main_generator(KiwiConfiguration $config) {
  *   The configuration object for this run.
  */
 function main_cleanup(KiwiConfiguration $config) {
+  print "Cleaning up..." . PHP_EOL;
+
 
   // Close the result set object.
   // @todo I'm not sure if we need to, since the modules in the children may
@@ -121,7 +125,9 @@ function main_cleanup(KiwiConfiguration $config) {
   // be synchronous later.
   $server_info = $config->getSolrInfo();
   $solr = new Apache_Solr_Service($server_info['host'], $server_info['port'], $server_info['path']);
+  print "Committing Solr data..." . PHP_EOL;
   $solr->commit();
+  print "Optimizing Solr index..." . PHP_EOL;
   $solr->optimize();
 
   //$solr->deleteByQuery('*:*');
@@ -139,7 +145,7 @@ function main_cleanup(KiwiConfiguration $config) {
  *   The Module ID of the result set object on whic to work.
  */
 function main_processor(KiwiConfiguration $config, $child_id, $module_id) {
-  debug("Child {$child_id} running...");
+  print "Starting processor {$child_id}..." . PHP_EOL;
   $server_info = $config->getEmuInfo();
   $session = new KiwiImuSession($config, $server_info['host'], $server_info['reconnect-port']);
 
