@@ -185,7 +185,7 @@ class KiwiQueryProcessor {
 interface FieldHandlerInterface {}
 
 
-class HandlerAbstract implements FieldHandlerInterface {
+class FieldHandlerBase implements FieldHandlerInterface {
 
   /**
    * The configuration object for this processor.
@@ -207,19 +207,19 @@ class HandlerAbstract implements FieldHandlerInterface {
 
 }
 
-class TextHandler extends HandlerAbstract {
+class TextHandler extends FieldHandlerBase {
   protected $prefix = 'ss';
 }
 
-class DateHandler extends HandlerAbstract {
+class DateHandler extends FieldHandlerBase {
   protected $prefix = 'ds';
 }
 
-class IntegerHandler extends HandlerAbstract {
+class IntegerHandler extends FieldHandlerBase {
   protected $prefix = 'is';
 }
 
-class FloatHandler extends HandlerAbstract {
+class FloatHandler extends FieldHandlerBase {
   protected $prefix = 'fs';
 }
 
@@ -228,7 +228,7 @@ class AlternateHandler extends TextHandler {}
 /**
  * This field mapping handler does nothing.
  */
-class NullHandler extends HandlerAbstract {
+class NullHandler extends FieldHandlerBase {
 
   public function map($field_name, $field_info, $value, Apache_Solr_Document $document) {}
 
