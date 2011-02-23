@@ -109,14 +109,13 @@ function main_cleanup(KiwiConfiguration $config) {
   // do so.  TBD.
 
   // Commit any pending changes to the Solr index and tell Solr to optimize itself.
-  // This is mostly just cleanup for performance.  The commit is set to async
-  // (the two FALSE values) so that it can run in the background on its own
-  // without making the user wait.
-  // @todo: It may make sense to make the commit synchronous so that we don't
-  // return until we're for-reals done.  At least for benchmarking.
+  // Note that these are synchronous operations, so that we can time the entire
+  // process including Solr rebuild.  It may or may not make sense for this to
+  // be synchronous later.
   $server_info = $config->getSolrInfo();
   $solr = new Apache_Solr_Service($server_info['host'], $server_info['port'], $server_info['path']);
-  $solr->commit(TRUE, FALSE, FALSE);
+  $solr->commit();
+  $solr->optimize();
 
   //$solr->deleteByQuery('*:*');
 
