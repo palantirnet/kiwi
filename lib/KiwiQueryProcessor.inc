@@ -91,9 +91,7 @@ class KiwiQueryProcessor {
         foreach ($records->rows as $row) {
           $documents[] = $this->createSolrDocument($row);
         }
-        // This won't work, of course, until there is a schema waiting for it.
-        //$this->solr->addDocuments($documents);
-
+        $this->solr->addDocuments($documents);
       }
     }
   }
@@ -108,10 +106,19 @@ class KiwiQueryProcessor {
    *   A row of results from an Emu base query.
    * @return Apache_Solr_Document
    */
-  protected function createSolrDocument($row) {
+  protected function createSolrDocument(array $row) {
     debug($row);
     $document = new Apache_Solr_Document();
     $document->id = $row['irn'];
+
+    // Simplistic, naive approach to adding fields to the document. Works for the
+    // moment...
+    $tables = $this->getAttachFetchSet();
+    foreach ($tables as $table => $fields) {
+      foreach ($fields as $field) {
+        $document->$field = $row[$field];
+      }
+    }
 
     return $document;
   }
