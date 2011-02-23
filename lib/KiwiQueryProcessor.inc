@@ -125,7 +125,7 @@ class KiwiQueryProcessor {
    * @return Apache_Solr_Document
    */
   protected function createSolrDocument(array $row) {
-    //debug($row);
+    debug($row);
     $document = new Apache_Solr_Document();
     $document->id = $row['irn'];
 
@@ -136,8 +136,7 @@ class KiwiQueryProcessor {
       foreach ($fields as $field) {
         $handler = $this->getHandler($table, $field);
 
-        $solr_field_name = 'ss_' . $field;
-        $document->$solr_field_name = $row[$field];
+        $handler->map($field, $this->session->getFieldInfo($table, $field), $row[$field], $document);
       }
     }
 
@@ -156,7 +155,7 @@ class KiwiQueryProcessor {
   protected function getHandler($table, $field) {
     $field_info = $this->session->getFieldInfo($table, $field);
     $class = $this->config->getFieldHandler($table, $field, $field_info['DataType']);
-    debug($class, 'Handler class');
+    //debug($class, 'Handler class');
     if (empty($this->handlers[$class])) {
       $this->handlers[$class] = new $class($this->config);
     }
@@ -195,20 +194,42 @@ class HandlerAbstract implements FieldHandlerInterface {
    */
   protected $config;
 
+  protected $prefix;
 
   public function __construct(KiwiConfiguration $config) {
     $this->config = $config;
   }
 
-  public function map($field, $document) {
-
+  public function map($field_name, $field_info, $value, Apache_Solr_Document $document) {
+    $solr_field_name = $this->prefix . '_' . $field_name;
+    $document->$solr_field_name = $value;
   }
 
 }
 
-class TextHandler extends HandlerAbstract {}
-class DateHandler extends HandlerAbstract {}
-class IntegerHandler extends HandlerAbstract {}
-class FloatHandler extends HandlerAbstract {}
-class AlternateHandler extends HandlerAbstract {}
-class NullHandler extends HandlerAbstract {}
+class TextHandler extends HandlerAbstract {
+  protected $prefix = 'ss';
+}
+
+class DateHandler extends HandlerAbstract {
+  protected $prefix = 'ds';
+}
+
+class IntegerHandler extends HandlerAbstract {
+  protected $prefix = 'is';
+}
+
+class FloatHandler extends HandlerAbstract {
+  protected $prefix = 'fs';
+}
+
+class AlternateHandler extends TextHandler {}
+
+/**
+ * This field mapping handler does nothing.
+ */
+class NullHandler extends HandlerAbstract {
+
+  public function map($field_name, $field_info, $value, Apache_Solr_Document $document) {}
+
+}

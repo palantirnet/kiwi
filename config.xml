@@ -10,8 +10,8 @@
   <field-types default-handler="NullHandler">
     <field-type name="Text" handler="TextHandler" />
     <field-type name="Integer" handler="IntegerHandler" />
-    <field-type name="Date" handler="DateHandler" />
-    <field-type name="Float" handler="FloatHandler" />
+<!--    <field-type name="Date" handler="DateHandler" />-->
+<!--    <field-type name="Float" handler="FloatHandler" />-->
   </field-types>
 
   <filters>
