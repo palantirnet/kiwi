@@ -146,4 +146,15 @@ class KiwiConfiguration {
   public function getFieldTypes() {
     return $this->configFile->branch()->find('field-types field-type');
   }
+
+  public function getFieldHandler($table, $field, $type) {
+    $handler = $this->configFile->branch()->find("table[name='{$table}'] field[name={$field}]")->attr('handler');
+    if (!$handler) {
+      $handler = $this->configFile->branch()->find("field-types field-type[name={$type}]")->attr('handler');
+    }
+    if (!$handler) {
+      $handler = $this->configFile->branch()->find("field-types")->attr('default-handler');
+    }
+    return $handler;
+  }
 }

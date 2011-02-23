@@ -127,7 +127,7 @@ class KiwiQueryProcessor {
         $field_info = $this->session->getFieldInfo($table, $field);
         debug($field_info);
 
-        $this->getHandler($field, $field_info['DataType']);
+        $this->getHandler($table, $field, $field_info['DataType']);
         $solr_field_name = 'ss_' . $field;
         $document->$solr_field_name = $row[$field];
       }
@@ -136,9 +136,8 @@ class KiwiQueryProcessor {
     return $document;
   }
 
-  protected function getHandler($field, $type) {
-    $types = $this->config->getFieldTypes();
-    $class = $types->filter("[name={$type}]")->attr('handler');
+  protected function getHandler($table, $field, $type) {
+    $class = $this->config->getFieldHandler($table, $field, $type);
     debug($class, 'Handler class');
     return new $class($this->config);
   }
@@ -187,3 +186,5 @@ class TextHandler extends HandlerAbstract {}
 class DateHandler extends HandlerAbstract {}
 class IntegerHandler extends HandlerAbstract {}
 class FloatHandler extends HandlerAbstract {}
+class AlternateHandler extends HandlerAbstract {}
+class NullHandler extends HandlerAbstract {}

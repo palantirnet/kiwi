@@ -7,7 +7,7 @@
 
   <base-table name="ecatalogue" />
 
-  <field-types>
+  <field-types default-handler="NullHandler">
     <field-type name="Text" handler="TextHandler" />
     <field-type name="Integer" handler="IntegerHandler" />
     <field-type name="Date" handler="DateHandler" />
@@ -25,7 +25,7 @@
     <field name="irn" search="1" display="1" />
 
     <!-- Sample text field. -->
-    <field name="TypICBNType" indexed="1" stored="1" fulltext="1" sort="1" />
+    <field name="TypICBNType" handler="AlternateHandler" indexed="1" stored="1" fulltext="1" sort="1" />
 
     <!-- Sample date fields. -->
     <field name="ColEarliestDateCollected" indexed="1" stored="1" fulltext="1" sort="1" />
