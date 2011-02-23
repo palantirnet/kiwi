@@ -96,6 +96,11 @@ class KiwiQueryProcessor {
         }
         $this->solr->addDocuments($documents);
       }
+
+      // When fetching multiple records at once, we need to then manually advance
+      // the "current" pointer to catch up with it.  This makes no sense, especially
+      // why an offset of 1 seems to work regardless of the batch size.
+      $result = $this->module->fetch($position, 1, 0, 'attachFields');
     }
   }
 
