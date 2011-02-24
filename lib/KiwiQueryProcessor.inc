@@ -225,7 +225,7 @@ class IntegerHandler extends FieldHandlerBase {
 }
 
 class FloatHandler extends FieldHandlerBase {
-  protected $prefix = 'fs';
+  protected $prefix = 'tfs';
 }
 
 class AlternateHandler extends TextHandler {}
