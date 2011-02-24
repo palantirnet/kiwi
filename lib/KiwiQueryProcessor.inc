@@ -201,8 +201,13 @@ class FieldHandlerBase implements FieldHandlerInterface {
   }
 
   public function map($field_name, $field_info, $value, Apache_Solr_Document $document) {
-    $solr_field_name = $this->prefix . '_' . $field_name;
-    $document->$solr_field_name = $value;
+
+    // Some field types will die if there's no value specified, so skip empty
+    // values entirely.
+    if ($value) {
+      $solr_field_name = $this->prefix . '_' . $field_name;
+      $document->$solr_field_name = $value;
+    }
   }
 
 }
