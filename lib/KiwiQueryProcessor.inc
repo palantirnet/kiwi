@@ -218,6 +218,18 @@ class TextHandler extends FieldHandlerBase {
 
 class DateHandler extends FieldHandlerBase {
   protected $prefix = 'ds';
+
+  public function map($field_name, $field_info, $value, Apache_Solr_Document $document) {
+    if ($value) {
+      // Recode the date value from D/M/Y to ISO.
+      list($day, $month, $year) = explode('/', $value);
+      $date = new DateTime(NULL, new DateTimeZone('UTC'));
+      $date->setDate($year, $month, $day);
+      $value = $date->format('c') . 'Z';
+
+      parent::map($field_name, $field_info, $value, $document);
+    }
+  }
 }
 
 class IntegerHandler extends FieldHandlerBase {
