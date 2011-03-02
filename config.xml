@@ -16,7 +16,7 @@
 
   <filters>
     <filter name="AdmPublishWebNoPassword" value="Yes" />
-    <filter name="CatDepartment" value="Zoology" operator="matches" />
+<!--    <filter name="CatDepartment" value="Zoology" operator="matches" />-->
     <filter name="ColEarliestDateCollected" value="18/09/1939" />
   </filters>
 
@@ -25,7 +25,12 @@
     <field name="irn" search="1" display="1" />
 
     <!-- Sample text field. -->
-    <field name="TypICBNType" handler="AlternateHandler" indexed="1" stored="1" fulltext="1" sort="1" />
+    <field name="TypICBNType" indexed="1" stored="1" fulltext="1" sort="1" />
+
+    <!-- Sample multi-value text field. -->
+<!--    <field name="ObjOtherNumbersNumber_tab" handler="AlternateHandler" indexed="1" stored="1" fulltext="1" sort="0" />-->
+<!--    <field name="CatProject_tab" handler="AlternateHandler" indexed="1" stored="1" fulltext="1" sort="0" />-->
+
 
     <!-- Sample date fields. -->
     <field name="ColEarliestDateCollected" indexed="1" stored="1" fulltext="1" sort="1" />
@@ -36,6 +41,8 @@
 
     <!-- Sample integer field. -->
     <field name="CatCatalogueNo" indexed="1" stored="1" fulltext="1" sort="1" />
+
+
 
 <!-- These fields are reporting not found in Emu for some reason.  -->
 <!--    <field name="PriCollectionDate" search="1" display="1" fulltext="1" sort="1" />-->

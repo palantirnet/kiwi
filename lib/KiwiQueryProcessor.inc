@@ -143,7 +143,7 @@ class KiwiQueryProcessor {
    * @return Apache_Solr_Document
    */
   protected function createSolrDocument(array $row) {
-    debug($row);
+    //debug($row);
     $document = new Apache_Solr_Document();
     $document->id = $row['irn'];
 
@@ -268,6 +268,7 @@ class DateHandler extends FieldHandlerBase {
   protected $prefix = 'ds';
 
   public function map($field_name, array $field_info, $value, Apache_Solr_Document $document) {
+    //debug($field_info);
     if ($value) {
       // Recode the date value from D/M/Y to ISO.
       list($day, $month, $year) = explode('/', $value);
@@ -299,7 +300,18 @@ class FloatHandler extends FieldHandlerBase {
  *
  * @todo Remove this once the point has been made.
  */
-class AlternateHandler extends TextHandler {}
+class AlternateHandler extends TextHandler {
+
+  public function map($field_name, array $field_info, $value, Apache_Solr_Document $document) {
+    //debug($field_name);
+    //debug($field_info);
+    //debug($value);
+    if ($value) {
+      $solr_field_name = $this->prefix . '_' . $field_name;
+      $document->$solr_field_name = $value;
+    }
+  }
+}
 
 /**
  * No-map field handler that does nothing.
