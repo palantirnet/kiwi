@@ -85,6 +85,7 @@ class KiwiQueryProcessor {
     $position = 'current';
     $offset = 0;
     $count = $this->config->numDocumentsPerBatch();
+    $max_records = $this->config->maxRecordsPerProcessor();
 
     // Build a list of all of the fields we are going to retrieve at once from
     // attachment tables.  We need to retrieve a field if we are using it for
@@ -105,7 +106,7 @@ class KiwiQueryProcessor {
     $last_irn = 0;
     $processed = 0;
     $counter = 1;
-    while ($processed < 10) {
+    while ($processed < $max_records) {
       $result = $this->module->fetch($position, $offset, $count, 'attachFields');
       $processed += $count;
       foreach ($result->modules as $module => $records) {

@@ -110,6 +110,19 @@ class KiwiConfiguration {
   }
 
   /**
+   * Returns the maximum number of records each processor will process.
+   *
+   * This is mostly for debug purposes, but allows a maximum size to be enforced
+   * on an index.
+   *
+   * @return int
+   */
+  public function maxRecordsPerProcessor() {
+    $max = $this->configFile->branch()->find('processors')->attr('max-size');
+    return max($max, PHP_INT_MAX);
+  }
+
+  /**
    * Returns a list of field directives for the specified table.
    *
    * @param string $table
