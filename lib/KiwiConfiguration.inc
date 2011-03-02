@@ -119,7 +119,7 @@ class KiwiConfiguration {
    */
   public function maxRecordsPerProcessor() {
     $max = $this->configFile->branch()->find('processors')->attr('max-size');
-    return max($max, PHP_INT_MAX);
+    return min($max, PHP_INT_MAX);
   }
 
   /**
