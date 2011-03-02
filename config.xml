@@ -3,7 +3,7 @@
 <config name="ecatalogue">
   <solr host="solr.palantir.net" port="8080" core="kiwi" path="/solr/kiwi" />
   <emu host="66.158.71.71" port="40000" reconnect-port="45000" />
-  <processors count="1" batch-size="10" max-size="100" />
+  <processors count="1" batch-size="50" max-size="200" />
 
   <base-table name="ecatalogue" />
 
@@ -16,8 +16,9 @@
 
   <filters>
     <filter name="AdmPublishWebNoPassword" value="Yes" />
-<!--    <filter name="CatDepartment" value="Zoology" operator="matches" />-->
-    <filter name="ColEarliestDateCollected" value="18/09/1939" />
+    <filter name="CatDepartment" value="Zoology" operator="matches" />
+    <filter name="ObjOtherNumbersNumber_tab" value="0" operator="&lt;>" />
+<!--    <filter name="ColEarliestDateCollected" value="18/09/1939" />-->
   </filters>
 
   <table name="ecatalogue" type="attach">
@@ -28,8 +29,8 @@
     <field name="TypICBNType" indexed="1" stored="1" fulltext="1" sort="1" />
 
     <!-- Sample multi-value text field. -->
-<!--    <field name="ObjOtherNumbersNumber_tab" handler="AlternateHandler" indexed="1" stored="1" fulltext="1" sort="0" />-->
-<!--    <field name="CatProject_tab" handler="AlternateHandler" indexed="1" stored="1" fulltext="1" sort="0" />-->
+    <field name="ObjOtherNumbersNumber_tab" handler="AlternateHandler" indexed="1" stored="1" fulltext="1" sort="0" />
+    <field name="CatProject_tab" handler="AlternateHandler" indexed="1" stored="1" fulltext="1" sort="0" />
 
 
     <!-- Sample date fields. -->

@@ -303,10 +303,10 @@ class FloatHandler extends FieldHandlerBase {
 class AlternateHandler extends TextHandler {
 
   public function map($field_name, array $field_info, $value, Apache_Solr_Document $document) {
-    //debug($field_name);
-    //debug($field_info);
-    //debug($value);
     if ($value) {
+      debug($field_name);
+      debug($field_info);
+      debug($value);
       $solr_field_name = $this->prefix . '_' . $field_name;
       $document->$solr_field_name = $value;
     }
