@@ -45,6 +45,8 @@ function main() {
   IMuTrace::setFile('trace.txt');
   IMuTrace::setLevel(1);
 
+  KiwiOutput::get()->setThreshold();
+
   date_default_timezone_set('America/Chicago');
 
   $config = new KiwiConfiguration('config.xml');
@@ -52,7 +54,7 @@ function main() {
   // Build the main query on the Emu server.
   $module_id = main_generator($config);
 
-  debug($module_id, 'Module ID');
+  KiwiOutput::debug($module_id, 'Module ID');
 
   // Spawn off children to do work.
   for ($child_id = 1, $num_processors = $config->numChildProcesses(); $child_id <= $num_processors; ++$child_id) {
@@ -78,7 +80,7 @@ function main() {
   // Curiously, this is always returning exactly 3,670,016 bytes, no matter what
   // the Solr batch size or child count is.  Perhaps it's ignoring the child
   // processes entirely.
-  print "Maximum memory used (bytes): " . number_format(memory_get_peak_usage(TRUE)) . PHP_EOL;
+  KiwiOutput::debug("Maximum memory used (bytes): " . number_format(memory_get_peak_usage(TRUE)));
 
   exit();
 }
@@ -92,7 +94,7 @@ function main() {
  *   The Module ID of the result set object.
  */
 function main_generator(KiwiConfiguration $config) {
-  print "Generating initial Emu query..." . PHP_EOL;
+  KiwiOutput::info("Generating initial Emu query...");
 
   $server_info = $config->getEmuInfo();
   $session = new KiwiImuSession($config, $server_info['host'], $server_info['port']);
@@ -112,8 +114,7 @@ function main_generator(KiwiConfiguration $config) {
  *   The configuration object for this run.
  */
 function main_cleanup(KiwiConfiguration $config) {
-  print "Cleaning up..." . PHP_EOL;
-
+  KiwiOutput::info("Cleaning up...");
 
   // Close the result set object.
   // @todo I'm not sure if we need to, since the modules in the children may
@@ -125,9 +126,9 @@ function main_cleanup(KiwiConfiguration $config) {
   // be synchronous later.
   $server_info = $config->getSolrInfo();
   $solr = new Apache_Solr_Service($server_info['host'], $server_info['port'], $server_info['path']);
-  print "Committing Solr data..." . PHP_EOL;
+  KiwiOutput::info("Committing Solr data...");
   $solr->commit();
-  print "Optimizing Solr index..." . PHP_EOL;
+  KiwiOutput::info("Optimizing Solr index...");
   $solr->optimize();
 
   //$solr->deleteByQuery('*:*');
@@ -145,7 +146,7 @@ function main_cleanup(KiwiConfiguration $config) {
  *   The Module ID of the result set object on whic to work.
  */
 function main_processor(KiwiConfiguration $config, $child_id, $module_id) {
-  print "Starting processor {$child_id}..." . PHP_EOL;
+  KiwiOutput::info("Starting processor {$child_id}...");
   $server_info = $config->getEmuInfo();
   $session = new KiwiImuSession($config, $server_info['host'], $server_info['reconnect-port']);
 
