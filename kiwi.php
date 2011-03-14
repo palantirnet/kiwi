@@ -156,6 +156,7 @@ function main_processor(KiwiConfiguration $config, $child_id, $module_id) {
   $processor = new KiwiQueryProcessor($child_id, $module_id, $config, $session, $solr);
 
   //try {
+    KiwiOutput::get()->setThreshold(LOG_INFO);
     $processor->run();
   //}
   //catch(Exception $e) {
