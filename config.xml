@@ -16,8 +16,9 @@
 
   <filters>
     <filter name="AdmPublishWebNoPassword" value="Yes" />
-    <filter name="CatDepartment" value="Zoology" operator="matches" />
-    <filter name="ObjOtherNumbersNumber_tab" value="0" operator="&lt;>" />
+<!--    <filter name="irn" value="1386657" />-->
+<!--    <filter name="CatDepartment" value="Zoology" operator="matches" />-->
+<!--    <filter name="ObjOtherNumbersNumber_tab" value="0" operator="&lt;>" />-->
 <!--    <filter name="ColEarliestDateCollected" value="18/09/1939" />-->
   </filters>
 
@@ -29,8 +30,9 @@
     <field name="TypICBNType" indexed="1" stored="1" fulltext="1" sort="1" />
 
     <!-- Sample multi-value text field. -->
-    <field name="ObjOtherNumbersNumber_tab" handler="AlternateHandler" indexed="1" stored="1" fulltext="1" sort="0" />
-    <field name="CatProject_tab" handler="AlternateHandler" indexed="1" stored="1" fulltext="1" sort="0" />
+<!--    <field name="ObjOtherNumbersNumber_tab" handler="AlternateHandler" indexed="1" stored="1" fulltext="1" sort="0" />-->
+<!--    <field name="CatProject_tab" handler="AlternateHandler" indexed="1" stored="1" fulltext="1" sort="0" />-->
+    <field name="DesMaterials_tab" indexed="1" stored="1" fulltext="1" sort="0" />
 
 
     <!-- Sample date fields. -->
