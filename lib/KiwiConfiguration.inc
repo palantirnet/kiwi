@@ -52,11 +52,10 @@ class KiwiConfiguration {
    * @return array
    */
   public function getSolrInfo() {
-    $emu = $this->configFile->branch()->find('solr');
-    return array(
-      'host' => $emu->attr('host'),
-      'port' => $emu->attr('port'),
-      'path' => $emu->attr('path'),
+    return $this->configFile->branch()->find('solr')->attr() + array(
+      'host' => '',
+      'port' => '',
+      'path' => '',
     );
   }
 
