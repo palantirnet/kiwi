@@ -65,11 +65,10 @@ class KiwiConfiguration {
    * @return array
    */
   public function getEmuInfo() {
-    $emu = $this->configFile->branch()->find('emu');
-    return array(
-      'host' => $emu->attr('host'),
-      'port' => $emu->attr('port'),
-      'reconnect-port' => $emu->attr('reconnect-port'),
+    return $this->configFile->branch()->find('emu')->attr() + array(
+      'host' => 'localhost',
+      'port' => 40000,
+      'reconnect-port' => 45000,
     );
   }
 
