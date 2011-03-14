@@ -56,6 +56,16 @@ function main() {
 
   KiwiOutput::debug($module_id, 'Module ID');
 
+  // If specified, clear the existing Solr core before adding new content.
+  $info = $config->getConfigInfo();
+  if ($info['full-rebuild']) {
+    $server_info = $config->getSolrInfo();
+    KiwiOutput::info("Purging old solr index...");
+    $solr = new Apache_Solr_Service($server_info['host'], $server_info['port'], $server_info['path']);
+    $solr->deleteByQuery('*:*');
+    unset($solr); // Close the connection.
+  }
+
   // Spawn off children to do work.
   for ($child_id = 1, $num_processors = $config->numChildProcesses(); $child_id <= $num_processors; ++$child_id) {
     $pid = pcntl_fork();
@@ -130,9 +140,6 @@ function main_cleanup(KiwiConfiguration $config) {
   $solr->commit();
   KiwiOutput::info("Optimizing Solr index...");
   $solr->optimize();
-
-  //$solr->deleteByQuery('*:*');
-
 }
 
 /**
