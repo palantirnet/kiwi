@@ -35,6 +35,18 @@ class KiwiConfiguration {
   }
 
   /**
+   * Returns general information about this configuration.
+   *
+   * @return array
+   */
+  public function getConfigInfo() {
+    return $this->configFile->branch()->find('config')->attr() + array(
+      'name' => '',
+      'full-rebuild' => 0,
+    );
+  }
+
+  /**
    * Returns the connection information for the Emu server.
    *
    * @return array
