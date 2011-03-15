@@ -20,6 +20,20 @@ class KiwiConfiguration {
   protected $fieldOptions;
 
   /**
+   * Cache of table names from the config file.
+   *
+   * @var array
+   */
+  protected $tableNames;
+
+  /**
+   * Cache of field info from the config file.
+   *
+   * @var array
+   */
+  protected $fieldTableInfo;
+
+  /**
    * Constructor.
    *
    * @param string $file
@@ -80,7 +94,6 @@ class KiwiConfiguration {
   }
 
   public function baseTable() {
-
     $base_table = $this->configFile->branch()->find('base-table')->attr('name');
 
     return array(
@@ -96,12 +109,15 @@ class KiwiConfiguration {
    * @return array
    */
   public function getTables($type) {
-    $names = array();
-    $tables = $this->configFile->branch()->find("table[type='{$type}']");
-    foreach ($tables as $table) {
-      $names[] = $table->attr('name');
+    if (empty($this->tableNames[$type])) {
+      $names = array();
+      $tables = $this->configFile->branch()->find("table[type='{$type}']");
+      foreach ($tables as $table) {
+        $names[] = $table->attr('name');
+      }
+      $this->tableNames[$type] = $names;
     }
-    return $names;
+    return $this->tableNames[$type];
   }
 
   /**
@@ -159,12 +175,15 @@ class KiwiConfiguration {
    * @return QuerPath
    */
   public function getFields($table, $use = 'all') {
-    $names = array();
-    $fields = $this->configFile->branch()->find("table[name='{$table}'] field");
-    if ($use != 'all') {
-      $fields->filter("[{$use}=1]");
+    if (empty($this->fieldTableInfo[$table][$use])) {
+      $names = array();
+      $fields = $this->configFile->branch()->find("table[name='{$table}'] field");
+      if ($use != 'all') {
+        $fields->filter("[{$use}=1]");
+      }
+      $this->fieldTableInfo[$table][$use] = $fields;
     }
-    return $fields;
+    return $this->fieldTableInfo[$table][$use];
   }
 
   /**
@@ -190,7 +209,6 @@ class KiwiConfiguration {
    *   An array of all properties relevant to the specified field.
    */
   public function getFieldOptions($table, $field, $type) {
-
     if (empty($this->fieldOptions[$table][$field])) {
       // The specific field's definition:
       $info = $this->configFile->branch()->find("table[name='{$table}'] field[name={$field}]")->attr();
