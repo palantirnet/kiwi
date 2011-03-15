@@ -12,6 +12,9 @@
     <field-type name="Integer" handler="IntegerHandler" />
     <field-type name="Date" handler="DateHandler" />
     <field-type name="Float" handler="FloatHandler" />
+    <field-type name="Currency" handler="FloatHandler" />
+    <field-type name="Latitude" handler="FloatHandler" />
+    <field-type name="Longitude" handler="FloatHandler" />
   </field-types>
 
   <filters>
