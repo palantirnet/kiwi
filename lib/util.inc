@@ -95,6 +95,8 @@ class KiwiOutput {
    *   The message to record.
    * @param int $level
    *   The level of the message we are writing.
+   * @return KiwiOutput
+   *   The called object.
    */
   public function writeMessage($message, $level = LOG_INFO) {
     if ($level <= $this->threshold) {
@@ -110,6 +112,8 @@ class KiwiOutput {
    *
    * @param int $level
    *   The minimum error level we want printed.
+   * @return KiwiOutput
+   *   The called object.
    */
   public function setThreshold($level = LOG_INFO) {
     $this->threshold = $level;
@@ -133,6 +137,8 @@ class KiwiOutput {
    *
    * @param string $string
    *   The message to record.
+   * @return KiwiOutput
+   *   The active output object for chaining.
    */
   public static function info($message) {
     return self::get()->writeMessage($message, LOG_INFO);
@@ -149,6 +155,8 @@ class KiwiOutput {
    *   all sorts of debugging.
    * @param string $label
    *   An optional title for this message.
+   * @return KiwiOutput
+   *   The active output object for chaining.
    */
   public static function debug($message, $label = '') {
     $message = print_r($message, 1);
