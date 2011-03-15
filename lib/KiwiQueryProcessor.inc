@@ -108,7 +108,12 @@ class KiwiQueryProcessor {
     $counter = 1;
     while ($processed < $max_records) {
       $result = $this->module->fetch($position, $offset, $count, 'attachFields');
+      if (!$processed) {
+        $total_string = number_format($result->modules[0]->hits);
+        KiwiOutput::info("Processor {$this->processorId}: Approximately {$total_string} records to process.  Will process {$max_records} at most.");
+      }
       $processed += $count;
+
       foreach ($result->modules as $module => $records) {
         $documents = array();
         foreach ($records->rows as $row) {
@@ -121,7 +126,7 @@ class KiwiQueryProcessor {
             $last_irn = $row['irn'];
           }
         }
-        KiwiOutput::info("Processor {$this->processorId}: Indexing {$count} documents to Solr. Indexed {$processed} documents so far.");
+        KiwiOutput::info("Processor {$this->processorId}: Indexed $processed records.");
         $this->solr->addDocuments($documents);
       }
 
