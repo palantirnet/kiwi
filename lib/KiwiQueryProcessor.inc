@@ -326,7 +326,7 @@ class DateHandler extends FieldHandlerBase {
   );
 
   public function map($field_name, KiwiFieldInfoWrapper $field_info, $value, Apache_Solr_Document $document) {
-    //debug($field_info);
+    //KiwiOutput::get()->setThreshold(LOG_DEBUG);
     if ($value) {
       if (!is_array($value)) {
         $value = array($value);
@@ -334,7 +334,16 @@ class DateHandler extends FieldHandlerBase {
       $values = array();
       foreach ($value as $date_value) {
         // Recode the date value from D/M/Y to ISO.
-        list($day, $month, $year) = explode('/', $value);
+        //KiwiOutput::debug($value, 'Date value');
+        list($day, $month, $year) = explode('/', $date_value);
+        // Some dates have no month or day listed at all. In that case, default
+        // to the 1st so that we have a valid date.
+        if (!$day) {
+          $day = 1;
+        }
+        if (!$month) {
+          $month = 1;
+        }
         $date = new DateTime(NULL, new DateTimeZone('UTC'));
         $date->setDate($year, $month, $day);
         $values[] = $date->format('c') . 'Z';
@@ -342,6 +351,7 @@ class DateHandler extends FieldHandlerBase {
 
       parent::map($field_name, $field_info, $values, $document);
     }
+    //KiwiOutput::get()->setThreshold();
   }
 }
 
