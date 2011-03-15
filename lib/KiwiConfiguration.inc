@@ -170,30 +170,6 @@ class KiwiConfiguration {
   }
 
   /**
-   * Returns the name of the handler class for the specified field.
-   *
-   * @param string $table
-   *   The table to which the field belongs.
-   * @param string $field
-   *   The field for which we want to know the handler class.
-   * @param string $type
-   *   The type of the field in question.
-   *
-   * @return string
-   *   The name of the handler class for this field.
-   */
-  public function getFieldHandler($table, $field, $type) {
-    $handler = $this->configFile->branch()->find("table[name='{$table}'] field[name={$field}]")->attr('handler');
-    if (!$handler) {
-      $handler = $this->configFile->branch()->find("field-types field-type[name={$type}]")->attr('handler');
-    }
-    if (!$handler) {
-      $handler = $this->configFile->branch()->find("field-types")->attr('default-handler');
-    }
-    return $handler;
-  }
-
-  /**
    * Returns the configuration for a specific field.
    *
    * @param string $table
