@@ -114,6 +114,7 @@ class KiwiQueryProcessor {
         foreach ($records->rows as $row) {
           KiwiOutput::debug("Child {$this->processorId}: Processing IRN #" . $counter++ . ": " . $row['irn']);
           $documents[] = $this->createSolrDocument($row);
+          KiwiOutput::info("Child {$this->processorId}: Indexing {$count} documents to Solr. Indexed {$processed} documents so far.");
           $this->solr->addDocuments($documents);
           if ($last_irn == $row['irn']) {
             break 3;
