@@ -13,6 +13,13 @@ class KiwiConfiguration {
   protected $configFile;
 
   /**
+   * Cache of field options from the config file.
+   *
+   * @var array
+   */
+  protected $fieldOptions;
+
+  /**
    * Constructor.
    *
    * @param string $file
@@ -183,26 +190,31 @@ class KiwiConfiguration {
    *   An array of all properties relevant to the specified field.
    */
   public function getFieldOptions($table, $field, $type) {
-    // The specific field's definition:
-    $info = $this->configFile->branch()->find("table[name='{$table}'] field[name={$field}]")->attr();
 
-    // Use any values defined for that field type as defaults.
-    $info += $this->configFile->branch()->find("field-types field-type[name={$type}]")->attr();
+    if (empty($this->fieldOptions[$table][$field])) {
+      // The specific field's definition:
+      $info = $this->configFile->branch()->find("table[name='{$table}'] field[name={$field}]")->attr();
 
-    // The handler specifically has an extra default specification.
-    if (!$info['handler']) {
-      $info['handler'] = $this->configFile->branch()->find("field-types")->attr('default-handler');
+      // Use any values defined for that field type as defaults.
+      $info += $this->configFile->branch()->find("field-types field-type[name={$type}]")->attr();
+
+      // The handler specifically has an extra default specification.
+      if (!$info['handler']) {
+        $info['handler'] = $this->configFile->branch()->find("field-types")->attr('default-handler');
+      }
+
+      // And now hard-coded defaults:
+      $info += array(
+        'handler' => 'NullHandler',
+        'indexed' => 0,
+        'stored' => 0,
+        'fulltext' => 0,
+        'sorted' => 0,
+      );
+
+      $this->fieldOptions[$table][$field] = $info;
     }
 
-    // And now hard-coded defaults:
-    $info += array(
-      'handler' => 'NullHandler',
-      'indexed' => 0,
-      'stored' => 0,
-      'fulltext' => 0,
-      'sorted' => 0,
-    );
-
-    return $info;
+    return $this->fieldOptions[$table][$field];
   }
 }
