@@ -100,6 +100,7 @@ class KiwiOutput {
     if ($level <= $this->threshold) {
       fwrite($this->getStream($level), $message . PHP_EOL);
     }
+    return $this;
   }
 
   /**
@@ -112,6 +113,7 @@ class KiwiOutput {
    */
   public function setThreshold($level = LOG_INFO) {
     $this->threshold = $level;
+    return $this;
   }
 
   /**
@@ -133,7 +135,7 @@ class KiwiOutput {
    *   The message to record.
    */
   public static function info($message) {
-    self::get()->writeMessage($message, LOG_INFO);
+    return self::get()->writeMessage($message, LOG_INFO);
   }
 
   /**
@@ -153,7 +155,7 @@ class KiwiOutput {
     if ($label) {
       $message = $label . ': ' . $message;
     }
-    self::get()->writeMessage($message, LOG_DEBUG);
+    return self::get()->writeMessage($message, LOG_DEBUG);
   }
 }
 
