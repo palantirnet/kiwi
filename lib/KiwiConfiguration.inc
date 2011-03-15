@@ -169,7 +169,6 @@ class KiwiConfiguration {
     return $this->configFile->branch()->find("filters filter");
   }
 
-
   /**
    * Returns the name of the handler class for the specified field.
    *
@@ -192,5 +191,42 @@ class KiwiConfiguration {
       $handler = $this->configFile->branch()->find("field-types")->attr('default-handler');
     }
     return $handler;
+  }
+
+  /**
+   * Returns the configuration for a specific field.
+   *
+   * @param string $table
+   *   The table to which the field belongs.
+   * @param string $field
+   *   The field for which we want configuration data.
+   * @param string $type
+   *   The type of the field in question.
+   *
+   * @return array
+   *   An array of all properties relevant to the specified field.
+   */
+  public function getFieldOptions($table, $field, $type) {
+    // The specific field's definition:
+    $info = $this->configFile->branch()->find("table[name='{$table}'] field[name={$field}]")->attr();
+
+    // Use any values defined for that field type as defaults.
+    $info += $this->configFile->branch()->find("field-types field-type[name={$type}]")->attr();
+
+    // The handler specifically has an extra default specification.
+    if (!$info['handler']) {
+      $info['handler'] = $this->configFile->branch()->find("field-types")->attr('default-handler');
+    }
+
+    // And now hard-coded defaults:
+    $info += array(
+      'handler' => 'NullHandler',
+      'indexed' => 0,
+      'stored' => 0,
+      'fulltext' => 0,
+      'sorted' => 0,
+    );
+
+    return $info;
   }
 }

@@ -181,8 +181,8 @@ class KiwiQueryProcessor {
    */
   protected function getHandler($table, $field) {
     $field_info = $this->session->getFieldInfo($table, $field);
-    $class = $this->config->getFieldHandler($table, $field, $field_info['DataType']);
-    //debug($class, 'Handler class');
+    $field_options = $this->config->getFieldOptions($table, $field, $field_info['DataType']);
+    $class = $field_options['handler'];
     if (empty($this->handlers[$class])) {
       $this->handlers[$class] = new $class($this->config);
     }
