@@ -3,7 +3,7 @@
 <config name="ecatalogue" full-rebuild="0">
   <solr host="solr.palantir.net" port="8080" core="kiwi" path="/solr/kiwi" />
   <emu host="66.158.71.71" port="40000" reconnect-port="45000" />
-  <processors count="1" batch-size="50" max-size="1000" />
+  <processors count="1" batch-size="1" max-size="1000" />
 
   <base-table name="ecatalogue" />
 
@@ -13,13 +13,13 @@
     <field-type name="Date" handler="DateHandler" />
     <field-type name="Float" handler="FloatHandler" />
     <field-type name="Currency" handler="FloatHandler" />
-    <field-type name="Latitude" handler="FloatHandler" />
-    <field-type name="Longitude" handler="FloatHandler" />
+    <field-type name="Latitude" handler="AlternateHandler" />
+    <field-type name="Longitude" handler="AlternateHandler" />
   </field-types>
 
   <filters>
     <filter name="AdmPublishWebNoPassword" value="Yes" />
-<!--    <filter name="irn" value="1386657" />-->
+<!--    <filter name="irn" value="2548884" />-->
     <filter name="CatDepartment" value="Zoology" operator="matches" />
 <!--    <filter name="ObjOtherNumbersNumber_tab" value="0" operator="&lt;>" />-->
 <!--    <filter name="ColEarliestDateCollected" value="18/09/1939" />-->
@@ -29,25 +29,30 @@
     <!-- The PKey, which is also an integer field. -->
     <field name="irn" search="1" display="1" />
 
-    <!-- Sample text field. -->
+    <!-- Sample text field, single-value. -->
     <field name="TypICBNType" indexed="1" stored="1" fulltext="1" sort="1" />
 
-    <!-- Sample multi-value text field. -->
+    <!-- Sample text field, multi-value. -->
     <field name="ObjOtherNumbersNumber_tab" indexed="1" stored="1" fulltext="1" sort="0" />
     <field name="CatProject_tab" indexed="1" stored="1" fulltext="1" sort="0" />
     <field name="DesMaterials_tab" indexed="1" stored="1" fulltext="1" sort="0" />
 
 
-    <!-- Sample date fields. -->
+    <!-- Sample date fields, single-value. -->
     <field name="ColEarliestDateCollected" indexed="1" stored="1" fulltext="1" sort="1" />
     <field name="ColLatestDateCollected" indexed="1" stored="1" fulltext="1" sort="0" />
 
-    <!-- Sample floating point field. -->
+    <!-- Sample floating point field, single-value. -->
     <field name="DarCoordinatePrecision" indexed="1" stored="1" fulltext="1" sort="0" />
 
-    <!-- Sample integer field. -->
+    <!-- Sample integer field, single-value. -->
     <field name="CatCatalogueNo" indexed="1" stored="1" fulltext="1" sort="1" />
 
+    <!-- Sample latitude field, single value. -->
+    <field name="ColCentroidLatitudeLocal" handler="AlternateHandler" indexed="1" stored="1" fulltext="1" sort="1" />
+
+    <!-- Sample longitude field, single value. -->
+    <field name="ColCentroidLongitudeLocal" indexed="1" stored="1" fulltext="1" sort="1" />
 
 
 <!-- These fields are reporting not found in Emu for some reason.  -->

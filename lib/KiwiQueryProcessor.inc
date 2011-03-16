@@ -387,17 +387,19 @@ class FloatHandler extends FieldHandlerBase {
  *
  * @todo Remove this once the point has been made.
  */
-class AlternateHandler extends TextHandler {
+class AlternateHandler extends FloatHandler {
 
   public function map($field_name, KiwiFieldInfoWrapper $field_info, $value, Apache_Solr_Document $document) {
+    KiwiOutput::get()->setThreshold(LOG_DEBUG);
     if ($value) {
-      debug($field_name, 'Field name');
-      debug($field_info, 'Field info');
-      debug($value, 'Field value');
+      KiwiOutput::debug($field_name, 'Field name');
+      KiwiOutput::debug($field_info, 'Field info');
+      KiwiOutput::debug($value, 'Field value');
       $prefix = ($field_info->isMultiValue()) ? $this->prefix['multi'] : $this->prefix['single'];
       $solr_field_name = $prefix . '_' . $field_name;
-      $document->$solr_field_name = $value;
+      //$document->$solr_field_name = $value;
     }
+    KiwiOutput::get()->setThreshold();
   }
 }
 
