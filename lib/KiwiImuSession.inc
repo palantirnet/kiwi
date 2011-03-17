@@ -190,7 +190,6 @@ class KiwiEmuField {
 
   public function __construct($schema) {
     $this->schema = $schema;
-    debug($schema);
   }
 
   /**
@@ -203,5 +202,13 @@ class KiwiEmuField {
    */
   public function isMultiValue() {
      return (substr($this->schema['ColumnName'], -4) == '_tab');
+  }
+
+  public function itemName() {
+    return $this->schema['ItemName'];
+  }
+
+  public function columnName() {
+    return $this->schema['ColumnName'];
   }
 }
