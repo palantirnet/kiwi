@@ -161,7 +161,7 @@ class KiwiQueryProcessor {
       $tableO = $this->session->getTable($table);
       foreach ($fields as $field) {
         $handler = $this->getHandler($table, $field);
-        $handler->map($field, $tableO->getField($field), $row[$field], $document);
+        $handler->map($tableO->getField($field), $row[$field], $document);
       }
     }
 
@@ -262,16 +262,14 @@ interface FieldHandlerInterface {
    * handling is needed for them.  For some fields, though, like date, it may
    * be necessary to add special handling.  That is up to each field to figure out.
    *
-   * @param string $field_name
-   *   The name of the field from Emu that we are adding.
-   * @param KiwiFieldInfoWrapper $field_info
+   * @param KiwiEmuField $field_info
    *   The Emu schema information for this field.
    * @param string $value
    *   The value of the field in Emu.
    * @param Apache_Solr_Document $document
    *   The Solr document to which to add the field.
    */
-  public function map($field_name, $field_info, $value, Apache_Solr_Document $document);
+  public function map(KiwiEmuField $field_info, $value, Apache_Solr_Document $document);
 
 }
 
@@ -296,14 +294,14 @@ class FieldHandlerBase implements FieldHandlerInterface {
     $this->config = $config;
   }
 
-  public function map($field_name, $field_info, $value, Apache_Solr_Document $document) {
+  public function map(KiwiEmuField $field_info, $value, Apache_Solr_Document $document) {
     // Some field types will die if there's no value specified, so skip empty
     // values entirely.
     if ($value) {
-      KiwiOutput::debug("\tMapping $field_name using " . get_class($this));
+      KiwiOutput::debug("\tMapping " . $field_info->columnName() . " using " . get_class($this));
 
       $prefix = ($field_info->isMultiValue()) ? $this->prefix['multi'] : $this->prefix['single'];
-      $solr_field_name = $prefix . '_' . $field_name;
+      $solr_field_name = $prefix . '_' . $field_info->itemName();
       $document->$solr_field_name = $value;
     }
   }
@@ -330,7 +328,7 @@ class DateHandler extends FieldHandlerBase {
     'multi' => 'dm'
   );
 
-  public function map($field_name, $field_info, $value, Apache_Solr_Document $document) {
+  public function map(KiwiEmuField $field_info, $value, Apache_Solr_Document $document) {
     //KiwiOutput::get()->setThreshold(LOG_DEBUG);
     if ($value) {
       if (!is_array($value)) {
@@ -354,7 +352,7 @@ class DateHandler extends FieldHandlerBase {
         $values[] = $date->format('c') . 'Z';
       }
 
-      parent::map($field_name, $field_info, $values, $document);
+      parent::map($field_info, $values, $document);
     }
     //KiwiOutput::get()->setThreshold();
   }
@@ -387,14 +385,13 @@ class FloatHandler extends FieldHandlerBase {
  */
 class AlternateHandler extends FloatHandler {
 
-  public function map($field_name, $field_info, $value, Apache_Solr_Document $document) {
+  public function map(KiwiEmuField $field_info, $value, Apache_Solr_Document $document) {
     //KiwiOutput::get()->setThreshold(LOG_DEBUG);
     if ($value) {
-      KiwiOutput::debug($field_name, 'Field name');
       KiwiOutput::debug($field_info, 'Field info');
       KiwiOutput::debug($value, 'Field value');
       $prefix = ($field_info->isMultiValue()) ? $this->prefix['multi'] : $this->prefix['single'];
-      $solr_field_name = $prefix . '_' . $field_name;
+      $solr_field_name = $prefix . '_' . $field_info->itemName();
       //$document->$solr_field_name = $value;
     }
     KiwiOutput::get()->setThreshold();
@@ -408,6 +405,6 @@ class AlternateHandler extends FloatHandler {
  */
 class NullHandler extends FieldHandlerBase {
 
-  public function map($field_name, $field_info, $value, Apache_Solr_Document $document) {}
+  public function map(KiwiEmuField $field_info, $value, Apache_Solr_Document $document) {}
 
 }
