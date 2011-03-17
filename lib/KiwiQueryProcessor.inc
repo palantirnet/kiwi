@@ -388,7 +388,7 @@ class FloatHandler extends FieldHandlerBase {
 class AlternateHandler extends FloatHandler {
 
   public function map($field_name, $field_info, $value, Apache_Solr_Document $document) {
-    KiwiOutput::get()->setThreshold(LOG_DEBUG);
+    //KiwiOutput::get()->setThreshold(LOG_DEBUG);
     if ($value) {
       KiwiOutput::debug($field_name, 'Field name');
       KiwiOutput::debug($field_info, 'Field info');

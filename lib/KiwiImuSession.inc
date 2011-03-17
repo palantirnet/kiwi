@@ -142,7 +142,7 @@ class KiwiImuSession extends IMuSession {
 
   public function getTable($name) {
     if (empty($this->tables[$name])) {
-      $this->tables[$name] = new KiwiEmuTable($this->getSchemaInfo($name));
+      $this->tables[$name] = new KiwiEmuTable($this->getSchemaInfo($name), $this->config);
     }
     return $this->tables[$name];
   }
@@ -154,13 +154,20 @@ class KiwiEmuTable implements IteratorAggregate {
 
   protected $fields;
 
-  public function __construct($schema) {
+  protected $config;
+
+  public function __construct($schema, KiwiConfiguration $config) {
     $this->schema = $schema;
+    $this->config = $config;
 
     // Split out our fields up front, since we're almost certain to need them.
-    foreach ($schema['schema']['columns'] as $field => $field_info) {
-      $this->fields[$field] = new KiwiEmuField($field_info);
+    foreach ($this->config->getFields($this->getName()) as $field) {
+      $this->fields[$field->attr('name')] = new KiwiEmuField($this->schema['schema']['columns'][$field->attr('name')]);
     }
+  }
+
+  public function getName() {
+    return $this->schema['schema']['table'];
   }
 
   public function getField($field) {
