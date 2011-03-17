@@ -110,7 +110,7 @@ class KiwiQueryProcessor {
       $result = $this->module->fetch($position, $offset, $count, 'attachFields');
       if (!$processed) {
         $total_string = number_format($result->modules[0]->hits);
-        $max_string = number_Format($max_records);
+        $max_string = number_format($max_records);
         KiwiOutput::info("Processor {$this->processorId}: Approximately {$total_string} records to process.  Will process {$max_string} at most.");
       }
       $processed += $count;
