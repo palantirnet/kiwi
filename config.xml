@@ -3,7 +3,7 @@
 <config name="ecatalogue" full-rebuild="0">
   <solr host="solr.palantir.net" port="8080" core="kiwi" path="/solr/kiwi" />
   <emu host="66.158.71.71" port="40000" reconnect-port="45000" />
-  <processors count="1" batch-size="1" max-size="10" />
+  <processors count="1" batch-size="1" max-size="100" />
 
   <base-table name="ecatalogue" />
 
@@ -54,11 +54,16 @@
     <!-- Sample longitude field, single value. -->
     <field name="ColCentroidLongitudeLocal" indexed="1" stored="1" fulltext="1" sort="1" />
 
+    <!-- Sample reference field, single-value. -->
+    <field name="ColSiteLocationRef" handler="RefTestHandler" indexed="1" stored="1" fulltext="1" sort="1" />
 
 <!-- These fields are reporting not found in Emu for some reason.  -->
 <!--    <field name="PriCollectionDate" search="1" display="1" fulltext="1" sort="1" />-->
 <!--    <field name="PriSiteCEDateCollected" search="1" display="1" fulltext="1" sort="0" />-->
   </table>
 
+  <table name="esites" type="attach">
+    <field name="LocVerbatimLocality" indexed="1" stored="1" />
+  </table>
 
 </config>

@@ -154,6 +154,7 @@ class KiwiQueryProcessor {
     $document = new Apache_Solr_Document();
     $document->id = $row['irn'];
 
+    debug($row);
     // Simplistic, naive approach to adding fields to the document. Works for the
     // moment...
     $tables = $this->getAttachFetchSet();
@@ -207,6 +208,7 @@ class KiwiQueryProcessor {
         $columns[$table][] = $field->columnName();
       }
     }
+    //debug($columns);
     return $columns;
   }
 }
@@ -412,4 +414,10 @@ class NullHandler extends FieldHandlerBase {
 
   public function map(KiwiEmuField $field_info, $value, Apache_Solr_Document $document) {}
 
+}
+
+class RefTestHandler extends FieldHandlerBase {
+  public function map(KiwiEmuField $field_info, $value, Apache_Solr_Document $document) {
+    parent::map($field_info, $value, $document);
+  }
 }
