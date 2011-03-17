@@ -173,5 +173,9 @@ class KiwiOutput {
     }
     return self::get()->writeMessage($message, LOG_DEBUG);
   }
+
+  public static function warn($message) {
+    self::get()->writeMessage($message, LOG_WARNING);
+  }
 }
 
