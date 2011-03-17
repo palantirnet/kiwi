@@ -154,8 +154,6 @@ class KiwiQueryProcessor {
     $document = new Apache_Solr_Document();
     $document->id = $row['irn'];
 
-    $field_info_wrapper = new KiwiFieldInfoWrapper();
-
     // Simplistic, naive approach to adding fields to the document. Works for the
     // moment...
     $tables = $this->getAttachFetchSet();
@@ -163,7 +161,7 @@ class KiwiQueryProcessor {
       foreach ($fields as $field) {
         $handler = $this->getHandler($table, $field);
 
-        $handler->map($field, $field_info_wrapper->setFieldInfo($this->session->getFieldInfo($table, $field)), $row[$field], $document);
+        $handler->map($field, $this->session->getTable($table)->getField($field), $row[$field], $document);
       }
     }
 
@@ -273,7 +271,7 @@ interface FieldHandlerInterface {
    * @param Apache_Solr_Document $document
    *   The Solr document to which to add the field.
    */
-  public function map($field_name, KiwiFieldInfoWrapper $field_info, $value, Apache_Solr_Document $document);
+  public function map($field_name, $field_info, $value, Apache_Solr_Document $document);
 
 }
 
@@ -298,7 +296,7 @@ class FieldHandlerBase implements FieldHandlerInterface {
     $this->config = $config;
   }
 
-  public function map($field_name, KiwiFieldInfoWrapper $field_info, $value, Apache_Solr_Document $document) {
+  public function map($field_name, $field_info, $value, Apache_Solr_Document $document) {
     // Some field types will die if there's no value specified, so skip empty
     // values entirely.
     if ($value) {
@@ -332,7 +330,7 @@ class DateHandler extends FieldHandlerBase {
     'multi' => 'dm'
   );
 
-  public function map($field_name, KiwiFieldInfoWrapper $field_info, $value, Apache_Solr_Document $document) {
+  public function map($field_name, $field_info, $value, Apache_Solr_Document $document) {
     //KiwiOutput::get()->setThreshold(LOG_DEBUG);
     if ($value) {
       if (!is_array($value)) {
@@ -389,7 +387,7 @@ class FloatHandler extends FieldHandlerBase {
  */
 class AlternateHandler extends FloatHandler {
 
-  public function map($field_name, KiwiFieldInfoWrapper $field_info, $value, Apache_Solr_Document $document) {
+  public function map($field_name, $field_info, $value, Apache_Solr_Document $document) {
     KiwiOutput::get()->setThreshold(LOG_DEBUG);
     if ($value) {
       KiwiOutput::debug($field_name, 'Field name');
@@ -410,6 +408,6 @@ class AlternateHandler extends FloatHandler {
  */
 class NullHandler extends FieldHandlerBase {
 
-  public function map($field_name, KiwiFieldInfoWrapper $field_info, $value, Apache_Solr_Document $document) {}
+  public function map($field_name, $field_info, $value, Apache_Solr_Document $document) {}
 
 }
