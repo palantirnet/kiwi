@@ -161,7 +161,12 @@ class KiwiQueryProcessor {
       $tableO = $this->session->getTable($table);
       foreach ($fields as $field) {
         $handler = $this->getHandler($table, $field);
-        $handler->map($tableO->getField($field), $row[$field], $document);
+        if (array_key_exists($field, $row)) {
+          $handler->map($tableO->getField($field), $row[$field], $document);
+        }
+        else {
+          KiwiOutput::warn("Field not included in result set: {$field}");
+        }
       }
     }
 
