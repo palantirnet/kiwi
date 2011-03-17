@@ -158,10 +158,10 @@ class KiwiQueryProcessor {
     // moment...
     $tables = $this->getAttachFetchSet();
     foreach ($tables as $table => $fields) {
+      $tableO = $this->session->getTable($table);
       foreach ($fields as $field) {
         $handler = $this->getHandler($table, $field);
-
-        $handler->map($field, $this->session->getTable($table)->getField($field), $row[$field], $document);
+        $handler->map($field, $tableO->getField($field), $row[$field], $document);
       }
     }
 
