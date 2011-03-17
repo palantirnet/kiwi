@@ -146,6 +146,10 @@ class KiwiImuSession extends IMuSession {
     }
     return $this->tables[$name];
   }
+
+  public function getTables() {
+    $this->config->getTables('attach');
+  }
 }
 
 class KiwiEmuTable implements IteratorAggregate {
@@ -186,6 +190,7 @@ class KiwiEmuField {
 
   public function __construct($schema) {
     $this->schema = $schema;
+    debug($schema);
   }
 
   /**

@@ -198,6 +198,11 @@ class KiwiQueryProcessor {
   protected function getAttachFetchSet() {
     $columns = array();
     foreach ($this->config->getTables('attach') as $table) {
+      $tableO = $this->session->getTable($table);
+      foreach ($table as $field) {
+        $columns[$table][] = $field->name();
+      }
+
       foreach ($this->config->getFields($table) as $field) {
         $columns[$table][] = $field->attr('name');
       }
