@@ -71,15 +71,15 @@ class KiwiOutput {
    * Constructor.
    */
   protected function __construct() {
-    $this->defaultStream = fopen('php://stdout', 'w');
+    $this->defaultStream = STDOUT;
 
-    $stderr = fopen('php://stderr', 'w');
-    $this->streams[LOG_NOTICE] = $stderr;
-    $this->streams[LOG_WARNING] = $stderr;
-    $this->streams[LOG_ERR] = $stderr;
-    $this->streams[LOG_CRIT] = $stderr;
-    $this->streams[LOG_ALERT] = $stderr;
-    $this->streams[LOG_EMERG] = $stderr;
+    //$stderr = fopen('php://stderr', 'w');
+    $this->streams[LOG_NOTICE] = STDERR;
+    $this->streams[LOG_WARNING] = STDERR;
+    $this->streams[LOG_ERR] = STDERR;
+    $this->streams[LOG_CRIT] = STDERR;
+    $this->streams[LOG_ALERT] = STDERR;
+    $this->streams[LOG_EMERG] = STDERR;
   }
 
   /**
