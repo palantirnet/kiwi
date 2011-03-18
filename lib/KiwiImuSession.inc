@@ -60,46 +60,40 @@ class KiwiImuSession extends IMuSession {
   }
 
   /**
-   * Returns a new IMuModules object for a new handler.
+   * Returns a new IMuModule object for a new handler.
    *
-   * @see KiwiImuSession::resumeModulesHandler();
+   * @see KiwiImuSession::resumeModuleHandler();
    * @param boolean $destroy
    *   Whether or not to destroy the server-side result object when the PHP
    *   object goes out of scope.  The default is to let it be released. This
    *   must be set to TRUE to allow the result set to be reconnected to later.
    *
-   * @return IMuModules
+   * @return IMuModule
    */
-  public function newModulesHandler($destroy = TRUE) {
-    $module = new IMuModules($this);
+  public function newModuleHandler($destroy = TRUE) {
+    $base_table = $this->config->baseTable();
+    $module = new IMuModule($base_table['name'], $this);
 
     // Leave the result set open on the server.  That allows us to reconnect
     // to it from the child processes later.
     $module->destroy = $destroy;
 
-    $tables = $this->config->getTables('attach');
-
-    $module->setModules($tables);
-
     return $module;
   }
 
   /**
-   * Returns a new IMuModules object for an existing handler on the server.
+   * Returns a new IMuModule object for an existing handler on the server.
    *
    * @param string $module_id
    *   The ID of the existing module handler on the Emu server to which to
    *   reconnect.
-   * @return IMuModules
+   * @return IMuModule
    */
-  public function resumeModulesHandler($module_id) {
-    $module = new IMuModules($this);
+  public function resumeModuleHandler($module_id) {
+    $base_table = $this->config->baseTable();
+    $module = new IMuModule($base_table['name'], $this);
 
     $module->id = $module_id;
-
-    $tables = $this->config->getTables('attach');
-
-    $module->setModules($tables);
 
     return $module;
   }

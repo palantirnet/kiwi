@@ -74,7 +74,7 @@ class KiwiQueryProcessor {
     $this->session = $session;
     $this->solr = $solr;
 
-    $this->module = $this->session->resumeModulesHandler($module_id);
+    $this->module = $this->session->resumeModuleHandler($module_id);
   }
 
   /**
@@ -106,30 +106,29 @@ class KiwiQueryProcessor {
     $last_irn = 0;
     $processed = 0;
     $counter = 1;
+    KiwiOutput::get()->setThreshold(LOG_DEBUG);
     while ($processed < $max_records) {
       $result = $this->module->fetch($position, $offset, $count, 'attachFields');
       if (!$processed) {
-        $total_string = number_format($result->modules[0]->hits);
+        $total_string = number_format($result->hits);
         $max_string = number_format($max_records);
         KiwiOutput::info("Processor {$this->processorId}: Approximately {$total_string} records to process.  Will process {$max_string} at most.");
       }
       $processed += $count;
 
-      foreach ($result->modules as $module => $records) {
-        $documents = array();
-        foreach ($records->rows as $row) {
-          KiwiOutput::debug("Processor {$this->processorId}: Processing IRN #" . $counter++ . ": " . $row['irn']);
-          $documents[] = $this->createSolrDocument($row);
-          if ($last_irn == $row['irn']) {
-            break 3;
-          }
-          else {
-            $last_irn = $row['irn'];
-          }
+      $documents = array();
+      foreach ($result->rows as $row) {
+        KiwiOutput::debug("Processor {$this->processorId}: Processing IRN #" . $counter++ . ": " . $row['irn']);
+        $documents[] = $this->createSolrDocument($row);
+        if ($last_irn == $row['irn']) {
+          break 2;
         }
-        KiwiOutput::info("Processor {$this->processorId}: Indexed $processed records.");
-        $this->solr->addDocuments($documents);
+        else {
+          $last_irn = $row['irn'];
+        }
       }
+      KiwiOutput::info("Processor {$this->processorId}: Indexed $processed records.");
+      $this->solr->addDocuments($documents);
 
 
       // When fetching multiple records at once, we need to then manually advance
@@ -154,20 +153,15 @@ class KiwiQueryProcessor {
     $document = new Apache_Solr_Document();
     $document->id = $row['irn'];
 
-    debug($row);
-    // Simplistic, naive approach to adding fields to the document. Works for the
-    // moment...
-    $tables = $this->getAttachFetchSet();
-    foreach ($tables as $table => $fields) {
-      $tableO = $this->session->getTable($table);
-      foreach ($fields as $field) {
-        $handler = $this->getHandler($table, $field);
-        if (array_key_exists($field, $row)) {
-          $handler->map($tableO->getField($field), $row[$field], $document);
-        }
-        else {
-          KiwiOutput::warn("Field not included in result set: {$field}");
-        }
+    $base_table = $this->config->baseTable();
+    $table = $this->session->getTable($base_table['name']);
+    foreach ($table as $field) {
+      if (array_key_exists($field->columnName(), $row)) {
+        $handler = $this->getHandler($base_table['name'], $field->columnName());
+        $handler->map($field, $row[$field->columnName()], $document);
+      }
+      else {
+        KiwiOutput::warn("Field not included in result set: {$field}");
       }
     }
 
@@ -194,20 +188,23 @@ class KiwiQueryProcessor {
   }
 
   /**
-   * Returns an array of all tables/fields to retrieve from the main query.
+   * Returns an array of the tables/fields for the query.
    *
-   * The double-nested array returned by this method is safe to pass to
+   * @todo Handle reference fields properly.
+   *
+   * The array returned by this method is safe to pass to
    * IMuModules::addFetchSet().
    *
    * @return array
    */
   protected function getAttachFetchSet() {
     $columns = array();
-    foreach ($this->config->getTables('attach') as $table) {
-      foreach ($this->session->getTable($table) as $field) {
-        $columns[$table][] = $field->columnName();
-      }
+    $base_table = $this->config->baseTable();
+
+    foreach ($this->session->getTable($base_table['name']) as $field) {
+      $columns[] = $field->columnName();
     }
+
     //debug($columns);
     return $columns;
   }
