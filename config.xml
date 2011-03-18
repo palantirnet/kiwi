@@ -13,8 +13,8 @@
     <field-type name="Date" handler="DateHandler" />
     <field-type name="Float" handler="FloatHandler" />
     <field-type name="Currency" handler="FloatHandler" />
-    <field-type name="Latitude" handler="AlternateHandler" />
-    <field-type name="Longitude" handler="AlternateHandler" />
+    <field-type name="Latitude" handler="LatLongHandler" />
+    <field-type name="Longitude" handler="LatLongHandler" />
   </field-types>
 
   <filters>
@@ -49,7 +49,7 @@
     <field name="CatCatalogueNo" indexed="1" stored="1" fulltext="1" sort="1" />
 
     <!-- Sample latitude field, single value. -->
-    <field name="ColCentroidLatitudeLocal" handler="AlternateHandler" indexed="1" stored="1" fulltext="1" sort="1" />
+    <field name="ColCentroidLatitudeLocal" indexed="1" stored="1" fulltext="1" sort="1" />
 
     <!-- Sample longitude field, single value. -->
     <field name="ColCentroidLongitudeLocal" indexed="1" stored="1" fulltext="1" sort="1" />

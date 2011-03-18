@@ -106,7 +106,6 @@ class KiwiQueryProcessor {
     $last_irn = 0;
     $processed = 0;
     $counter = 1;
-    KiwiOutput::get()->setThreshold(LOG_DEBUG);
     while ($processed < $max_records) {
       $result = $this->module->fetch($position, $offset, $count, 'attachFields');
       if (!$processed) {
@@ -399,6 +398,26 @@ class AlternateHandler extends FloatHandler {
       //$document->$solr_field_name = $value;
     }
     KiwiOutput::get()->setThreshold();
+  }
+}
+
+/**
+ * Handler for latitude/longitude fields, which need custom processing.
+ *
+ * @todo Finish this.
+ */
+class LatLongHandler extends FloatHandler {
+
+  public function map(KiwiEmuField $field_info, $value, Apache_Solr_Document $document) {
+    //KiwiOutput::get()->setThreshold(LOG_DEBUG);
+    if ($value) {
+      //KiwiOutput::debug($field_info, 'Field info');
+      //KiwiOutput::debug($value, 'Field value');
+      $prefix = ($field_info->isMultiValue()) ? $this->prefix['multi'] : $this->prefix['single'];
+      $solr_field_name = $prefix . '_' . $field_info->itemName();
+      //$document->$solr_field_name = $value;
+    }
+    //KiwiOutput::get()->setThreshold();
   }
 }
 
