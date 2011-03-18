@@ -95,10 +95,6 @@ class KiwiQueryProcessor {
     //$schema = $this->session->getTableSchema('ecatalogue');
     //debug(array_keys($schema['schema']['columns']));
 
-    // Currently, the way this is running it appears that each child process
-    // runs through the entire result set, which is seriously not what we want
-    // to do.  This will need to be investigated further. @TODO
-
     // Spin through all records in the result until we run out or hit the max
     // processing limit, whichever comes first.  Emu doesn't actually tell you
     // when you've reached the end of a result set, but just returns the last
@@ -128,12 +124,6 @@ class KiwiQueryProcessor {
       }
       KiwiOutput::info("Processor {$this->processorId}: Indexed $processed records.");
       $this->solr->addDocuments($documents);
-
-
-      // When fetching multiple records at once, we need to then manually advance
-      // the "current" pointer to catch up with it.  This makes no sense, especially
-      // why an offset of 1 seems to work regardless of the batch size.
-      $this->module->fetch($position, 1, 0, 'attachFields');
     }
   }
 
