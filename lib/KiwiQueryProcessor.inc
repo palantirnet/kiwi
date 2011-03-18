@@ -210,48 +210,6 @@ class KiwiQueryProcessor {
 }
 
 /**
- * Reusable utility wrapper for Emu field information.
- *
- * This class has no constructor, and maintains no cache or state. It is
- * controlled entirely by the field_info array specified in setFieldInfo().
- * That allows it to be reused with new data as if it were a new object but
- * without the overhead of creating hundreds or thousands of new objects.
- */
-class KiwiFieldInfoWrapper {
-
-  /**
-   * A definition array for the current field, as specified by Emu.
-   *
-   * @var array
-   */
-  protected $fieldInfo;
-
-  /**
-   * Sets the internal state of the object to a new Emu field definition.
-   *
-   * @param array $field_info
-   * @return KiwiFieldInfoWrapper
-   */
-  public function setFieldInfo($field_info) {
-    $this->fieldInfo = $field_info;
-
-    return $this;
-  }
-
-  /**
-   * Returns true if this field is multi-value, false otherwise.
-   *
-   * Note that this depends on the Emu field schema, not on the number of values
-   * the field may actually have at any given time.
-   *
-   * @return boolean
-   */
-  public function isMultiValue() {
-    return (substr($this->fieldInfo['ColumnName'], -4) == '_tab');
-  }
-}
-
-/**
  * Common interface for all Field mapping handlers.
  */
 interface FieldHandlerInterface {
