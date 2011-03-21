@@ -215,4 +215,16 @@ class KiwiEmuField {
   public function columnName() {
     return $this->schema['ColumnName'];
   }
+
+  public function isAttachmentField() {
+    return ($this->schema['DataKind'] == 'dkAtom' && substr($this->schema['ColumnName'], -3) == 'Ref');
+  }
+
+  public function refTable() {
+    return !empty($this->schema['RefTable']) ? $this->schema['RefTable'] : '';
+  }
+
+  public function dataType() {
+    return $this->schema['DataType'];
+  }
 }
