@@ -146,11 +146,11 @@ class KiwiQueryProcessor {
     $table = $this->session->getTable($base_table['name']);
     foreach ($table as $field) {
       if (array_key_exists($field->columnName(), $row)) {
-        $handler = $this->getHandler($base_table['name'], $field->columnName());
+        $handler = $this->getHandler($base_table['name'], $field);
         $handler->map($field, $row[$field->columnName()], $document);
       }
       else {
-        KiwiOutput::warn("Field not included in result set: {$field}");
+        KiwiOutput::warn("Field not included in result set: " . $field->columnName());
       }
     }
 
@@ -162,16 +162,16 @@ class KiwiQueryProcessor {
    *
    * @param string $table
    *   The table to which the field belongs.
-   * @param string $field
+   * @param KiwiEmuField $field
    *   The field we want to be able to map.
    * @return FieldHandlerInterface
    */
-  protected function getHandler($table, $field) {
-    $field_info = $this->session->getFieldInfo($table, $field);
-    $field_options = $this->config->getFieldOptions($table, $field, $field_info['DataType']);
+  protected function getHandler($table, KiwiEmuField $field) {
+
+    $field_options = $this->config->getFieldOptions($table, $field->columnName(), $field->dataType());
     $class = $field_options['handler'];
     if (empty($this->handlers[$class])) {
-      $this->handlers[$class] = new $class($this->config);
+      $this->handlers[$class] = new $class($this->config, $this->session);
     }
     return $this->handlers[$class];
   }
