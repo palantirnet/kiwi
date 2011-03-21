@@ -134,6 +134,16 @@ class KiwiImuSession extends IMuSession {
     return $this->tableInfo[$table];
   }
 
+  /**
+   * Returns an object representing a given table in the Emu schema.
+   *
+   * This object will be pre-filtered to only know about fields that are in
+   * our current configuration.
+   *
+   * @param string $name
+   *   The name of the table we want information about.
+   * @return KiwiEmuTable
+   */
   public function getTable($name) {
     if (empty($this->tables[$name])) {
       $this->tables[$name] = new KiwiEmuTable($this->getSchemaInfo($name), $this->config);
