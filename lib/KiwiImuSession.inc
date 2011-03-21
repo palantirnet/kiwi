@@ -43,6 +43,16 @@ class KiwiImuSession extends IMuSession {
   protected $tables = array();
 
   /**
+   * A collection of field handler objects.
+   *
+   * These are stateless and reusable, so we can cache them and only have to
+   * instantiate one of each.
+   *
+   * @var array
+   */
+  protected $handlers = array();
+
+  /**
    * Constructor.
    *
    * This overrides the parent constructor just to let us pass in a config object.
@@ -146,13 +156,20 @@ class KiwiImuSession extends IMuSession {
    */
   public function getTable($name) {
     if (empty($this->tables[$name])) {
-      $this->tables[$name] = new KiwiEmuTable($this->getSchemaInfo($name), $this->config);
+      $this->tables[$name] = new KiwiEmuTable($this->config, $this, $this->getSchemaInfo($name));
     }
     return $this->tables[$name];
   }
 
   public function getTables() {
     $this->config->getTables('attach');
+  }
+
+  public function getHandler($class) {
+    if (empty($this->handlers[$class])) {
+      $this->handlers[$class] = new $class($this->config, $this);
+    }
+    return $this->handlers[$class];
   }
 }
 
@@ -164,13 +181,16 @@ class KiwiEmuTable implements IteratorAggregate {
 
   protected $config;
 
-  public function __construct($schema, KiwiConfiguration $config) {
+  protected $session;
+
+  public function __construct(KiwiConfiguration $config, KiwiImuSession $session, $schema) {
     $this->schema = $schema;
     $this->config = $config;
+    $this->session = $session;
 
     // Split out our fields up front, since we're almost certain to need them.
     foreach ($this->config->getFields($this->getName()) as $field) {
-      $this->fields[$field->attr('name')] = new KiwiEmuField($this->schema['schema']['columns'][$field->attr('name')]);
+      $this->fields[$field->attr('name')] = new KiwiEmuField($this->config, $this->session, $this->getName(), $this->schema['schema']['columns'][$field->attr('name')]);
     }
   }
 
@@ -188,12 +208,54 @@ class KiwiEmuTable implements IteratorAggregate {
 
 }
 
+/**
+ * Wrapper class representing a field in Emu.
+ */
 class KiwiEmuField {
 
+  /**
+   * The Emu schema definition for this field.
+   *
+   * @var array
+   */
   protected $schema;
 
-  public function __construct($schema) {
+  /**
+   * The configuration object for this run.
+   *
+   * @var KiwiConfiguration
+   */
+  protected $config;
+
+  /**
+   * The session object to which this field is bound.
+   *
+   * @var KiwiImuSession
+   */
+  protected $session;
+
+  /**
+   * The name of the table this field belongs to.
+   *
+   * This is a string, not an object reference, to avoid another circular
+   * reference.  The table object can be derived from this string with
+   *
+   * @code
+   * $this->session->getTable($this->table);
+   * @endcode
+   * 
+   * if necessary.
+   *
+   * @var string
+   */
+  protected $table;
+
+  public function __construct(KiwiConfiguration $config, KiwiImuSession $session, $table, $schema) {
+    //debug($schema);
+    $this->config = $config;
+    $this->session = $session;
     $this->schema = $schema;
+    $this->table = $table;
   }
 
   /**
@@ -226,5 +288,17 @@ class KiwiEmuField {
 
   public function dataType() {
     return $this->schema['DataType'];
+  }
+
+  /**
+   * Returns a mapping handler object for the this field.
+   *
+   * @return FieldHandlerInterface
+   */
+  public function getHandler() {
+
+    $field_options = $this->config->getFieldOptions($this->table, $this->columnName(), $this->dataType());
+    $class = $field_options['handler'];
+    return $this->session->getHandler($class);
   }
 }

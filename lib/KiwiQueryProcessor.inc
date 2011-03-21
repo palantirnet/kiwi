@@ -46,16 +46,6 @@ class KiwiQueryProcessor {
   protected $module;
 
   /**
-   * A collection of field handler objects.
-   *
-   * These are stateless and reusable, so we can cache them and only have to
-   * instantiate one of each.
-   *
-   * @var array
-   */
-  protected $handlers = array();
-
-  /**
    * Constructor.
    *
    * @param int $processor_id
@@ -146,7 +136,7 @@ class KiwiQueryProcessor {
     $table = $this->session->getTable($base_table['name']);
     foreach ($table as $field) {
       if (array_key_exists($field->columnName(), $row)) {
-        $handler = $this->getHandler($base_table['name'], $field);
+        $handler = $field->getHandler();
         $handler->map($field, $row[$field->columnName()], $document);
       }
       else {
