@@ -411,6 +411,27 @@ class NullHandler extends FieldHandlerBase {
 
 class RefTestHandler extends FieldHandlerBase {
   public function map(KiwiEmuField $field_info, $value, Apache_Solr_Document $document) {
-    parent::map($field_info, $value, $document);
+    debug($field_info);
+    debug($value);
+
+    // Because this is a reference, the value is a nested associative array of
+    // the fields in the referenced table.  Those need to be recursively processed.
+
+    $ref_table = $this->session->getTable($field_info->refTable());
+    foreach ($value as $key => $v) {
+      $ref_field = $ref_table->getField($key);
+      
+    }
+
+    if ($value) {
+      KiwiOutput::debug("\tMapping " . $field_info->columnName() . " using " . get_class($this));
+
+      $prefix = ($field_info->isMultiValue()) ? $this->prefix['multi'] : $this->prefix['single'];
+      $solr_field_name = $prefix . '_' . $field_info->itemName();
+      $document->$solr_field_name = $value;
+    }
+
+
+    //parent::map($field_info, $value, $document);
   }
 }
