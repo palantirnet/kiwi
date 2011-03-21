@@ -274,7 +274,7 @@ class KiwiEmuField {
    * @return boolean
    */
   public function isMultiValue() {
-     return (substr($this->schema['ColumnName'], -4) == '_tab');
+    return (substr($this->schema['ColumnName'], -4) == '_tab');
   }
 
   public function itemName() {
