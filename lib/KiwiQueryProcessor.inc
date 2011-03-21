@@ -191,11 +191,32 @@ class KiwiQueryProcessor {
     $base_table = $this->config->baseTable();
 
     foreach ($this->session->getTable($base_table['name']) as $field) {
-      $columns[] = $field->columnName();
+      if ($field->isAttachmentField()) {
+        $columns[] = $this->getNestedFetchSet($field);
+      }
+      else {
+        $columns[] = $field->columnName();
+      }
     }
 
-    //debug($columns);
+    debug($columns);
     return $columns;
+  }
+
+  protected function getNestedFetchSet(KiwiEmuField $field) {
+    $columns = array();
+    $table = $field->refTable();
+    $refTable = $this->session->getTable($table);
+    foreach ($refTable as $ref_field) {
+      if ($ref_field->isAttachmentField()) {
+        $columns[] = $this->getNestedFetchSet($ref_field);
+      }
+      else {
+        $columns[] = $ref_field->columnName();
+      }
+    }
+
+    return $field->columnName() . '.(' . implode(',', $columns) . ')';
   }
 }
 
