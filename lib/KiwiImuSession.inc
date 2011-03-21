@@ -198,6 +198,13 @@ class KiwiEmuTable implements IteratorAggregate {
     return $this->schema['schema']['table'];
   }
 
+  /**
+   * Returns a Field object for the specified field.
+   *
+   * @param string $field
+   *   The name of the field to return.
+   * @return KiwiEmuField
+   */
   public function getField($field) {
     return $this->fields[$field];
   }
