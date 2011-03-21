@@ -256,14 +256,22 @@ class FieldHandlerBase implements FieldHandlerInterface {
   protected $config;
 
   /**
+   * The session object this processor is running against.
+   *
+   * @var KiwiImuSession
+   */
+  protected $session;
+
+  /**
    * The prefix to add to a given field name to align it with the right Solr field.
    *
    * @var string
    */
   protected $prefix;
 
-  public function __construct(KiwiConfiguration $config) {
+  public function __construct(KiwiConfiguration $config, KiwiImuSession $session) {
     $this->config = $config;
+    $this->session = $session;
   }
 
   public function map(KiwiEmuField $field_info, $value, Apache_Solr_Document $document) {
