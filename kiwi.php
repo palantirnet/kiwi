@@ -14,11 +14,9 @@ function includeEmu() {
 
 function includeKiwi() {
   // Include the Kiwi libraries.
-  require_once('lib/util.inc');
-  require_once('lib/KiwiConfiguration.inc');
-  require_once('lib/KiwiQueryGenerator.inc');
-  require_once('lib/KiwiQueryProcessor.inc');
-  require_once('lib/KiwiImuSession.inc');
+  foreach (glob('lib/*.inc') as $file) {
+    require_once($file);
+  }
 }
 
 function includeQueryPath() {
