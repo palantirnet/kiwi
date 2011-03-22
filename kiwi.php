@@ -17,6 +17,11 @@ function includeKiwi() {
   foreach (glob('lib/*.inc') as $file) {
     require_once($file);
   }
+
+  // Include any custom handlers.
+  foreach (glob('handlers/*.inc') as $file) {
+    require_once($file);
+  }
 }
 
 function includeQueryPath() {
