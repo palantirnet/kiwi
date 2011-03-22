@@ -330,17 +330,24 @@ class DateHandler extends TextHandler {
         $format = array();
         if (!$day) {
           $day = 1;
+          $day_values[] = 0;
         }
         else {
           $format[] = 'j';
+          // Force-cast to an int to eliminate leading 0s.
+          $day_values[] = (int)$day;
         }
         if (!$month) {
           $month = 1;
+          $month_values[] = 0;
         }
         else {
           $format[] = 'F';
+          // Force-cast to an int to eliminate leading 0s.
+          $month_values[] = (int)$month;
         }
         $format[] = 'Y';
+        $year_values[] = $year;
         $date = new DateTime(NULL, new DateTimeZone('UTC'));
         $date->setDate($year, $month, $day);
 
@@ -348,6 +355,17 @@ class DateHandler extends TextHandler {
       }
 
       parent::map($field_info, $values, $document, $field_prefix);
+
+      // Each date part get indexed into additional denormalized fields, as ints.
+      // That way we can sort and query on parts of the date, even though we don't
+      // always have the complete date.
+      $prefix = ($field_info->isMultiValue()) ? 'im' : 'is';
+      $solr_field_name = $prefix . '_' . ($field_prefix ? ($field_prefix . '_') : '') . $field_info->itemName() . '_year';
+      $document->$solr_field_name = $year_values;
+      $solr_field_name = $prefix . '_' . ($field_prefix ? ($field_prefix . '_') : '') . $field_info->itemName() . '_month';
+      $document->$solr_field_name = $month_values;
+      $solr_field_name = $prefix . '_' . ($field_prefix ? ($field_prefix . '_') : '') . $field_info->itemName() . '_day';
+      $document->$solr_field_name = $day_values;
     }
     //KiwiOutput::get()->setThreshold();
   }
