@@ -291,7 +291,7 @@ class FieldHandlerBase implements FieldHandlerInterface {
       KiwiOutput::debug("\tMapping " . $field_info->columnName() . " using " . get_class($this));
 
       $prefix = ($field_info->isMultiValue()) ? $this->prefix['multi'] : $this->prefix['single'];
-      $solr_field_name = $prefix . '_' . $field_prefix . '_' . $field_info->itemName();
+      $solr_field_name = $prefix . '_' . ($field_prefix ? ($field_prefix . '_') : '') . $field_info->itemName();
       $document->$solr_field_name = $value;
     }
   }
@@ -381,7 +381,7 @@ class AlternateHandler extends FloatHandler {
       KiwiOutput::debug($field_info, 'Field info');
       KiwiOutput::debug($value, 'Field value');
       $prefix = ($field_info->isMultiValue()) ? $this->prefix['multi'] : $this->prefix['single'];
-      $solr_field_name = $prefix . '_' . $field_prefix . '_' . $field_info->itemName();
+      $solr_field_name = $prefix . '_' . ($field_prefix ? ($field_prefix . '_') : '') . $field_info->itemName();
       //$document->$solr_field_name = $value;
     }
     KiwiOutput::get()->setThreshold();
