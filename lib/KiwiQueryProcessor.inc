@@ -127,7 +127,7 @@ class KiwiQueryProcessor {
           // Tidy extension is available, also use that to pretty-print the XML.
           $solr_xml = $trace[0]['args'][1];
           if (extension_loaded('tidy')) {
-            $solr_xml = (string)tidy_parse_string($solr_xml_doc, array('indent' => TRUE, 'input-xml' => TRUE, 'wrap' => 300));
+            $solr_xml = (string)tidy_parse_string($solr_xml, array('indent' => TRUE, 'input-xml' => TRUE, 'wrap' => 300));
           }
           KiwiOutput::debug($solr_xml, "Solr document\n");
         }
