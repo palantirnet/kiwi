@@ -312,11 +312,7 @@ class TextHandler extends FieldHandlerBase {
 /**
  * Default handler for Emu Date fields.
  */
-class DateHandler extends FieldHandlerBase {
-  protected $prefix = array(
-    'single' => 'ds',
-    'multi' => 'dm'
-  );
+class DateHandler extends TextHandler {
 
   public function map(KiwiEmuField $field_info, $value, Apache_Solr_Document $document, $field_prefix = '') {
     //KiwiOutput::get()->setThreshold(LOG_DEBUG);
@@ -326,20 +322,29 @@ class DateHandler extends FieldHandlerBase {
       }
       $values = array();
       foreach ($value as $date_value) {
-        // Recode the date value from D/M/Y to ISO.
+        // Recode the date value from D/M/Y to a more human (American)-friendly format.
         //KiwiOutput::debug($value, 'Date value');
         list($day, $month, $year) = explode('/', $date_value);
         // Some dates have no month or day listed at all. In that case, default
         // to the 1st so that we have a valid date.
+        $format = array();
         if (!$day) {
           $day = 1;
+        }
+        else {
+          $format[] = 'j';
         }
         if (!$month) {
           $month = 1;
         }
+        else {
+          $format[] = 'F';
+        }
+        $format[] = 'Y';
         $date = new DateTime(NULL, new DateTimeZone('UTC'));
         $date->setDate($year, $month, $day);
-        $values[] = $date->format('c') . 'Z';
+
+        $values[] = $date->format(implode(' ', $format));
       }
 
       parent::map($field_info, $values, $document, $field_prefix);
