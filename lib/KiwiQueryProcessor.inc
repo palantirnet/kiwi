@@ -99,7 +99,6 @@ class KiwiQueryProcessor {
         $max_string = number_format($max_records);
         KiwiOutput::info("Processor {$this->processorId}: Approximately {$total_string} records to process.  Will process {$max_string} at most.");
       }
-      $processed += $count;
 
       $documents = array();
       foreach ($result->rows as $row) {
@@ -112,8 +111,28 @@ class KiwiQueryProcessor {
           $last_irn = $row['irn'];
         }
       }
-      KiwiOutput::info("Processor {$this->processorId}: Indexed $processed records.");
-      $this->solr->addDocuments($documents);
+
+      //KiwiOutput::get()->setThreshold(LOG_DEBUG);
+      try {
+        $this->solr->addDocuments($documents);
+        $processed += $count;
+        KiwiOutput::info("Processor {$this->processorId}: Indexed $processed records.");
+      }
+      catch (Exception $e) {
+        KiwiOutput::info("Processor {$this->processorId}: Error processing Solr document.");
+        KiwiOutput::debug($e->getMessage(), 'Solr error');
+        $trace = $e->getTrace();
+        if ($trace[0]['class'] == 'Apache_Solr_Service' && $trace[0]['function'] == '_sendRawPost') {
+          // To ease debugging, print out the failing Solr document. If the
+          // Tidy extension is available, also use that to pretty-print the XML.
+          $solr_xml = $trace[0]['args'][1];
+          if (extension_loaded('tidy')) {
+            $solr_xml = (string)tidy_parse_string($solr_xml_doc, array('indent' => TRUE, 'input-xml' => TRUE, 'wrap' => 300));
+          }
+          KiwiOutput::debug($solr_xml, "Solr document\n");
+        }
+      }
+      //KiwiOutput::get()->setThreshold();
     }
   }
 
