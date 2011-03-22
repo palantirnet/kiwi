@@ -64,6 +64,9 @@
 
   <table name="esites" type="attach">
     <field name="LocVerbatimLocality" indexed="1" stored="1" />
+    <field name="LatCentroidLatitude0" indexed="1" stored="1" />
+    <field name="LatCentroidLongitude0" indexed="1" stored="1" />
+
   </table>
 
 </config>

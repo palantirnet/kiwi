@@ -264,14 +264,14 @@ class FieldHandlerBase implements FieldHandlerInterface {
     $this->session = $session;
   }
 
-  public function map(KiwiEmuField $field_info, $value, Apache_Solr_Document $document) {
+  public function map(KiwiEmuField $field_info, $value, Apache_Solr_Document $document, $field_prefix = '') {
     // Some field types will die if there's no value specified, so skip empty
     // values entirely.
     if ($value) {
       KiwiOutput::debug("\tMapping " . $field_info->columnName() . " using " . get_class($this));
 
       $prefix = ($field_info->isMultiValue()) ? $this->prefix['multi'] : $this->prefix['single'];
-      $solr_field_name = $prefix . '_' . $field_info->itemName();
+      $solr_field_name = $prefix . '_' . $field_prefix . '_' . $field_info->itemName();
       $document->$solr_field_name = $value;
     }
   }
@@ -298,7 +298,7 @@ class DateHandler extends FieldHandlerBase {
     'multi' => 'dm'
   );
 
-  public function map(KiwiEmuField $field_info, $value, Apache_Solr_Document $document) {
+  public function map(KiwiEmuField $field_info, $value, Apache_Solr_Document $document, $field_prefix = '') {
     //KiwiOutput::get()->setThreshold(LOG_DEBUG);
     if ($value) {
       if (!is_array($value)) {
@@ -322,7 +322,7 @@ class DateHandler extends FieldHandlerBase {
         $values[] = $date->format('c') . 'Z';
       }
 
-      parent::map($field_info, $values, $document);
+      parent::map($field_info, $values, $document, $field_prefix);
     }
     //KiwiOutput::get()->setThreshold();
   }
@@ -355,13 +355,13 @@ class FloatHandler extends FieldHandlerBase {
  */
 class AlternateHandler extends FloatHandler {
 
-  public function map(KiwiEmuField $field_info, $value, Apache_Solr_Document $document) {
+  public function map(KiwiEmuField $field_info, $value, Apache_Solr_Document $document, $field_prefix = '') {
     //KiwiOutput::get()->setThreshold(LOG_DEBUG);
     if ($value) {
       KiwiOutput::debug($field_info, 'Field info');
       KiwiOutput::debug($value, 'Field value');
       $prefix = ($field_info->isMultiValue()) ? $this->prefix['multi'] : $this->prefix['single'];
-      $solr_field_name = $prefix . '_' . $field_info->itemName();
+      $solr_field_name = $prefix . '_' . $field_prefix . '_' . $field_info->itemName();
       //$document->$solr_field_name = $value;
     }
     KiwiOutput::get()->setThreshold();
@@ -373,16 +373,17 @@ class AlternateHandler extends FloatHandler {
  *
  * @todo Finish this.
  */
-class LatLongHandler extends FloatHandler {
+class LatLongHandler extends TextHandler {
 
-  public function map(KiwiEmuField $field_info, $value, Apache_Solr_Document $document) {
+  public function map(KiwiEmuField $field_info, $value, Apache_Solr_Document $document, $field_prefix = '') {
     //KiwiOutput::get()->setThreshold(LOG_DEBUG);
     if ($value) {
+      debug($value, "LatLong value");
       //KiwiOutput::debug($field_info, 'Field info');
       //KiwiOutput::debug($value, 'Field value');
       $prefix = ($field_info->isMultiValue()) ? $this->prefix['multi'] : $this->prefix['single'];
-      $solr_field_name = $prefix . '_' . $field_info->itemName();
-      //$document->$solr_field_name = $value;
+      $solr_field_name = $prefix . '_' . $field_prefix . '_' . $field_info->itemName();
+      $document->$solr_field_name = $value;
     }
     //KiwiOutput::get()->setThreshold();
   }
@@ -395,33 +396,24 @@ class LatLongHandler extends FloatHandler {
  */
 class NullHandler extends FieldHandlerBase {
 
-  public function map(KiwiEmuField $field_info, $value, Apache_Solr_Document $document) {}
+  public function map(KiwiEmuField $field_info, $value, Apache_Solr_Document $document, $field_prefix = '') {}
 
 }
 
 class RefTestHandler extends FieldHandlerBase {
-  public function map(KiwiEmuField $field_info, $value, Apache_Solr_Document $document) {
-    debug($field_info);
-    debug($value);
-
-    // Because this is a reference, the value is a nested associative array of
-    // the fields in the referenced table.  Those need to be recursively processed.
-
-    $ref_table = $this->session->getTable($field_info->refTable());
-    foreach ($value as $key => $v) {
-      $ref_field = $ref_table->getField($key);
-      
-    }
+  public function map(KiwiEmuField $field_info, $value, Apache_Solr_Document $document, $field_prefix = '') {
+    //debug($field_info);
 
     if ($value) {
-      KiwiOutput::debug("\tMapping " . $field_info->columnName() . " using " . get_class($this));
+      // Because this is a reference, the value is a nested associative array of
+      // the fields in the referenced table.  Those need to be recursively processed.
 
-      $prefix = ($field_info->isMultiValue()) ? $this->prefix['multi'] : $this->prefix['single'];
-      $solr_field_name = $prefix . '_' . $field_info->itemName();
-      $document->$solr_field_name = $value;
+      $ref_table = $this->session->getTable($field_info->refTable());
+      foreach ($value as $key => $v) {
+        $ref_field = $ref_table->getField($key);
+        $handler = $ref_field->getHandler();
+        $handler->map($ref_field, $v, $document, $field_prefix . $field_info->itemName());
+      }
     }
-
-
-    //parent::map($field_info, $value, $document);
   }
 }
