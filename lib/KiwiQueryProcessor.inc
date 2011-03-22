@@ -144,6 +144,7 @@ class KiwiQueryProcessor {
       }
     }
 
+    //debug($document);
     return $document;
   }
 

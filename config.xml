@@ -22,7 +22,7 @@
 <!--    <filter name="irn" value="2548884" />-->
     <filter name="CatDepartment" value="Zoology" operator="matches" />
 <!--    <filter name="ObjOtherNumbersNumber_tab" value="0" operator="&lt;>" />-->
-    <filter name="ColEarliestDateCollected" value="18/09/1939" />
+<!--    <filter name="ColEarliestDateCollected" value="18/09/1939" />-->
   </filters>
 
   <table name="ecatalogue" type="attach">
