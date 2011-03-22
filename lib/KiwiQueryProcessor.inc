@@ -371,22 +371,39 @@ class AlternateHandler extends FloatHandler {
 
 /**
  * Handler for latitude/longitude fields, which need custom processing.
- *
- * @todo Finish this.
  */
-class LatLongHandler extends TextHandler {
+class LatLongHandler extends FloatHandler {
 
   public function map(KiwiEmuField $field_info, $value, Apache_Solr_Document $document, $field_prefix = '') {
-    //KiwiOutput::get()->setThreshold(LOG_DEBUG);
     if ($value) {
-      debug($value, "LatLong value");
-      //KiwiOutput::debug($field_info, 'Field info');
-      //KiwiOutput::debug($value, 'Field value');
-      $prefix = ($field_info->isMultiValue()) ? $this->prefix['multi'] : $this->prefix['single'];
-      $solr_field_name = $prefix . '_' . $field_prefix . '_' . $field_info->itemName();
-      $document->$solr_field_name = $value;
+      if ($field_info->isMultiValue() || is_array($value)) {
+        $new_values = array();
+        foreach ($value as $v) {
+          $new_values[] = $this->convertToFloat($v);
+        }
+        $value = $new_values;
+      }
+      else {
+        if (!is_float($value)) {
+          $value = $this->convertToFloat($value);
+        }
+      }
+      parent::map($field_info, $value, $document, $field_prefix);
     }
-    //KiwiOutput::get()->setThreshold();
+  }
+
+  /**
+   * Returns the float version of a string Lat/Long field.
+   *
+   * @param string $value
+   *   The string version of the Lat/Long value.
+   * @return float
+   *   The Lat/Long value, converted to a float.
+   */
+  protected function convertToFloat($value) {
+    list($parts['degrees'], $parts['minutes'], $parts['seconds'], $parts['direction']) = explode(' ', $value);
+    $value = $parts['degrees'] + $parts['minutes'] / 60 + $parts['seconds'] / 3600;
+    return $value;
   }
 }
 
