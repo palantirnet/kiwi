@@ -161,10 +161,16 @@ class KiwiImuSession extends IMuSession {
     return $this->tables[$name];
   }
 
-  public function getTables() {
-    $this->config->getTables('attach');
-  }
-
+  /**
+   * Returns a single instance of the specified handler class.
+   *
+   * This is a factory function that will reuse classes once instantiated.
+   * That means all handler classes must be stateless.
+   *
+   * @param string $class
+   *   The name of the handler class to return.
+   * @return FieldHandlerInterface
+   */
   public function getHandler($class) {
     if (empty($this->handlers[$class])) {
       $this->handlers[$class] = new $class($this->config, $this);
@@ -175,14 +181,47 @@ class KiwiImuSession extends IMuSession {
 
 class KiwiEmuTable implements IteratorAggregate {
 
+  /**
+   * The Emu schema definition for this table.
+   *
+   * @var array
+   */
   protected $schema;
 
-  protected $fields;
-
+  /**
+   * The configuration object for this run.
+   *
+   * @var KiwiConfiguration
+   */
   protected $config;
 
+  /**
+   * The session object to which this field is bound.
+   *
+   * @var KiwiImuSession
+   */
   protected $session;
 
+  /**
+   * An array of the fields that make up this table.
+   *
+   * This value is filtered to only those fields that are in our configuration
+   * as a field we care about.
+   *
+   * @var array
+   */
+  protected $fields = array();
+
+  /**
+   * Constructor
+   *
+   * @param KiwiConfiguration $config
+   *   The configuration object for this run.
+   * @param KiwiImuSession $session
+   *   The Emu session connection object we are processing.
+   * @param array $schema
+   *   The schema definition for this table.
+   */
   public function __construct(KiwiConfiguration $config, KiwiImuSession $session, $schema) {
     $this->schema = $schema;
     $this->config = $config;
@@ -194,6 +233,11 @@ class KiwiEmuTable implements IteratorAggregate {
     }
   }
 
+  /**
+   * Returns the name of the table.
+   *
+   * @return string
+   */
   public function getName() {
     return $this->schema['schema']['table'];
   }
@@ -209,6 +253,14 @@ class KiwiEmuTable implements IteratorAggregate {
     return $this->fields[$field];
   }
 
+  /**
+   * Returns the iterator for this table.
+   *
+   * Iterating the table iterates over all of the fields it encompasses.
+   *
+   * @see IteratorAggregate
+   * @return ArrayIterator
+   */
   public function getIterator() {
     return new ArrayIterator($this->fields);
   }
@@ -257,8 +309,18 @@ class KiwiEmuField {
    */
   protected $table;
 
+  /**
+   * Constructor.
+   *
+   * @param KiwiConfiguration $config
+   *   The configuration object for this run.
+   * @param KiwiImuSession $session
+   *   The Emu connection object we are processing.
+   * @param <type> $table
+   * @param array $schema
+   *   The schema definition for this field.
+   */
   public function __construct(KiwiConfiguration $config, KiwiImuSession $session, $table, $schema) {
-    //debug($schema);
     $this->config = $config;
     $this->session = $session;
     $this->schema = $schema;
@@ -277,22 +339,60 @@ class KiwiEmuField {
     return (substr($this->schema['ColumnName'], -4) == '_tab');
   }
 
+  /**
+   * Returns the item name of the field.
+   *
+   * The item name is not always the same as the columnName. It may be missing
+   * Hungarian suffixes like _tab.
+   *
+   * @return string
+   *   The item name for this field.
+   */
   public function itemName() {
     return $this->schema['ItemName'];
   }
 
+  /**
+   * Returns the column name of the field.
+   *
+   * The column name is the physical name within Emu.
+   *
+   * @return string
+   */
   public function columnName() {
     return $this->schema['ColumnName'];
   }
 
+  /**
+   * Returns True if this field is an attachment field, False otherwise.
+   *
+   * Note that for our purposes, attachment fields are only single-value.
+   * Multi-value reference fields we call something else.
+   *
+   * @return boolean
+   */
   public function isAttachmentField() {
     return ($this->schema['DataKind'] == 'dkAtom' && substr($this->schema['ColumnName'], -3) == 'Ref');
   }
 
+  /**
+   * Returns the name of the table referenced by this field, if any.
+   *
+   * @return string
+   *   The name of the table this field references, or empty string if it
+   *   is not a reference field.
+   */
   public function refTable() {
     return !empty($this->schema['RefTable']) ? $this->schema['RefTable'] : '';
   }
 
+  /**
+   * Returns the data type for this field.
+   *
+   * The data type is the type of field, such as Integer, Float, etc.
+   *
+   * @return string
+   */
   public function dataType() {
     return $this->schema['DataType'];
   }
@@ -303,7 +403,6 @@ class KiwiEmuField {
    * @return FieldHandlerInterface
    */
   public function getHandler() {
-
     $field_options = $this->config->getFieldOptions($this->table, $this->columnName(), $this->dataType());
     $class = $field_options['handler'];
     return $this->session->getHandler($class);

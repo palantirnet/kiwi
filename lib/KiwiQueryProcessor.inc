@@ -236,6 +236,16 @@ class KiwiQueryProcessor {
 interface FieldHandlerInterface {
 
   /**
+   * Constructor
+   *
+   * @param KiwiConfiguration $config
+   *   The configuration object for this run.
+   * @param KiwiImuSession $session
+   *   The Emu connection from which we are fetching.
+   */
+  public function __construct(KiwiConfiguration $config, KiwiImuSession $session);
+
+  /**
    * Maps the specified field information onto a Solr document.
    *
    * @todo What happens with multi-value fields?  That's up next, I guess.
@@ -407,7 +417,7 @@ class AlternateHandler extends FloatHandler {
       $solr_field_name = $prefix . '_' . ($field_prefix ? ($field_prefix . '_') : '') . $field_info->itemName();
       //$document->$solr_field_name = $value;
     }
-    KiwiOutput::get()->setThreshold();
+    //KiwiOutput::get()->setThreshold();
   }
 }
 
@@ -455,9 +465,7 @@ class LatLongHandler extends FloatHandler {
  * Use this handler for defaults, or for fields that should be supressed entirely.
  */
 class NullHandler extends FieldHandlerBase {
-
   public function map(KiwiEmuField $field_info, $value, Apache_Solr_Document $document, $field_prefix = '') {}
-
 }
 
 class RefTestHandler extends FieldHandlerBase {
