@@ -119,7 +119,7 @@ class KiwiQueryProcessor {
         KiwiOutput::info("Processor {$this->processorId}: Indexed $processed records.");
       }
       catch (Exception $e) {
-        KiwiOutput::info("Processor {$this->processorId}: Error processing Solr document.");
+        KiwiOutput::get()->writeMessage("Processor {$this->processorId}: Error processing Solr document.", LOG_ERR);
         KiwiOutput::debug($e->getMessage(), 'Solr error');
         $trace = $e->getTrace();
         if ($trace[0]['class'] == 'Apache_Solr_Service' && $trace[0]['function'] == '_sendRawPost') {
