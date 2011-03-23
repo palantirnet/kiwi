@@ -69,6 +69,8 @@ function main() {
     unset($solr); // Close the connection.
   }
 
+  $children = array();
+
   // Spawn off children to do work.
   for ($child_id = 1, $num_processors = $config->numChildProcesses(); $child_id <= $num_processors; ++$child_id) {
     $pid = pcntl_fork();
@@ -77,6 +79,7 @@ function main() {
     }
     else if ($pid) {
       // This is the parent. Do nothing here but let the loop complete.
+      $children[] = $pid;
     }
     else {
       // This is the child.
@@ -87,7 +90,13 @@ function main() {
   }
 
   // Wait for all of the spawned children to die.
-  pcntl_wait($status); //Protect against Zombie children.
+  // This may end up waiting for process 1 long after process 3 is done, but
+  // that's OK. It ensures that all processes are truly done before continuing,
+  // whatever order they finish in, which is what we want.
+  $status = 0;
+  foreach ($children as $pid) {
+   pcntl_waitpid($pid, $status);
+  }
   main_cleanup($config);
 
   exit();
