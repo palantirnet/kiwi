@@ -229,7 +229,13 @@ class KiwiEmuTable implements IteratorAggregate {
 
     // Split out our fields up front, since we're almost certain to need them.
     foreach ($this->config->getFields($this->getName()) as $field) {
-      $this->fields[$field->attr('name')] = new KiwiEmuField($this->config, $this->session, $this->getName(), $this->schema['schema']['columns'][$field->attr('name')]);
+      $field_name = $field->attr('name');
+      if (isset($this->schema['schema']['columns'][$field_name])) {
+        $this->fields[$field_name] = new KiwiEmuField($this->config, $this->session, $this->getName(), $this->schema['schema']['columns'][$field_name]);
+      }
+      else {
+        KiwiOutput::get()->writeMessage("Field '{$field_name}' not found in schema for table '{$this->schema['schema']['table']}'", LOG_WARNING);
+      }
     }
   }
 
