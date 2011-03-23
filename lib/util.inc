@@ -45,6 +45,22 @@ class KiwiOutput {
   protected static $instance;
 
   /**
+   * Static list of human-readable names for each message level.
+   *
+   * @var array
+   */
+  protected static $levelPrefixes = array(
+    LOG_EMERG => 'Emergency',
+    LOG_ALERT => 'Alert',
+    LOG_CRIT => 'Critical',
+    LOG_ERR => 'Error',
+    LOG_WARNING => 'Warning',
+    LOG_NOTICE => 'Notice',
+    LOG_INFO => 'Info',
+    LOG_DEBUG => 'Debug'
+  );
+
+  /**
    * The default stream to use for any output.
    *
    * @var Stream
@@ -108,9 +124,23 @@ class KiwiOutput {
    */
   public function writeMessage($message, $level = LOG_INFO) {
     if ($level <= $this->threshold) {
-      fwrite($this->getStream($level), $message . PHP_EOL);
+      fwrite($this->getStream($level), $this->formatMessage($message, $level). PHP_EOL);
     }
     return $this;
+  }
+
+  /**
+   * Formats a message for display to the user.
+   *
+   * @param string $message
+   *   The message to report to the user.
+   * @param int $level
+   *   The error level of the message.
+   * @return string
+   *   The formatted message string.
+   */
+  protected function formatMessage($message, $level) {
+    return '[' . self::$levelPrefixes[$level] . '] ' . $message;
   }
 
   /**
