@@ -67,6 +67,9 @@
     <field name="LatCentroidLatitude0" indexed="1" stored="1" />
     <field name="LatCentroidLongitude0" indexed="1" stored="1" />
 
+    <field name="LatPreferredLatitudeDec_tab" indexed="1" stored="1" />
+    <field name="LatPreferredLongitudeDec_tab" indexed="1" stored="1" />
+
   </table>
 
 </config>
