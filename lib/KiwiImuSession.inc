@@ -228,8 +228,7 @@ class KiwiEmuTable implements IteratorAggregate {
     $this->session = $session;
 
     // Split out our fields up front, since we're almost certain to need them.
-    foreach ($this->config->getFields($this->getName()) as $field) {
-      $field_name = $field->attr('name');
+    foreach ($this->config->getFields($this->getName()) as $field_name) {
       if (isset($this->schema['schema']['columns'][$field_name])) {
         $this->fields[$field_name] = new KiwiEmuField($this->config, $this->session, $this->getName(), $this->schema['schema']['columns'][$field_name]);
       }

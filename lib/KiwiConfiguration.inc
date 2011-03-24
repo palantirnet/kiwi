@@ -176,12 +176,15 @@ class KiwiConfiguration {
    */
   public function getFields($table, $use = 'all') {
     if (empty($this->fieldTableInfo[$table][$use])) {
+      $this->fieldTableInfo[$table][$use] = array();
       $names = array();
       $fields = $this->configFile->branch()->find("table[name='{$table}'] field");
       if ($use != 'all') {
         $fields->filter("[{$use}=1]");
       }
-      $this->fieldTableInfo[$table][$use] = $fields;
+      foreach ($fields as $field) {
+        $this->fieldTableInfo[$table][$use][] = $field->attr('name');
+      }
     }
     return $this->fieldTableInfo[$table][$use];
   }
