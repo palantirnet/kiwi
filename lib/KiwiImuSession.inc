@@ -412,4 +412,13 @@ class KiwiEmuField {
     $class = $field_options['handler'];
     return $this->session->getHandler($class);
   }
+
+  /**
+   * Returns whether or not this field should be included in fulltext searches.
+   *
+   * @return boolean
+   */
+  public function indexFulltext() {
+    return in_array($this->columnName(), $this->config->getFields($this->table, 'fulltext'));
+  }
 }
