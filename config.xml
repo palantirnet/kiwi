@@ -70,6 +70,7 @@
     <field name="LatPreferredLatitudeDec_tab" indexed="1" stored="1" />
     <field name="LatPreferredLongitudeDec_tab" indexed="1" stored="1" />
 
+    <field name="LatLatitudeOrig_nesttab" indexed="1" stored="1" fulltext="1" sort="1" />
   </table>
 
 </config>
