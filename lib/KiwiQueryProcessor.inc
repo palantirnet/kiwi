@@ -112,17 +112,22 @@ class KiwiQueryProcessor {
         }
       }
 
-      //KiwiOutput::get()->setThreshold(LOG_DEBUG);
+      KiwiOutput::get()->setThreshold(LOG_DEBUG);
       try {
         $this->solr->addDocuments($documents);
         $processed += $count;
         KiwiOutput::info("Processor {$this->processorId}: Indexed $processed records.");
       }
+      catch (ErrorException $e) {
+        KiwiOutput::get()->writeMessage("Processor {$this->processorId}: Error processing Solr document.", LOG_ERR);
+        KiwiOutput::get()->writeMessage(sprintf('%s in %s on line %s', $e->getMessage(), $e->getFile(), $e->getLine()), LOG_ERR);
+        break;
+      }
       catch (Exception $e) {
         KiwiOutput::get()->writeMessage("Processor {$this->processorId}: Error processing Solr document.", LOG_ERR);
         KiwiOutput::debug($e->getMessage(), 'Solr error');
         $trace = $e->getTrace();
-        if ($trace[0]['class'] == 'Apache_Solr_Service' && $trace[0]['function'] == '_sendRawPost') {
+        if (isset($trace[0]['class']) && $trace[0]['class'] == 'Apache_Solr_Service' && $trace[0]['function'] == '_sendRawPost') {
           // To ease debugging, print out the failing Solr document. If the
           // Tidy extension is available, also use that to pretty-print the XML.
           $solr_xml = $trace[0]['args'][1];
@@ -480,7 +485,9 @@ class RefTestHandler extends FieldHandlerBase {
       foreach ($value as $key => $v) {
         $ref_field = $ref_table->getField($key);
         $handler = $ref_field->getHandler();
+        debug(__LINE__, __FILE__);
         $handler->map($ref_field, $v, $document, $field_prefix . $field_info->itemName());
+        debug(__LINE__, __FILE__);
       }
     }
   }

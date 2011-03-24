@@ -19,7 +19,7 @@
 
   <filters>
     <filter name="AdmPublishWebNoPassword" value="Yes" />
-<!--    <filter name="irn" value="2548884" />-->
+    <filter name="irn" value="2548884" />
     <filter name="CatDepartment" value="Zoology" operator="matches" />
 <!--    <filter name="ObjOtherNumbersNumber_tab" value="0" operator="&lt;>" />-->
 <!--    <filter name="ColEarliestDateCollected" value="18/09/1939" />-->
@@ -60,6 +60,7 @@
 <!-- These fields are reporting not found in Emu for some reason.  -->
 <!--    <field name="PriCollectionDate" search="1" display="1" fulltext="1" sort="1" />-->
 <!--    <field name="PriSiteCEDateCollected" search="1" display="1" fulltext="1" sort="0" />-->
+
   </table>
 
   <table name="esites" type="attach">

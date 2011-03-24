@@ -411,6 +411,7 @@ class KiwiEmuField {
   public function getHandler() {
     $field_options = $this->config->getFieldOptions($this->table, $this->columnName(), $this->dataType());
     $class = $field_options['handler'];
+    debug($this->itemName() . ' maps to ' . $class);
     return $this->session->getHandler($class);
   }
 }
