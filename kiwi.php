@@ -51,6 +51,7 @@ function main() {
   KiwiOutput::get()->setThreshold();
 
   date_default_timezone_set('America/Chicago');
+  set_error_handler('exceptions_error_handler');
 
   $config = new KiwiConfiguration('config.xml');
 
@@ -100,6 +101,15 @@ function main() {
   main_cleanup($config);
 
   exit();
+}
+
+function exceptions_error_handler($severity, $message, $filename, $lineno) {
+  if (error_reporting() == 0) {
+    return;
+  }
+  if (error_reporting() & $severity) {
+    throw new ErrorException($message, 0, $severity, $filename, $lineno);
+  }
 }
 
 /**
