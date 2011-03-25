@@ -423,6 +423,13 @@ class FloatHandler extends FieldHandlerBase {
     'single' => 'tfs',
     'multi' => 'tfm'
   );
+
+  protected function getTypePrefix(KiwiEmuField $field_info) {
+    if ($field_info->isSortable() && !$field_info->isMultiValue()) {
+      return 'sfloat';
+    }
+    parent::getTypePrefix($field_info);
+  }
 }
 
 /**
