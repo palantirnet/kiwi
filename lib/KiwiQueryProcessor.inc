@@ -300,7 +300,7 @@ class FieldHandlerBase implements FieldHandlerInterface {
     if ($value) {
       KiwiOutput::debug("\tMapping " . $field_info->columnName() . " using " . get_class($this));
 
-      $prefix = ($field_info->isMultiValue()) ? $this->prefix['multi'] : $this->prefix['single'];
+      $prefix = $this->getTypePrefix($field_info);
       $solr_field_name = $prefix . '_' . ($field_prefix ? ($field_prefix . '_') : '') . $field_info->itemName();
       $document->$solr_field_name = $value;
 
@@ -312,7 +312,18 @@ class FieldHandlerBase implements FieldHandlerInterface {
     }
   }
 
-
+  /**
+   * Returns the solr field prefix for the provided field.
+   *
+   * @param KiwiEmuField $field_info
+   *   The field for which we want to know the prefix.
+   * @return string
+   *   The prefix for this field type.  Note it does not include the trailing _,
+   *   so you'll have to add it yourself.
+   */
+  protected function getTypePrefix(KiwiEmuField $field_info) {
+    return ($field_info->isMultiValue()) ? $this->prefix['multi'] : $this->prefix['single'];
+  }
 }
 
 /**
