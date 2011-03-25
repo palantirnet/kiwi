@@ -408,7 +408,11 @@ class KiwiEmuField {
    * @return FieldHandlerInterface
    */
   public function getHandler() {
-    $field_options = $this->config->getFieldOptions($this->table, $this->columnName(), $this->dataType());
+    // If it's an attachment field, override the type since Emu files them
+    // as integers.
+    $data_type = $this->isAttachmentField() ? 'Attachment' : $this->dataType();
+
+    $field_options = $this->config->getFieldOptions($this->table, $this->columnName(), $data_type);
     $class = $field_options['handler'];
     return $this->session->getHandler($class);
   }
