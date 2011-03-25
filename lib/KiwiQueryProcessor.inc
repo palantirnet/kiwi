@@ -406,6 +406,13 @@ class IntegerHandler extends FieldHandlerBase {
     'single' => 'is',
     'multi' => 'im'
   );
+
+  protected function getTypePrefix(KiwiEmuField $field_info) {
+    if ($field_info->isSortable() && !$field_info->isMultiValue()) {
+      return 'sint';
+    }
+    parent::getTypePrefix($field_info);
+  }
 }
 
 /**
