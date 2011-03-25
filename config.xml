@@ -55,7 +55,7 @@
     <field name="ColCentroidLongitudeLocal" indexed="1" stored="1" fulltext="1" sort="0" />
 
     <!-- Sample reference field, single-value. -->
-    <field name="ColSiteLocationRef" handler="RefTestHandler" indexed="1" stored="1" fulltext="1" sort="1" />
+    <field name="ColSiteLocationRef" handler="AttachmentReferenceHandler" indexed="1" stored="1" fulltext="1" sort="1" />
 
 <!-- These fields are reporting not found in Emu for some reason.  -->
 <!--    <field name="PriCollectionDate" search="1" display="1" fulltext="1" sort="1" />-->

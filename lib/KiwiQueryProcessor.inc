@@ -504,7 +504,7 @@ class NullHandler extends FieldHandlerBase {
   public function map(KiwiEmuField $field_info, $value, Apache_Solr_Document $document, $field_prefix = '') {}
 }
 
-class RefTestHandler extends FieldHandlerBase {
+class AttachmentReferenceHandler extends FieldHandlerBase {
   public function map(KiwiEmuField $field_info, $value, Apache_Solr_Document $document, $field_prefix = '') {
     //debug($field_info);
 
