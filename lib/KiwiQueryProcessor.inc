@@ -304,10 +304,10 @@ class FieldHandlerBase implements FieldHandlerInterface {
       $solr_field_name = $prefix . '_' . ($field_prefix ? ($field_prefix . '_') : '') . $field_info->itemName();
       $document->$solr_field_name = $value;
 
-      // If appropriate, throw this field into the body solr field as well.  We
+      // If appropriate, throw this field into the content solr field as well.  We
       // use that for all fulltext index searching.
       if ($field_info->indexFulltext()) {
-        $document->body = $value;
+        $document->content = $value;
       }
     }
   }
