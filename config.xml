@@ -49,10 +49,10 @@
     <field name="CatCatalogueNo" indexed="1" stored="1" fulltext="1" sort="1" />
 
     <!-- Sample latitude field, single value. -->
-    <field name="ColCentroidLatitudeLocal" indexed="1" stored="1" fulltext="1" sort="1" />
+    <field name="ColCentroidLatitudeLocal" indexed="1" stored="1" fulltext="1" sort="0" />
 
     <!-- Sample longitude field, single value. -->
-    <field name="ColCentroidLongitudeLocal" indexed="1" stored="1" fulltext="1" sort="1" />
+    <field name="ColCentroidLongitudeLocal" indexed="1" stored="1" fulltext="1" sort="0" />
 
     <!-- Sample reference field, single-value. -->
     <field name="ColSiteLocationRef" handler="RefTestHandler" indexed="1" stored="1" fulltext="1" sort="1" />
