@@ -421,4 +421,13 @@ class KiwiEmuField {
   public function indexFulltext() {
     return in_array($this->columnName(), $this->config->getFields($this->table, 'fulltext'));
   }
+
+  /**
+   * Returns whether or not this field should be sortable.
+   *
+   * @return boolean
+   */
+  public function isSortable() {
+    return in_array($this->columnName(), $this->config->getFields($this->table, 'sort'));
+  }
 }
