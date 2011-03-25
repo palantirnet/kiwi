@@ -386,7 +386,12 @@ class DateHandler extends TextHandler {
       // Each date part get indexed into additional denormalized fields, as ints.
       // That way we can sort and query on parts of the date, even though we don't
       // always have the complete date.
-      $prefix = ($field_info->isMultiValue()) ? 'im' : 'is';
+      if ($field_info->isSortable() && !$field_info->isMultiValue()) {
+        $prefix = 'sint';
+      }
+      else {
+        $prefix = ($field_info->isMultiValue()) ? 'im' : 'is';
+      }
       $solr_field_name = $prefix . '_' . ($field_prefix ? ($field_prefix . '_') : '') . $field_info->itemName() . '_year';
       $document->$solr_field_name = $year_values;
       $solr_field_name = $prefix . '_' . ($field_prefix ? ($field_prefix . '_') : '') . $field_info->itemName() . '_month';
