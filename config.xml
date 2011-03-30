@@ -1,8 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <config name="ecatalogue" full-rebuild="0">
-  <solr host="solr.palantir.net" port="8080" core="kiwi" path="/solr/kiwi" />
-  <emu host="66.158.71.71" port="40000" reconnect-port="45000" />
+  <xi:include xmlns:xi="http://www.w3.org/2003/XInclude" href="servers.xml" />
+  <!--
+  <servers>
+    <solr host="solr.palantir.net" port="8080" core="kiwi" path="/solr/kiwi" />
+    <emu host="66.158.71.71" port="40000" reconnect-port="45000" />
+</servers>
+  -->
+  
   <processors count="1" batch-size="1" max-size="100" />
 
   <base-table name="ecatalogue" />
