@@ -1,0 +1,10 @@
+  <field-types default-handler="NullHandler">
+    <field-type name="Text" handler="TextHandler" />
+    <field-type name="Integer" handler="IntegerHandler" />
+    <field-type name="Date" handler="DateHandler" />
+    <field-type name="Float" handler="FloatHandler" />
+    <field-type name="Currency" handler="FloatHandler" />
+    <field-type name="Latitude" handler="LatLongHandler" />
+    <field-type name="Longitude" handler="LatLongHandler" />
+    <field-type name="Attachment" handler="AttachmentReferenceHandler" fulltext="0" sort="0" />
+  </field-types>

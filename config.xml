@@ -7,6 +7,8 @@
 
   <base-table name="ecatalogue" />
 
+<!--  <xi:include xmlns:xi="http://www.w3.org/2003/XInclude" href="fieldtypes.xml" />-->
+
   <field-types default-handler="NullHandler">
     <field-type name="Text" handler="TextHandler" />
     <field-type name="Integer" handler="IntegerHandler" />
