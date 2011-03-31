@@ -1,20 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <config name="ecatalogue" full-rebuild="0">
+  <!--
+    This include specifies the file that defines the server configuration.
+    That is different for each server.  Use the template below to populate
+    a new file with the appropriate data.
+   -->
   <xi:include xmlns:xi="http://www.w3.org/2003/XInclude" href="servers.xml" />
   <!--
-  <servers>
-    <solr host="solr.palantir.net" port="8080" core="kiwi" path="/solr/kiwi" />
-    <emu host="66.158.71.71" port="40000" reconnect-port="45000" />
-</servers>
+    <servers>
+      <solr host="66.158.71.71" port="8080" core="kiwi" path="/emu0/core0" />
+      <emu host="66.158.71.71" port="40000" reconnect-port="45000" />
+    </servers>
   -->
-  
+
+  <!--
+    The configuration for each processor.  This does not affect the fields that
+    are retrieved.
+  -->
   <processors count="1" batch-size="1" max-size="100" />
 
+  <!--
+    The base table of this index.  This must be one of the tables listed below.
+  -->
   <base-table name="ecatalogue" />
 
-<!--  <xi:include xmlns:xi="http://www.w3.org/2003/XInclude" href="fieldtypes.xml" />-->
-
+  <!--
+    The supported field types and the handler each one should use.  The default-hander
+    will be used for any field type not listed here.  Each handler name corresponds
+    to a PHP class.
+  -->
   <field-types default-handler="NullHandler">
     <field-type name="Text" handler="TextHandler" />
     <field-type name="Integer" handler="IntegerHandler" />
@@ -26,6 +41,11 @@
     <field-type name="Attachment" handler="AttachmentReferenceHandler" fulltext="0" sort="0" />
   </field-types>
 
+  <!--
+    These filters apply to the base table when building the initial query.
+    Note: Always include the AdmPublishWebNoPassword filter.  Emu requires
+    that there always be at least one filter.  All other filters are optional.
+  -->
   <filters>
     <filter name="AdmPublishWebNoPassword" value="Yes" />
 <!--    <filter name="irn" value="2548884" />-->
@@ -33,6 +53,36 @@
 <!--    <filter name="ObjOtherNumbersNumber_tab" value="0" operator="&lt;>" />-->
 <!--    <filter name="ColEarliestDateCollected" value="18/09/1939" />-->
   </filters>
+
+
+  <!--
+    The table definitions are the "meat" of the configuration file.  Although
+    they can be included via an XInclude directive, don't bother for now.
+
+    Each <table> defines a name and its usage or "type".  For now, the only supported
+    type is "attach".  The name attribute is the name of the table in Emu.
+
+    Each <table> contains one or more <field> elements.  Each <field> element
+    represents a field in Emu in that table.  Each field has the following keys:
+      - name (required): The name of the field in Emu.
+      - fulltext: Whether or not to include this field in fulltext searches of
+          This record.  Specify 1 for true or 0 for false.  The default is false.
+      - sort: Whether or not this field should be sortable.  At this time, single-value
+          Text fields are always sortable.  Single-value Integer and Float fields
+          are sortable only if this value is 1.  All other fields are never sortable.
+          This may change later.
+      - indexed: Whether or not this field should be searchable. (Currently ignored.)
+      - stored: Whether or not this field should be displayable. (Currently ignored.)
+
+      For now, don't bother filling in "indexed" or "stored" as they don't do
+      anything.
+
+      For a typical field that does not need to be sorted, it is valid to specify
+      only the name, like so:
+
+      <field name="CatCatalogueNo" />
+
+  -->
 
   <table name="ecatalogue" type="attach">
     <!-- The PKey, which is also an integer field. -->
