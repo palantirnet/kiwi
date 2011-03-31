@@ -408,7 +408,11 @@ class KiwiEmuField {
    * @return FieldHandlerInterface
    */
   public function getHandler() {
-    $field_options = $this->config->getFieldOptions($this->table, $this->columnName(), $this->dataType());
+    // If it's an attachment field, override the type since Emu files them
+    // as integers.
+    $data_type = $this->isAttachmentField() ? 'Attachment' : $this->dataType();
+
+    $field_options = $this->config->getFieldOptions($this->table, $this->columnName(), $data_type);
     $class = $field_options['handler'];
     debug($this->itemName() . ' maps to ' . $class);
     return $this->session->getHandler($class);
@@ -421,5 +425,14 @@ class KiwiEmuField {
    */
   public function indexFulltext() {
     return in_array($this->columnName(), $this->config->getFields($this->table, 'fulltext'));
+  }
+
+  /**
+   * Returns whether or not this field should be sortable.
+   *
+   * @return boolean
+   */
+  public function isSortable() {
+    return in_array($this->columnName(), $this->config->getFields($this->table, 'sort'));
   }
 }

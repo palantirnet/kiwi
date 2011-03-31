@@ -73,7 +73,7 @@ class KiwiConfiguration {
    * @return array
    */
   public function getSolrInfo() {
-    return $this->configFile->branch()->find('solr')->attr() + array(
+    return $this->configFile->branch()->find('servers > solr')->attr() + array(
       'host' => '',
       'port' => '',
       'path' => '',
@@ -86,7 +86,7 @@ class KiwiConfiguration {
    * @return array
    */
   public function getEmuInfo() {
-    return $this->configFile->branch()->find('emu')->attr() + array(
+    return $this->configFile->branch()->find('servers > emu')->attr() + array(
       'host' => 'localhost',
       'port' => 40000,
       'reconnect-port' => 45000,
