@@ -18,7 +18,7 @@
     The configuration for each processor.  This does not affect the fields that
     are retrieved.
   -->
-  <processors count="1" batch-size="1" max-size="100" />
+  <processors count="1" batch-size="1" max-size="10" />
 
   <!--
     The base table of this index.  This must be one of the tables listed below.
@@ -130,7 +130,7 @@
     <field name="LatPreferredLatitudeDec_tab" indexed="1" stored="1" />
     <field name="LatPreferredLongitudeDec_tab" indexed="1" stored="1" />
 
-    <field name="LatLatitudeOrig_nesttab" indexed="1" stored="1" fulltext="1" sort="1" />
+    <field name="LatLatitudeOrig_nesttab" handler="AlternateHandler" indexed="1" stored="1" fulltext="1" sort="1" />
   </table>
 
 </config>

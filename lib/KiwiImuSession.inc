@@ -414,7 +414,7 @@ class KiwiEmuField {
 
     $field_options = $this->config->getFieldOptions($this->table, $this->columnName(), $data_type);
     $class = $field_options['handler'];
-    debug($this->itemName() . ' maps to ' . $class);
+    //debug($this->itemName() . ' maps to ' . $class);
     return $this->session->getHandler($class);
   }
 
@@ -434,5 +434,9 @@ class KiwiEmuField {
    */
   public function isSortable() {
     return in_array($this->columnName(), $this->config->getFields($this->table, 'sort'));
+  }
+
+  public function  __toString() {
+    return print_r($this->schema, 1);
   }
 }

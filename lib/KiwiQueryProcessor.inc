@@ -112,7 +112,7 @@ class KiwiQueryProcessor {
         }
       }
 
-      KiwiOutput::get()->setThreshold(LOG_DEBUG);
+      //KiwiOutput::get()->setThreshold(LOG_DEBUG);
       try {
         $this->solr->addDocuments($documents);
         $processed += $count;
@@ -339,14 +339,19 @@ class FieldHandlerBase implements FieldHandlerInterface {
 class AlternateHandler extends FieldHandlerBase {
 
   public function map(KiwiEmuField $field_info, $value, Apache_Solr_Document $document, $field_prefix = '') {
-    //KiwiOutput::get()->setThreshold(LOG_DEBUG);
+    KiwiOutput::get()->setThreshold(LOG_DEBUG);
     if ($value) {
-      KiwiOutput::debug($field_info, 'Field info');
+      debug('In AlternateHandler');
+      $info = (string)$field_info;
+      debug($info);
+      //debug(array_keys($info));
+      //debug($info['*schema']);
+      //KiwiOutput::debug($field_info, 'Field info');
       KiwiOutput::debug($value, 'Field value');
       $prefix = ($field_info->isMultiValue()) ? $this->prefix['multi'] : $this->prefix['single'];
       $solr_field_name = $prefix . '_' . ($field_prefix ? ($field_prefix . '_') : '') . $field_info->itemName();
       //$document->$solr_field_name = $value;
     }
-    //KiwiOutput::get()->setThreshold();
+    KiwiOutput::get()->setThreshold();
   }
 }
