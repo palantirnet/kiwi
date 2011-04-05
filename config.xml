@@ -116,6 +116,9 @@
     <!-- Sample reference field, single-value. -->
     <field name="ColSiteLocationRef" indexed="1" stored="1" fulltext="1" />
 
+    <!-- Sample reference field, single-value. -->
+    <field name="LotRelatedObject_tab" handler="AlternateHandler" indexed="1" stored="1" fulltext="1" />
+
 <!-- These fields are reporting not found in Emu for some reason.  -->
 <!--    <field name="PriCollectionDate" search="1" display="1" fulltext="1" sort="1" />-->
 <!--    <field name="PriSiteCEDateCollected" search="1" display="1" fulltext="1" sort="0" />-->
@@ -130,7 +133,6 @@
     <field name="LatPreferredLatitudeDec_tab" indexed="1" stored="1" />
     <field name="LatPreferredLongitudeDec_tab" indexed="1" stored="1" />
 
-    <field name="LatLatitudeOrig_nesttab" handler="AlternateHandler" indexed="1" stored="1" fulltext="1" sort="1" />
   </table>
 
 </config>
