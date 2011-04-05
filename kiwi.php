@@ -180,15 +180,15 @@ function main_processor(KiwiConfiguration $config, $child_id, $module_id) {
 
   $processor = new KiwiQueryProcessor($child_id, $module_id, $config, $session, $solr);
 
-  //try {
+  try {
     //KiwiOutput::get()->setThreshold(LOG_INFO);
     $processor->run();
-  //}
-  //catch(Exception $e) {
-    //debug($e->getTrace());
-    //debug('Error message is: ' . $e->getMessage());
-    //debug('Error code is: ' . $e->getCode());
-  //}
+  }
+  catch(Exception $e) {
+    debug($e->getTrace());
+    debug('Error message is: ' . (string)$e);
+    debug('Error code is: ' . $e->getCode());
+  }
 
   KiwiOutput::debug("Processor {$child_id}: Maximum memory used (bytes): " . number_format(memory_get_peak_usage(TRUE)));
 }
