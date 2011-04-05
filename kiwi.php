@@ -48,12 +48,14 @@ function main() {
   IMuTrace::setFile('trace.txt');
   IMuTrace::setLevel(1);
 
-  KiwiOutput::get()->setThreshold();
-
   date_default_timezone_set('America/Chicago');
   set_error_handler('exceptions_error_handler');
 
   $config = new KiwiConfiguration('config.xml');
+
+  $config_info = $config->getConfigInfo();
+
+  KiwiOutput::get()->setThreshold($config_info['debug']);
 
   // Build the main query on the Emu server.
   $module_id = main_generator($config);
@@ -61,8 +63,7 @@ function main() {
   KiwiOutput::debug($module_id, 'Module ID');
 
   // If specified, clear the existing Solr core before adding new content.
-  $info = $config->getConfigInfo();
-  if ($info['full-rebuild']) {
+  if ($config_info['full-rebuild']) {
     $server_info = $config->getSolrInfo();
     KiwiOutput::info("Purging old solr index...");
     $solr = new Apache_Solr_Service($server_info['host'], $server_info['port'], $server_info['path']);

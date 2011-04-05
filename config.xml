@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<config name="ecatalogue" full-rebuild="0">
+<config name="ecatalogue" full-rebuild="0" debug="7">
   <!--
     This include specifies the file that defines the server configuration.
     That is different for each server.  Use the template below to populate
