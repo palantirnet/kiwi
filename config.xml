@@ -48,7 +48,7 @@
   -->
   <filters>
     <filter name="AdmPublishWebNoPassword" value="Yes" />
-    <filter name="irn" value="147587" />
+    <filter name="irn" value="2548884" />
     <filter name="CatDepartment" value="Zoology" operator="matches" />
 <!--    <filter name="ObjOtherNumbersNumber_tab" value="0" operator="&lt;>" />-->
 <!--    <filter name="ColEarliestDateCollected" value="18/09/1939" />-->
@@ -116,8 +116,8 @@
     <!-- Sample reference field, single-value. -->
     <field name="ColSiteLocationRef" indexed="1" stored="1" fulltext="1" />
 
-    <!-- Sample Merge reference -->
-    <field name="IdeIdentifiedByRef_nesttab" handler="AlternateHandler" indexed="1" stored="1" fulltext="1" sort="1" />
+    <!-- Sample reference field, multi-value (Merge field) -->
+    <field name="LotRelatedObjectRef_tab" handler="AlternateHandler" indexed="1" stored="1" fulltext="1" />
 
 <!-- These fields are reporting not found in Emu for some reason.  -->
 <!--    <field name="PriCollectionDate" search="1" display="1" fulltext="1" sort="1" />-->
