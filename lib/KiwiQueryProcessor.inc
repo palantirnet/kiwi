@@ -93,36 +93,44 @@ class KiwiQueryProcessor {
     $processed = 0;
     $counter = 1;
     while ($processed < $max_records) {
-      $result = $this->module->fetch($position, $offset, $count, 'attachFields');
-      if (!$processed) {
-        $total_string = number_format($result->hits);
-        $max_string = number_format($max_records);
-        KiwiOutput::info("Processor {$this->processorId}: Approximately {$total_string} records to process.  Will process {$max_string} at most.");
-      }
-
-      $documents = array();
-      foreach ($result->rows as $row) {
-        KiwiOutput::debug("Processor {$this->processorId}: Processing IRN #" . $counter++ . ": " . $row['irn']);
-        $documents[] = $this->createSolrDocument($row);
-        if ($last_irn == $row['irn']) {
-          break 2;
-        }
-        else {
-          $last_irn = $row['irn'];
-        }
-      }
-
-      //KiwiOutput::get()->setThreshold(LOG_DEBUG);
       try {
+        $result = $this->module->fetch($position, $offset, $count, 'attachFields');
+        if (!$processed) {
+          $total_string = number_format($result->hits);
+          $max_string = number_format($max_records);
+          KiwiOutput::info("Processor {$this->processorId}: Approximately {$total_string} records to process.  Will process {$max_string} at most.");
+        }
+
+        $documents = array();
+        foreach ($result->rows as $row) {
+          KiwiOutput::debug("Processor {$this->processorId}: Processing IRN #" . $counter++ . ": " . $row['irn']);
+          $documents[] = $this->createSolrDocument($row);
+          if ($last_irn == $row['irn']) {
+            break 2;
+          }
+          else {
+            $last_irn = $row['irn'];
+          }
+        }
+
         $this->solr->addDocuments($documents);
         $processed += $count;
         KiwiOutput::info("Processor {$this->processorId}: Indexed $processed records.");
+      }
+      catch (ImuException $e) {
+        KiwiOutput::get()->writeMessage("Processor {$this->processorId}: Error connecting to Emu.", LOG_ERR);
+        // ImuException is buggy and returns an empty string for $e->getMessage().
+        // Casting to a string, though, works.  Weird.
+        KiwiOutput::get()->writeMessage(sprintf('%s in %s on line %s', (string)$e, $e->getFile(), $e->getLine()), LOG_ERR);
+        break;
       }
       catch (ErrorException $e) {
         KiwiOutput::get()->writeMessage("Processor {$this->processorId}: Error processing Solr document.", LOG_ERR);
         KiwiOutput::get()->writeMessage(sprintf('%s in %s on line %s', $e->getMessage(), $e->getFile(), $e->getLine()), LOG_ERR);
         break;
       }
+      // The ApacheSolr library doesn't have its own Exception classes, because
+      // it's dumb.  We'll hope that the general class means it came from Solr.
       catch (Exception $e) {
         KiwiOutput::get()->writeMessage("Processor {$this->processorId}: Error processing Solr document.", LOG_ERR);
         KiwiOutput::debug($e->getMessage(), 'Solr error');
@@ -137,7 +145,6 @@ class KiwiQueryProcessor {
           KiwiOutput::debug($solr_xml, "Solr document\n");
         }
       }
-      //KiwiOutput::get()->setThreshold();
     }
   }
 
