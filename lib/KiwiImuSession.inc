@@ -381,6 +381,15 @@ class KiwiEmuField {
   }
 
   /**
+   * Returns True if this field is a Merge field, False otherwise.
+   *
+   * @return boolean
+   */
+  public function isMergeField() {
+    return ($this->schema['DataKind'] == 'dkNested' && substr($this->schema['ColumnName'], -3) == 'Ref');
+  }
+
+  /**
    * Returns the name of the table referenced by this field, if any.
    *
    * @return string
