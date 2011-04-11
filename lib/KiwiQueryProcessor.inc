@@ -346,7 +346,7 @@ class FieldHandlerBase implements FieldHandlerInterface {
 class AlternateHandler extends FieldHandlerBase {
 
   public function map(KiwiEmuField $field_info, $value, Apache_Solr_Document $document, $field_prefix = '') {
-    KiwiOutput::get()->setThreshold(LOG_DEBUG);
+    //KiwiOutput::get()->setThreshold(LOG_DEBUG);
     if ($value) {
       debug('In AlternateHandler');
       $info = (string)$field_info;
@@ -359,6 +359,6 @@ class AlternateHandler extends FieldHandlerBase {
       $solr_field_name = $prefix . '_' . ($field_prefix ? ($field_prefix . '_') : '') . $field_info->itemName();
       //$document->$solr_field_name = $value;
     }
-    KiwiOutput::get()->setThreshold();
+    //KiwiOutput::get()->setThreshold();
   }
 }

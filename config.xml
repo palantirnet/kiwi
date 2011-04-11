@@ -18,7 +18,7 @@
     The configuration for each processor.  This does not affect the fields that
     are retrieved.
   -->
-  <processors count="1" batch-size="1" max-size="10" />
+  <processors count="1" batch-size="1" max-size="100" />
 
   <!--
     The base table of this index.  This must be one of the tables listed below.
@@ -49,7 +49,8 @@
   <filters>
     <filter name="AdmPublishWebNoPassword" value="Yes" />
 <!--    <filter name="irn" value="1819593" />-->
-    <filter name="CatDepartment" value="Zoology" operator="matches" />
+    <filter name="CatDepartment" value="Anthropology" operator="matches" />
+<!--    <filter name="CatDepartment" value="Zoology" operator="matches" />-->
 <!--    <filter name="ObjOtherNumbersNumber_tab" value="0" operator="&lt;>" />-->
 <!--    <filter name="ColEarliestDateCollected" value="18/09/1939" />-->
   </filters>
@@ -116,7 +117,7 @@
     <!-- Sample reference field, single-value. -->
     <field name="ColSiteLocationRef" indexed="1" stored="1" fulltext="1" />
 
-    <field name="IdeIdentifiedBy_nesttab" handler="AlternateHandler" indexed="1" stored="1" fulltext="1" sort="1" />
+    <field name="AnaRole_nesttab" handler="AlternateHandler" indexed="1" stored="1"/>
 
 <!-- These fields are reporting not found in Emu for some reason.  -->
 <!--    <field name="PriCollectionDate" search="1" display="1" fulltext="1" sort="1" />-->
