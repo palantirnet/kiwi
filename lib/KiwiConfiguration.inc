@@ -64,6 +64,7 @@ class KiwiConfiguration {
     return $this->configFile->branch()->find('config')->attr() + array(
       'name' => '',
       'full-rebuild' => 0,
+      'debug' => LOG_INFO,
     );
   }
 

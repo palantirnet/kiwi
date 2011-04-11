@@ -93,36 +93,49 @@ class KiwiQueryProcessor {
     $processed = 0;
     $counter = 1;
     while ($processed < $max_records) {
-      $result = $this->module->fetch($position, $offset, $count, 'attachFields');
-      if (!$processed) {
-        $total_string = number_format($result->hits);
-        $max_string = number_format($max_records);
-        KiwiOutput::info("Processor {$this->processorId}: Approximately {$total_string} records to process.  Will process {$max_string} at most.");
-      }
-
-      $documents = array();
-      foreach ($result->rows as $row) {
-        KiwiOutput::debug("Processor {$this->processorId}: Processing IRN #" . $counter++ . ": " . $row['irn']);
-        $documents[] = $this->createSolrDocument($row);
-        if ($last_irn == $row['irn']) {
-          break 2;
-        }
-        else {
-          $last_irn = $row['irn'];
-        }
-      }
-
-      //KiwiOutput::get()->setThreshold(LOG_DEBUG);
       try {
+        $result = $this->module->fetch($position, $offset, $count, 'attachFields');
+        if (!$processed) {
+          $total_string = number_format($result->hits);
+          $max_string = number_format($max_records);
+          KiwiOutput::info("Processor {$this->processorId}: Approximately {$total_string} records to process.  Will process {$max_string} at most.");
+        }
+
+        $documents = array();
+        foreach ($result->rows as $row) {
+          KiwiOutput::debug("Processor {$this->processorId}: Processing IRN #" . $counter++ . ": " . $row['irn']);
+          $documents[] = $this->createSolrDocument($row);
+          if ($last_irn == $row['irn']) {
+            break 2;
+          }
+          else {
+            $last_irn = $row['irn'];
+          }
+        }
+
         $this->solr->addDocuments($documents);
         $processed += $count;
         KiwiOutput::info("Processor {$this->processorId}: Indexed $processed records.");
       }
+      catch (ImuException $e) {
+        KiwiOutput::get()->writeMessage("Processor {$this->processorId}: Error connecting to Emu.", LOG_ERR);
+        // ImuException is buggy and returns an empty string for $e->getMessage().
+        // Casting to a string, though, works.  Weird.
+        KiwiOutput::get()->writeMessage(sprintf('%s in %s on line %s', (string)$e, $e->getFile(), $e->getLine()), LOG_ERR);
+        break;
+      }
+      catch (ErrorException $e) {
+        KiwiOutput::get()->writeMessage("Processor {$this->processorId}: Error processing Solr document.", LOG_ERR);
+        KiwiOutput::get()->writeMessage(sprintf('%s in %s on line %s', $e->getMessage(), $e->getFile(), $e->getLine()), LOG_ERR);
+        break;
+      }
+      // The ApacheSolr library doesn't have its own Exception classes, because
+      // it's dumb.  We'll hope that the general class means it came from Solr.
       catch (Exception $e) {
         KiwiOutput::get()->writeMessage("Processor {$this->processorId}: Error processing Solr document.", LOG_ERR);
         KiwiOutput::debug($e->getMessage(), 'Solr error');
         $trace = $e->getTrace();
-        if ($trace[0]['class'] == 'Apache_Solr_Service' && $trace[0]['function'] == '_sendRawPost') {
+        if (isset($trace[0]['class']) && $trace[0]['class'] == 'Apache_Solr_Service' && $trace[0]['function'] == '_sendRawPost') {
           // To ease debugging, print out the failing Solr document. If the
           // Tidy extension is available, also use that to pretty-print the XML.
           $solr_xml = $trace[0]['args'][1];
@@ -132,7 +145,6 @@ class KiwiQueryProcessor {
           KiwiOutput::debug($solr_xml, "Solr document\n");
         }
       }
-      //KiwiOutput::get()->setThreshold();
     }
   }
 
@@ -307,7 +319,7 @@ class FieldHandlerBase implements FieldHandlerInterface {
       // If appropriate, throw this field into the content solr field as well.  We
       // use that for all fulltext index searching.
       if ($field_info->indexFulltext()) {
-        $document->content = $value;
+        $document->content = is_array($value) ? implode(', ', $value) : $value;
       }
     }
   }
@@ -334,14 +346,19 @@ class FieldHandlerBase implements FieldHandlerInterface {
 class AlternateHandler extends FieldHandlerBase {
 
   public function map(KiwiEmuField $field_info, $value, Apache_Solr_Document $document, $field_prefix = '') {
-    //KiwiOutput::get()->setThreshold(LOG_DEBUG);
+    KiwiOutput::get()->setThreshold(LOG_DEBUG);
     if ($value) {
-      KiwiOutput::debug($field_info, 'Field info');
+      debug('In AlternateHandler');
+      $info = (string)$field_info;
+      debug($info);
+      //debug(array_keys($info));
+      //debug($info['*schema']);
+      //KiwiOutput::debug($field_info, 'Field info');
       KiwiOutput::debug($value, 'Field value');
       $prefix = ($field_info->isMultiValue()) ? $this->prefix['multi'] : $this->prefix['single'];
       $solr_field_name = $prefix . '_' . ($field_prefix ? ($field_prefix . '_') : '') . $field_info->itemName();
       //$document->$solr_field_name = $value;
     }
-    //KiwiOutput::get()->setThreshold();
+    KiwiOutput::get()->setThreshold();
   }
 }

@@ -18,7 +18,7 @@
     The configuration for each processor.  This does not affect the fields that
     are retrieved.
   -->
-  <processors count="1" batch-size="1" max-size="100" />
+  <processors count="1" batch-size="50" max-size="1000" />
 
   <!--
     The base table of this index.  This must be one of the tables listed below.
@@ -89,13 +89,13 @@
      <field name="irn" search="1" display="1" />
  
 <!-- Sample text field, single-value. -->
+<!--     <field name="ColOReceivedBy" indexed="1" stored="1" fulltext="1" sort="1" /> -->
      <field name="SummaryData" indexed="1" stored="1"/>
      <field name="CatCatalogSubset" indexed="1" stored="1" fulltext="1" sort="1" />
      <field name="PriMammalsPrepSkin" indexed="1" stored="1" fulltext="1" sort="1" />
      <field name="CatTypesPresent" indexed="1" stored="1" fulltext="1" sort="1" />
      <field name="CatCatalogNo3" indexed="1" stored="1" fulltext="1" sort="1" />  
      <field name="CatCatalogNo1" indexed="1" stored="1" fulltext="1" sort="1" />
-<!--     <field name="ColOReceivedBy" indexed="1" stored="1" fulltext="1" sort="1" /> -->
      <field name="ColCollectionNumber" indexed="1" stored="1" fulltext="1" sort="1" />
      <field name="DarCollectionCode" indexed="1" stored="1" fulltext="1" sort="1" />
      <field name="DarVerbatimElevation" indexed="1" stored="1" fulltext="1" sort="1" />
@@ -283,7 +283,7 @@
      <field name="IdeFiledAsQualifiedName" indexed="1" stored="1" fulltext="1" sort="1" />
      <field name="IdeFiledAsQualifier" indexed="1" stored="1" fulltext="1" sort="1" />
      <field name="IdeFiledAsQualifierRank" indexed="1" stored="1" fulltext="1" sort="1" />
-     <field name="IdeFiledAsConfidence" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="IdeFiledAsConfidence" indexed="1" stored="1" fulltext="1" sort="1" /> 
  
 <!-- Sample text field, multi-value. -->
  
@@ -484,6 +484,7 @@
     <field name="ColCentroidLongitudeLocal" indexed="1" stored="1" fulltext="1" sort="1" />
 
 <!-- Sample reference field, single-value. -->
+
      <field name="CatCheckedByRef" indexed="1" stored="1" fulltext="1" sort="1" />
      <field name="ColCollectionEventRef" indexed="1" stored="1" fulltext="1" sort="1" />
      <field name="ColCollectorRef_tab" indexed="1" stored="1" fulltext="1" sort="1" />
@@ -500,7 +501,7 @@
      <field name="HosRepositoryRef_tab" indexed="1" stored="1" fulltext="1" sort="1" />
      <field name="IdeFiledAsIdentifiedByRef_tab" indexed="1" stored="1" fulltext="1" sort="1" />
      <field name="IdeFiledAsRef" indexed="1" stored="1" fulltext="1" sort="1" />
-     <field name="IdeFilingFamilyRef_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="IdeFilingFamilyRef_tab" indexed="1" stored="1" fulltext="1" sort="1" /> 
      <field name="IdeTaxonRef_tab" indexed="1" stored="1" fulltext="1" sort="1" />
      <field name="LotOwnerRef_tab" indexed="1" stored="1" fulltext="1" sort="1" />
      <field name="PriAccessionNumberRef" indexed="1" stored="1" fulltext="1" sort="1" />
@@ -508,7 +509,7 @@
      <field name="TisCollectorRef_tab" indexed="1" stored="1" fulltext="1" sort="1" />
      <field name="TisPreparedByRef_tab" indexed="1" stored="1" fulltext="1" sort="1" />
      <field name="XraXrayPreparedByRef_tab" indexed="1" stored="1" fulltext="1" sort="1" />
-     <field name="ZooZooRef" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="ZooZooRef" indexed="1" stored="1" fulltext="1" sort="1" />-->
  </table>
 
 <!--
@@ -564,12 +565,12 @@
     <field name="LocElevationASLFromFt" indexed="1" stored="1"/>
     <field name="LocElevationASLToMt" indexed="1" stored="1"/>
     <field name="LocElevationASLToFt" indexed="1" stored="1"/>
-    <field name="LatLatitudeDecimal_nesttab" indexed="1" stored="1"/>
-    <field name="LatLongitudeDecimal_nesttab" indexed="1" stored="1"/>
+<!--    <field name="LatLatitudeDecimal_nesttab" indexed="1" stored="1"/>-->
+<!--    <field name="LatLongitudeDecimal_nesttab" indexed="1" stored="1"/>-->
     <field name="AquHabitat_tab" indexed="1" stored="1"/>
     <field name="TerEcologicalZone" indexed="1" stored="1"/>
     <field name="LatPreferredLatitudeDec_tab" indexed="1" stored="1" />
     <field name="LatPreferredLongitudeDec_tab" indexed="1" stored="1" />
- </table> 
+ </table>
 
 </config>

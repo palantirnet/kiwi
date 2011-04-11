@@ -23,8 +23,13 @@ class DateHandler extends TextHandler {
       }
       $values = array();
       foreach ($value as $date_value) {
+        // Sometimes, we may get an array that has a NULL value in it.  This is
+        // most likely caused by user error entering content into Emu, but we
+        // have to deal with it anyway.
+        if (!$date_value) {
+          continue;
+        }
         // Recode the date value from D/M/Y to a more human (American)-friendly format.
-        //KiwiOutput::debug($value, 'Date value');
         list($day, $month, $year) = explode('/', $date_value);
         // Some dates have no month or day listed at all. In that case, default
         // to the 1st so that we have a valid date.

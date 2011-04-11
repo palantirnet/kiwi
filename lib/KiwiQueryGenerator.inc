@@ -64,7 +64,7 @@ class KiwiQueryGenerator {
       $terms[] = $term;
     }
 
-    KiwiOutput::debug($terms);
+    KiwiOutput::debug($terms, 'Query terms');
 
     $module->findTerms(array('and', $terms));
 
