@@ -30,7 +30,12 @@ class DateHandler extends TextHandler {
           continue;
         }
         // Recode the date value from D/M/Y to a more human (American)-friendly format.
-        list($day, $month, $year) = explode('/', $date_value);
+        if (strpos($date_value, '/') === FALSE) {
+          list($day, $month, $year) = array(0, 0, $date_value);
+        }
+        else {
+          list($day, $month, $year) = explode('/', $date_value);
+        }
         // Some dates have no month or day listed at all. In that case, default
         // to the 1st so that we have a valid date.
         $format = array();
