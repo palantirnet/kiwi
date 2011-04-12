@@ -416,15 +416,15 @@
      <field name="DarMaximumElevationInMeters" indexed="1" stored="1" fulltext="1" sort="1" />
      <field name="DarTemperature" indexed="1" stored="1" fulltext="1" sort="1" />
      <field name="DarMinimumDepthInMeters" indexed="1" stored="1" fulltext="1" sort="1" />
- 
+
 <!-- Sample floating point field, multi-value. -->
-     
+
      <field name="XraMa_tab" indexed="1" stored="1" fulltext="1" sort="1" />
      <field name="MeaMeasurementNumberValue_tab" indexed="1" stored="1" fulltext="1" sort="1" />
      <field name="XraKv_tab" indexed="1" stored="1" fulltext="1" sort="1" />
  
 <!-- Sample integer field, single-value. -->
-     
+
      <field name="DarStartMonthCollected" indexed="1" stored="1" fulltext="1" sort="1" />
      <field name="DarStartJulianDay" indexed="1" stored="1" fulltext="1" sort="1" />
      <field name="DarStartDayCollected" indexed="1" stored="1" fulltext="1" sort="1" />
@@ -463,7 +463,7 @@
      <field name="LotCountWet" indexed="1" stored="1" fulltext="1" sort="1" />
  
  <!-- Sample integer field, multi-value. -->
-    
+
      <field name="LotNoOfSpecimens_tab" indexed="1" stored="1" fulltext="1" sort="1" />
      <field name="PrvEventSequence_tab" indexed="1" stored="1" fulltext="1" sort="1" />
      <field name="LotPinnedCount_tab" indexed="1" stored="1" fulltext="1" sort="1" />
@@ -481,6 +481,7 @@
  
  
 <!-- Sample longitude field, single value. -->
+
     <field name="ColCentroidLongitudeLocal" indexed="1" stored="1" fulltext="1" sort="1" />
 
 <!-- Sample reference field, single-value. -->
@@ -509,7 +510,7 @@
      <field name="TisCollectorRef_tab" indexed="1" stored="1" fulltext="1" sort="1" />
      <field name="TisPreparedByRef_tab" indexed="1" stored="1" fulltext="1" sort="1" />
      <field name="XraXrayPreparedByRef_tab" indexed="1" stored="1" fulltext="1" sort="1" />
-     <field name="ZooZooRef" indexed="1" stored="1" fulltext="1" sort="1" />-->
+     <field name="ZooZooRef" indexed="1" stored="1" fulltext="1" sort="1" />
  </table>
 
 <!--
