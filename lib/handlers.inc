@@ -179,13 +179,17 @@ class AttachmentReferenceHandler extends FieldHandlerBase {
     //debug($field_info);
 
     if ($value) {
+       KiwiOutput::debug("\tMapping " . $field_info->columnName() . " using " . get_class($this));
+
       // Because this is a reference, the value is a nested associative array of
       // the fields in the referenced table.  Those need to be recursively processed.
 
       $ref_table = $this->session->getTable($field_info->refTable());
+      KiwiOutput::debug("\tThis field references: " . $ref_table->getName());
       foreach ($value as $key => $v) {
         $ref_field = $ref_table->getField($key);
         $handler = $ref_field->getHandler();
+        KiwiOutput::debug("\t\tSub-mapping " . $ref_field->columnName() . " using " . get_class($handler));
         $handler->map($ref_field, $v, $document, $field_prefix . $field_info->itemName());
       }
     }
