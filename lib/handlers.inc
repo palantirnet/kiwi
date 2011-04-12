@@ -76,11 +76,12 @@ class DateHandler extends TextHandler {
       else {
         $prefix = ($field_info->isMultiValue()) ? 'im' : 'is';
       }
-      $solr_field_name = $prefix . '_' . ($field_prefix ? ($field_prefix . '_') : '') . $field_info->itemName() . '_year';
+      $base = $prefix . '_' . ($field_prefix ? ($field_prefix . '_') : '') . $field_info->itemName();
+      $solr_field_name = $base . '_year';
       $document->$solr_field_name = $year_values;
-      $solr_field_name = $prefix . '_' . ($field_prefix ? ($field_prefix . '_') : '') . $field_info->itemName() . '_month';
+      $solr_field_name = $base . '_month';
       $document->$solr_field_name = $month_values;
-      $solr_field_name = $prefix . '_' . ($field_prefix ? ($field_prefix . '_') : '') . $field_info->itemName() . '_day';
+      $solr_field_name = $base . '_day';
       $document->$solr_field_name = $day_values;
     }
     //KiwiOutput::get()->setThreshold();
