@@ -319,7 +319,7 @@ class FieldHandlerBase implements FieldHandlerInterface {
       // If appropriate, throw this field into the content solr field as well.  We
       // use that for all fulltext index searching.
       if ($field_info->indexFulltext()) {
-        $document->content = $value;
+        $document->content = is_array($value) ? implode(', ', $value) : $value;
       }
     }
   }

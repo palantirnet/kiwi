@@ -1,4 +1,0 @@
-<servers>
-  <solr host="solr.palantir.net" port="8080" core="kiwi" path="/solr/kiwi" />
-  <emu host="66.158.71.71" port="40000" reconnect-port="45000" />
-</servers>

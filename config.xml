@@ -18,7 +18,7 @@
     The configuration for each processor.  This does not affect the fields that
     are retrieved.
   -->
-  <processors count="1" batch-size="1" max-size="10" />
+  <processors count="1" batch-size="50" max-size="1000" />
 
   <!--
     The base table of this index.  This must be one of the tables listed below.
@@ -48,7 +48,7 @@
   -->
   <filters>
     <filter name="AdmPublishWebNoPassword" value="Yes" />
-    <filter name="irn" value="2548884" />
+<!--    <filter name="irn" value="2548884" />-->
     <filter name="CatDepartment" value="Zoology" operator="matches" />
 <!--    <filter name="ObjOtherNumbersNumber_tab" value="0" operator="&lt;>" />-->
 <!--    <filter name="ColEarliestDateCollected" value="18/09/1939" />-->
@@ -85,54 +85,497 @@
   -->
 
   <table name="ecatalogue" type="attach">
-    <!-- The PKey, which is also an integer field. -->
-    <field name="irn" search="1" display="1" />
+     <!-- The PKey, which is also an integer field. -->
+     <field name="irn" search="1" display="1" />
+ 
+<!-- Sample text field, single-value. -->
+<!--     <field name="ColOReceivedBy" indexed="1" stored="1" fulltext="1" sort="1" /> -->
+     <field name="SummaryData" indexed="1" stored="1"/>
+     <field name="CatCatalogSubset" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="PriMammalsPrepSkin" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="CatTypesPresent" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="CatCatalogNo3" indexed="1" stored="1" fulltext="1" sort="1" />  
+     <field name="CatCatalogNo1" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="ColCollectionNumber" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="DarCollectionCode" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="DarVerbatimElevation" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="DarVerbatimDepth" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="DarVerbatimCollectingDate" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="DarTypeStatus" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="DarTissues" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="DarContinentOcean" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="DarContinent" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="ColOCollectionNo" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="DarCollector" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="ColPreciseLocationLocal" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="DarClass" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="DarCitation" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="DarCatalogNumberText" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="DarCatalogNumber" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="DarBoundingBox" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="DarBasisOfRecord" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="DarAgeClass" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="DarVerbatimLatitude" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="DarCollectorNumber" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="DarSpecies" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="DarPhylum" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="DarPreparations" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="DarPreparationType" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="DarPreviousCatalogNumber" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="DarRecordURL" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="DarRelatedCatalogItem" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="DarRelatedCatalogItems" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="DarRelatedInformation" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="DarRelationshipType" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="DarRemarks" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="DarScientificName" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="DarScientificNameAuthor" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="DarScientificNameAuthorYear" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="SpeOPrepTrachea" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="ZooZooLocal" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="ZooFounder" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="ZooHouseName" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="ZooIsisNo" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="ZooNecropsyNo" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="ZooSire" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="DarSex" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="ZooTissue" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="DarSource" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="DarTimeZone" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="DarSubspecies" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="DarSubgenus" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="DarStateProvince" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="DarSpecificEpithet" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="DarOrder" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="ZooStudBook" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="DarGenBankNum" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="DarOtherCatalogNumbers" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="DarHigherGeography" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="DarGMLFeature" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="DarGlobalUniqueIdentifier" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="DarGeorefMethod" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="DarHorizontalDatum" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="DarGenus" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="DarIdentificationModifier" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="DarFieldNumber" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="DarFieldNotes" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="DarFamily" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="DarDepthRange" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="DarDateLastModified" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="DarCounty" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="DarGeodeticDatum" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="DarIsland" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="ZooComments" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="DarNotes" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="DarLocality" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="DarLifeStage" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="DarLatLongComments" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="DarHigherTaxon" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="DarIslandGroup" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="DarOriginalCoordinateSystem" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="DarInstitutionCode" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="DarInfraspecificRank" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="DarInfraspecificEpithet" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="DarImageURL" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="DarIdentifiedBy" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="DarIdentificationQualifier" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="DarKingdom" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="ColMammalsCollectionNo" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="ZooDeath" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="EcoHostTargetTaxonLocal" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="EcoHabitatMicrohabitat" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="EcoGrowthForm" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="EcoFrequency" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="EcoFieldCharacters" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="EcoEndoEcto" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="EcoEcologyNotes" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="EcoBreedingSystem" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="EcoBodyPartLocation" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="EcoAdditionalHostData" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="ColSeaGulfLocal" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="ColQuadrat" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="EcoPhenology" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="SpeOPrepHead" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="PriOtherNo" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="PriSex" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="PriSexAgeNotes" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="PriSiteCENumberDataLocal" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="PriStatus" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="ColNearestNamedPlaceLocal" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="SpeOCatalogNo" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="ColMammalsExpedition" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="SpeOPrepSkinF" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="SpeOPrepSkinR" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="SpeOPrepSyrinx" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="SpeOPrepWing" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="ColExpedition" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="EcoRelationNotes" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="PriTypeStatus" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="LotTypeStatus" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="EcoNature" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="IdeFiledAsTribe" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="IdeFiledAsTypeStatus" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="LotAggregate" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="LotDry" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="IdeFiledAsSubfamily" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="LotPrimaryType" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="IdeFiledAsSpecies" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="LotWet" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="PriInventory" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="PriTissue" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="PriXray" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="LotInventory" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="DarCountry" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="PriLocalityNotes" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="PriBarcode" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="IdeFiledAsFamilyNumber" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="PriAdditionalNumber" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="EggOCatalogNo" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="PriAssociatedLots" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="DarWaterBody" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="IdeFiledAsTypeRemarks" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="PriMammalsPrepAsr" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="PriMammalsPrepMounted" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="PriMammalsPrepOthr" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="PriMammalsPrepSkel" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="ColMammalsCollectorLocal" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="DarVerbatimLongitude" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="PriMammalsPrepEnd" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="PriMammalsPrepCran" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="PriIslandGroupLocal" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="PriMammalsPrepBrain" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="PriCataloguedByDataLocal" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="PriMammalsPrepAlc" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="PriMammalsIndicatorTissue" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="PriIslandNameLocal" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="PriMammalsPrepMan" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="PriHistory" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="PriElevationVerbatim" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="PriCollectingEventNoLocal" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="PriMammalsPrepCarc" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="ColBiogeographyRegionLocal" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="ColMammalsCollectorInitials" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="ColLatestDateCollectedOrig" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="ColIslandLocal" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="ColIslandGroupingLocal" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="ColEarliestDateCollectedOrig" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="ColDrainageBasinLocal" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="ColDateCollected" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="ColOHabitat" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="ColCollectionNotes" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="ColSiteLocationLocal" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="ColBaySoundLocal" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="ZooBirth" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="PriMammalsPrepSkull" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="LotEggs" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="IdeFiledAsGenus" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="EcoSubstrate" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="EcoVerbatimEcology" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="EggOClutchSize" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="EggOParasitized" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="HosHostNote" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="IdeFiledAsClass" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="IdeFiledAsSubSpecies" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="IdeFiledAsFamily" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="ZooDam" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="IdeFiledAsOrder" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="IdeFiledAsPhylum" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="IdeFiledAsQualifiedName" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="IdeFiledAsQualifier" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="IdeFiledAsQualifierRank" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="IdeFiledAsConfidence" indexed="1" stored="1" fulltext="1" sort="1" /> 
+ 
+<!-- Sample text field, multi-value. -->
+ 
+     <field name="LotLotsTypeStatus_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="TisTissueRemarks_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="HosOtherPrepType_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="HosOtherHostTaxonLocal_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="HosFmnhSex_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="HosFmnhPrepType_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="HosCatalogNo_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="HosCatalogedHostTaxonLocal_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="TisTubeNumber_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="TisTubeNo_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="LotEstimate_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="TisTissueType_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="PreMammalsPrepRemarks_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="TisTissueNumber_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="TisStorageLocation_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="TisRepository_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="TisPreparedByDataLocal_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="TisMammalsTissueType_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="TisLocus_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="TisLocationNotes_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="TisInitStorageMedium_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="TisTissueUsedUp_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="XraExposureTime_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="LocFisPermanantLocation_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="LocFisMovementNotes_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="LocFisCurrentLocation_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="XraXraySystem_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="XraXrayRemarks_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="XraXrayPreparedByDataLocal_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="XraXrayNumber_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="XraView_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="HosOtherSex_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="XraFilmType_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="HosRepositoryLocal_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="XraExposureNotes_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="XraDistance_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="XraCountXrayed_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="TisCollectorNo_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="TisCollectorInitials_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="TisCollectionNotes_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="PreMammalsPrepTypeFlag_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="PreMammalsPrepType_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="TisCurrentStorageMed_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="XraSpecimensXrayed_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="ColCountryLocal_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="TisFieldPreservation_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="GenGenBankAccnNo_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="GenExtractionMethod_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="GenDnaUsedUp_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="GenAmplified_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="ColTownshipLocal_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="ColProvinceStateTerritoryLocal_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="ColOceanLocal_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="GenGeneticsRemarks_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="ColDistrictCountyShireLocal_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="GenOtherPreparedByDataLocal_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="ColContinentLocal_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="CatProject_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="LotSemaphoront_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="LotRegionNote_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="LotOwnerLocal_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="LotOtherNo_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="LotNotes_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="LotMaxBody_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="LotLotsEstimate_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="ColMammalsCollectorNo_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="IdeFiledAs_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="LotDescription_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="PrvPreservationNotes_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="PrvPreservation_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="PrvCurrentStorage_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="MeaMeasurementValue_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="MeaMeasurementTaken_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="MeaMeasurementKind_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="MeaMammalsMeasurementTaken_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="GenGene_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="IdeQualifiedName_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="TisDnaAvailable_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="GenWhatExtracted_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="GenTubeNumber_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="GenTissueNumber_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="GenStorageLocation_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="GenSequenced_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="GenPreparedByDataLocal_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="GenOtherUsedUp_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="GenOtherTubeNumber_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="GenOtherPrepType_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="LotRegion_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+    
+<!-- Sample date fields, single-value. -->
+   
+     <field name="ColLatestDateCollected" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="IdeFiledAsDateIdentified" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="ColEarliestDateCollected" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="TisDateTissuePrepared0" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="XraDateXrayed0" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="IdeDateIdentified0" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="GenDateSamplePrepared0" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="LocDateRemoved0" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="LocDateReturned0" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="GenDateOtherPrepared0" indexed="1" stored="1" fulltext="1" sort="1" />
 
-    <!-- Sample text field, single-value. -->
-    <field name="TypICBNType" indexed="1" stored="1" fulltext="1" sort="1" />
+<!-- Sample floating point field, single-value. -->
 
-    <!-- Sample text field, multi-value. -->
-    <field name="ObjOtherNumbersNumber_tab" indexed="1" stored="1" fulltext="1" sort="0" />
-    <field name="CatProject_tab" indexed="1" stored="1" fulltext="1" sort="0" />
-    <field name="DesMaterials_tab" indexed="1" stored="1" fulltext="1" sort="0" />
+     <field name="DarMaximumDepth" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="DarCoordinateUncertaintyInMeter" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="DarDecimalLatitude" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="DarDecimalLongitude" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="DarEndLatitude" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="DarEndLongitude" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="DarEndTimeOfDay" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="DarCoordinatePrecision" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="DarTimeOfDay" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="DarObservedWeight" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="DarStart_EndCoordinatePrecision" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="DarStartLatitude" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="DarStartLongitude" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="DarStartTimeOfDay" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="DarLatitude" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="DarTimeCollected" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="DarLongitude" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="DarMinimumElevationInMeters" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="DarMinimumElevation" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="DarMinimumDepth" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="DarMaximumElevation" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="DarMaximumDepthInMeters" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="DarMaximumElevationInMeters" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="DarTemperature" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="DarMinimumDepthInMeters" indexed="1" stored="1" fulltext="1" sort="1" />
 
+<!-- Sample floating point field, multi-value. -->
 
-    <!-- Sample date fields, single-value. -->
-    <field name="ColEarliestDateCollected" indexed="1" stored="1" fulltext="1" sort="1" />
-    <field name="ColLatestDateCollected" indexed="1" stored="1" fulltext="1" sort="0" />
+     <field name="XraMa_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="MeaMeasurementNumberValue_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="XraKv_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+ 
+<!-- Sample integer field, single-value. -->
 
-    <!-- Sample floating point field, single-value. -->
-    <field name="DarCoordinatePrecision" indexed="1" stored="1" fulltext="1" sort="0" />
+     <field name="DarStartMonthCollected" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="DarStartJulianDay" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="DarStartDayCollected" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="DarEndDayCollected" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="DarStartYearCollected" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="DarEndYearCollected" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="DarYearCollected" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="DarMonthIdentified" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="DarYearIdentified" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="DarMonthCollected" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="DarJulianDay" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="DarObservedIndividualCount" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="LotCountDry" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="DarEndJulianDay" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="DarIndividualCount" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="LotTotalCount" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="CatCatalogNo2" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="CatCatalogueNo" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="CatMammalsCatalogNo" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="DarCatalogNumberNumeric" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="irn" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="DarDayCollected" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="DarDayIdentified" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="DarEndMonthCollected" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="LotNumberOfJars" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="PriCatalogueNo" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="LotNonTypes" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="LotParatypes" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="LotSyntypes" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="LotTotalContainers" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="PriCandS" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="LotTotalSpecimens" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="PriMount" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="PriAlcohol" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="PriSkeleton" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="LotCountWet" indexed="1" stored="1" fulltext="1" sort="1" />
+ 
+ <!-- Sample integer field, multi-value. -->
 
-    <!-- Sample integer field, single-value. -->
-    <field name="CatCatalogueNo" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="LotNoOfSpecimens_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="PrvEventSequence_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="LotPinnedCount_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="PrvSeries_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="LotDryCount_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="LotNoOfContainers_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="IdeMammalsDescriptionStartPage_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="LotSlideCount_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="LotWetCount_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="PreOriginalCount_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+ 
+<!-- Sample latitude field, single value. -->
+  
+    <field name="ColCentroidLatitudeLocal" indexed="1" stored="1" fulltext="1" sort="1" />
+ 
+ 
+<!-- Sample longitude field, single value. -->
 
-    <!-- Sample latitude field, single value. -->
-    <field name="ColCentroidLatitudeLocal" indexed="1" stored="1" fulltext="1" sort="0" />
+    <field name="ColCentroidLongitudeLocal" indexed="1" stored="1" fulltext="1" sort="1" />
 
-    <!-- Sample longitude field, single value. -->
-    <field name="ColCentroidLongitudeLocal" indexed="1" stored="1" fulltext="1" sort="0" />
+<!-- Sample reference field, single-value. -->
 
-    <!-- Sample reference field, single-value. -->
-    <field name="ColSiteLocationRef" indexed="1" stored="1" fulltext="1" />
+     <field name="CatCheckedByRef" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="ColCollectionEventRef" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="ColCollectorRef_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="ColMammalsCollectorRef" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="ColSiteLocationRef" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="ConCheckedByRef" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="EcoAssociatedTaxaRef_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="EcoHostPhorophyteRef" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="EcoHostTargetTaxonRef" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="GenOtherPreparedByRef_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="GenPreparedByRef_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="HosCatalogedHostTaxonRef_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="HosOtherHostTaxonRef_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="HosRepositoryRef_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="IdeFiledAsIdentifiedByRef_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="IdeFiledAsRef" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="IdeFilingFamilyRef_tab" indexed="1" stored="1" fulltext="1" sort="1" /> 
+     <field name="IdeTaxonRef_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="LotOwnerRef_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="PriAccessionNumberRef" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="PriCataloguedByRef" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="TisCollectorRef_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="TisPreparedByRef_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="XraXrayPreparedByRef_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="ZooZooRef" indexed="1" stored="1" fulltext="1" sort="1" />
 
     <!-- Sample reference field, multi-value (Merge field) -->
     <field name="LotRelatedObjectRef_tab" handler="AlternateHandler" indexed="1" stored="1" fulltext="1" />
 
-<!-- These fields are reporting not found in Emu for some reason.  -->
-<!--    <field name="PriCollectionDate" search="1" display="1" fulltext="1" sort="1" />-->
-<!--    <field name="PriSiteCEDateCollected" search="1" display="1" fulltext="1" sort="0" />-->
+ </table>
 
-  </table>
+<!--
+ <table name="ecollectionevents" type="attach">
+    <field name="ColDateVisitedFrom" indexed="1" stored="1"/>
+    <field name="SummaryData" indexed="1" stored="1"/>
+    <field name="ColParticipantLocal_tab" indexed="1" stored="1"/>
+    <field name="ColDateVisitedFrom" indexed="1" stored="1"/>
+    <field name="ColSiteRef" indexed="1" stored="1"/>
+ </table>
+
+ <table name="efmnhtransactions" type="attach">
+    <fieldname="SummaryData" indexed="1" stored="1"/>
+ </table> 
+
+ <table name="eparties" type="attach">
+    <field name="SummaryData" indexed="1" stored="1"/>
+    <field name="NamBriefName" indexed="1" stored="1"/>
+    <field name="NamOrganisationAcronym" indexed="1" stored="1"/>
+ </table> 
+ <table name="etaxonomy" type="attach">
+    <field name="SummaryData" indexed="1" stored="1"/>
+    <field name="ClaFamilyNumber" indexed="1" stored="1"/>
+ </table>
+
+ <table name="emultimedia" type="attach">
+    <field name="irn" indexed="1" stored="1">
+    <field name="MulTitle" indexed="1" stored="1">
+    <field name="MulIdentifier" indexed="1" stored="1">
+    <field name="MulMimeFormat" indexed="1" stored="1">
+    <field name="MulDescription" indexed="1" stored="1">
+    <field name="" indexed="1" stored="1">
+    <field name="DetSource" indexed="1" stored="1">
+    <field name="" indexed="1" stored="1">
+    <field name="" indexed="1" stored="1">
+    <field name="" indexed="1" stored="1">
+
+    <field name="MulCreator_tab" indexed="1" stored="1">
+    <field name="DetSubject_tab" indexed="1" stored="1">
+ </table>
+-->
 
   <table name="esites" type="attach">
-    <field name="LocVerbatimLocality" indexed="1" stored="1" />
+    <field name="irn" indexed="1" stroed="1"/>
+    <field name="SummaryData" indexed="1" stored="1"/>
+    <field name="LocProvinceStateTerritory_tab" indexed="1" stored="1"/>
+    <field name="AquRiverBasin" indexed="1" stored="1"/>
+    <field name="LocSeaGulf_tab" indexed="1" stored="1"/>
+    <field name="LocPreciseLocation" indexed="1" stored="1" />
     <field name="LatCentroidLatitude0" indexed="1" stored="1" />
     <field name="LatCentroidLongitude0" indexed="1" stored="1" />
-
+    <field name="LocElevationASLFromMt" indexed="1" stored="1"/>
+    <field name="LocElevationASLFromFt" indexed="1" stored="1"/>
+    <field name="LocElevationASLToMt" indexed="1" stored="1"/>
+    <field name="LocElevationASLToFt" indexed="1" stored="1"/>
+<!--    <field name="LatLatitudeDecimal_nesttab" indexed="1" stored="1"/>-->
+<!--    <field name="LatLongitudeDecimal_nesttab" indexed="1" stored="1"/>-->
+    <field name="AquHabitat_tab" indexed="1" stored="1"/>
+    <field name="TerEcologicalZone" indexed="1" stored="1"/>
     <field name="LatPreferredLatitudeDec_tab" indexed="1" stored="1" />
     <field name="LatPreferredLongitudeDec_tab" indexed="1" stored="1" />
-
   </table>
 
 </config>
