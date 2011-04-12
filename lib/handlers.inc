@@ -23,9 +23,19 @@ class DateHandler extends TextHandler {
       }
       $values = array();
       foreach ($value as $date_value) {
+        // Sometimes, we may get an array that has a NULL value in it.  This is
+        // most likely caused by user error entering content into Emu, but we
+        // have to deal with it anyway.
+        if (!$date_value) {
+          continue;
+        }
         // Recode the date value from D/M/Y to a more human (American)-friendly format.
-        //KiwiOutput::debug($value, 'Date value');
-        list($day, $month, $year) = explode('/', $date_value);
+        if (strpos($date_value, '/') === FALSE) {
+          list($day, $month, $year) = array(0, 0, $date_value);
+        }
+        else {
+          list($day, $month, $year) = explode('/', $date_value);
+        }
         // Some dates have no month or day listed at all. In that case, default
         // to the 1st so that we have a valid date.
         $format = array();
@@ -66,11 +76,12 @@ class DateHandler extends TextHandler {
       else {
         $prefix = ($field_info->isMultiValue()) ? 'im' : 'is';
       }
-      $solr_field_name = $prefix . '_' . ($field_prefix ? ($field_prefix . '_') : '') . $field_info->itemName() . '_year';
+      $base = $prefix . '_' . ($field_prefix ? ($field_prefix . '_') : '') . $field_info->itemName();
+      $solr_field_name = $base . '_year';
       $document->$solr_field_name = $year_values;
-      $solr_field_name = $prefix . '_' . ($field_prefix ? ($field_prefix . '_') : '') . $field_info->itemName() . '_month';
+      $solr_field_name = $base . '_month';
       $document->$solr_field_name = $month_values;
-      $solr_field_name = $prefix . '_' . ($field_prefix ? ($field_prefix . '_') : '') . $field_info->itemName() . '_day';
+      $solr_field_name = $base . '_day';
       $document->$solr_field_name = $day_values;
     }
     //KiwiOutput::get()->setThreshold();
@@ -168,13 +179,17 @@ class AttachmentReferenceHandler extends FieldHandlerBase {
     //debug($field_info);
 
     if ($value) {
+       KiwiOutput::debug("\tMapping " . $field_info->columnName() . " using " . get_class($this));
+
       // Because this is a reference, the value is a nested associative array of
       // the fields in the referenced table.  Those need to be recursively processed.
 
       $ref_table = $this->session->getTable($field_info->refTable());
+      KiwiOutput::debug("\tThis field references: " . $ref_table->getName());
       foreach ($value as $key => $v) {
         $ref_field = $ref_table->getField($key);
         $handler = $ref_field->getHandler();
+        KiwiOutput::debug("\t\tSub-mapping " . $ref_field->columnName() . " using " . get_class($handler));
         $handler->map($ref_field, $v, $document, $field_prefix . $field_info->itemName());
       }
     }

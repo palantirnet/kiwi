@@ -341,7 +341,8 @@ class KiwiEmuField {
    * @return boolean
    */
   public function isMultiValue() {
-    return (substr($this->schema['ColumnName'], -4) == '_tab');
+    return ($this->schema['DataKind'] == 'dkTable');
+    //return (substr($this->schema['ColumnName'], -4) == '_tab');
   }
 
   /**
@@ -434,9 +435,5 @@ class KiwiEmuField {
    */
   public function isSortable() {
     return in_array($this->columnName(), $this->config->getFields($this->table, 'sort'));
-  }
-
-  public function  __toString() {
-    return print_r($this->schema, 1);
   }
 }
