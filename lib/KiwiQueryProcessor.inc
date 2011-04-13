@@ -104,13 +104,13 @@ class KiwiQueryProcessor {
         $documents = array();
         foreach ($result->rows as $row) {
           KiwiOutput::debug("Processor {$this->processorId}: Processing IRN #" . $counter++ . ": " . $row['irn']);
-          $documents[] = $this->createSolrDocument($row);
           if ($last_irn == $row['irn']) {
             break 2;
           }
           else {
             $last_irn = $row['irn'];
           }
+          $documents[] = $this->createSolrDocument($row);
         }
 
         $this->solr->addDocuments($documents);
