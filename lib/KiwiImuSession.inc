@@ -387,7 +387,7 @@ class KiwiEmuField {
    * @return boolean
    */
   public function isMergeField() {
-    return ($this->schema['DataKind'] == 'dkNested' && substr($this->schema['ColumnName'], -3) == 'Ref');
+    return ($this->isMultiValue() && substr($this->schema['ColumnName'], -7) == 'Ref_tab');
   }
 
   /**
