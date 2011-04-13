@@ -180,25 +180,6 @@ class KiwiQueryProcessor {
   }
 
   /**
-   * Returns a handler object for the specified field.
-   *
-   * @param string $table
-   *   The table to which the field belongs.
-   * @param KiwiEmuField $field
-   *   The field we want to be able to map.
-   * @return FieldHandlerInterface
-   */
-  protected function getHandler($table, KiwiEmuField $field) {
-
-    $field_options = $this->config->getFieldOptions($table, $field->columnName(), $field->dataType());
-    $class = $field_options['handler'];
-    if (empty($this->handlers[$class])) {
-      $this->handlers[$class] = new $class($this->config, $this->session);
-    }
-    return $this->handlers[$class];
-  }
-
-  /**
    * Returns an array of the tables/fields for the query.
    *
    * @todo Handle reference fields properly.
