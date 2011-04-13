@@ -436,4 +436,8 @@ class KiwiEmuField {
   public function isSortable() {
     return in_array($this->columnName(), $this->config->getFields($this->table, 'sort'));
   }
+
+  public function  __toString() {
+    return print_r($this->schema, 1);
+  }
 }
