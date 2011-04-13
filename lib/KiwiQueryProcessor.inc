@@ -330,6 +330,7 @@ class AlternateHandler extends FieldHandlerBase {
     KiwiOutput::get()->setThreshold(LOG_DEBUG);
     if ($value) {
       debug('In AlternateHandler');
+      debug("IRN: " . $document->id);
       $info = (string)$field_info;
       debug($info);
       //debug(array_keys($info));
