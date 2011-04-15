@@ -194,25 +194,43 @@ class KiwiQueryProcessor {
     $base_table = $this->config->baseTable();
 
     foreach ($this->session->getTable($base_table['name'], 'attach') as $field) {
-      if ($field->isAttachmentField()) {
-        $columns[] = $this->getNestedFetchSet($field);
+      if ($field->isReferenceField()) {
+        $columns[] = $this->getNestedFetchSet($field, $base_table['name']);
       }
       else {
         $columns[] = $field->columnName();
       }
     }
 
-    //debug($columns);
+    debug($columns);
     return $columns;
   }
 
-  protected function getNestedFetchSet(KiwiEmuField $field) {
+  /**
+   * Returns a nested set of fields for the fetch set from referenced tables.
+   *
+   * @param KiwiEmuField $field
+   *   The reference field we want to traverse to get more fields from a dependent
+   *   table.
+   * @param string $parent_table
+   *   The name of the table from which we are referencing.  This is used to
+   *   detect and avoid infinite loops.
+   * @return array
+   */
+  protected function getNestedFetchSet(KiwiEmuField $field, $parent_table) {
     $columns = array();
     $table = $field->refTable();
-    $refTable = $this->session->getTable($table);
-    foreach ($refTable as $ref_field) {
-      if ($ref_field->isAttachmentField()) {
-        $columns[] = $this->getNestedFetchSet($ref_field);
+    $ref_table = $this->session->getTable($table);
+    foreach ($ref_table as $ref_field) {
+      // A table can reference itself, which if we kept on going would result
+      // in an infinite loop.  Instead, we check for a reference back to the
+      // original table and only traverse one level.  That is, we can go from
+      // ecatalogue->ecatalogue, but ecatalogue->ecatalogue->ecatalogue will
+      // be skipped.
+      if ($ref_field->isReferenceField()) {
+        if ($ref_field->refTable() != $parent_table) {
+          $columns[] = $this->getNestedFetchSet($ref_field, $ref_table->getName());
+        }
       }
       else {
         $columns[] = $ref_field->columnName();
