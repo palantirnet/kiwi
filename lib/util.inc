@@ -13,7 +13,28 @@ function debug($message, $label = '') {
   print $message;
 }
 
-
+/**
+ * Recursively implodes an array.
+ *
+ * @see http://www.php.net/manual/en/function.implode.php#96100
+ * @param string $glue
+ *   The value to append between each piece.
+ * @param array $pieces
+ *   The array of strings to implode.
+ * @return string
+ */
+function recursive_implode($glue, $pieces) {
+  $ret_val = array();
+  foreach($pieces as $r_pieces) {
+    if (is_array($r_pieces)) {
+      $ret_val[] = recursive_implode($glue, $r_pieces);
+    }
+    else {
+      $ret_val[] = $r_pieces;
+    }
+  }
+  return implode($glue, $ret_val);
+}
 
 /**
  * Output manager for Kiwi.
