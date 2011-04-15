@@ -400,6 +400,18 @@ class KiwiEmuField {
   }
 
   /**
+   * Returns True if this field is a reference to another module/table.
+   *
+   * There are multiple kinds of reference field, as far as we're concerned, but
+   * this method will return true for all of them.
+   *
+   * @return boolean
+   */
+  public function isReferenceField() {
+    return $this->isMergeField() || $this->isAttachmentField();
+  }
+
+  /**
    * Returns the name of the table referenced by this field, if any.
    *
    * @return string
