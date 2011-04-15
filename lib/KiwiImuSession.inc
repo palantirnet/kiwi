@@ -152,13 +152,23 @@ class KiwiImuSession extends IMuSession {
    *
    * @param string $name
    *   The name of the table we want information about.
+   * @param string $type
+   *   The type of table.  Values are attach, merge, or collapse.
    * @return KiwiEmuTable
    */
-  public function getTable($name) {
-    if (empty($this->tables[$name])) {
-      $this->tables[$name] = new KiwiEmuTable($this->config, $this, $this->getSchemaInfo($name));
+  public function getTable($name, $type = 'attach') {
+    if (empty($this->tables[$name][$type])) {
+      $this->tables[$name][$type] = new KiwiEmuTable($this->config, $this, $this->getSchemaInfo($name), $type);
     }
-    return $this->tables[$name];
+    return $this->tables[$name][$type];
+  }
+
+  public function getTables($type) {
+    $tables = array();
+    foreach ($this->config->getTables($type) as $name) {
+      $tables[] = $this->getTable($name, $type);
+    }
+    return $tables;
   }
 
   /**
@@ -222,13 +232,13 @@ class KiwiEmuTable implements IteratorAggregate {
    * @param array $schema
    *   The schema definition for this table.
    */
-  public function __construct(KiwiConfiguration $config, KiwiImuSession $session, $schema) {
+  public function __construct(KiwiConfiguration $config, KiwiImuSession $session, $schema, $table_type = 'attach') {
     $this->schema = $schema;
     $this->config = $config;
     $this->session = $session;
 
     // Split out our fields up front, since we're almost certain to need them.
-    foreach ($this->config->getFields($this->getName()) as $field_name) {
+    foreach ($this->config->getFields($this->getName(), 'all', $table_type) as $field_name) {
       if (isset($this->schema['schema']['columns'][$field_name])) {
         $this->fields[$field_name] = new KiwiEmuField($this->config, $this->session, $this->getName(), $this->schema['schema']['columns'][$field_name]);
       }

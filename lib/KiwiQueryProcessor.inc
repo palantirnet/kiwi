@@ -193,7 +193,7 @@ class KiwiQueryProcessor {
     $columns = array();
     $base_table = $this->config->baseTable();
 
-    foreach ($this->session->getTable($base_table['name']) as $field) {
+    foreach ($this->session->getTable($base_table['name'], 'attach') as $field) {
       if ($field->isAttachmentField()) {
         $columns[] = $this->getNestedFetchSet($field);
       }
