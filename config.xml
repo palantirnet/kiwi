@@ -517,7 +517,6 @@
 
  </table>
 
-<!--
  <table name="ecollectionevents" type="attach">
     <field name="ColDateVisitedFrom" indexed="1" stored="1"/>
     <field name="SummaryData" indexed="1" stored="1"/>
@@ -527,35 +526,32 @@
  </table>
 
  <table name="efmnhtransactions" type="attach">
-    <fieldname="SummaryData" indexed="1" stored="1"/>
+    <field name="SummaryData" indexed="1" stored="1"/>
  </table> 
 
  <table name="eparties" type="attach">
     <field name="SummaryData" indexed="1" stored="1"/>
     <field name="NamBriefName" indexed="1" stored="1"/>
     <field name="NamOrganisationAcronym" indexed="1" stored="1"/>
- </table> 
+ </table>
+
  <table name="etaxonomy" type="attach">
     <field name="SummaryData" indexed="1" stored="1"/>
     <field name="ClaFamilyNumber" indexed="1" stored="1"/>
  </table>
 
  <table name="emultimedia" type="attach">
-    <field name="irn" indexed="1" stored="1">
-    <field name="MulTitle" indexed="1" stored="1">
-    <field name="MulIdentifier" indexed="1" stored="1">
-    <field name="MulMimeFormat" indexed="1" stored="1">
-    <field name="MulDescription" indexed="1" stored="1">
-    <field name="" indexed="1" stored="1">
-    <field name="DetSource" indexed="1" stored="1">
-    <field name="" indexed="1" stored="1">
-    <field name="" indexed="1" stored="1">
-    <field name="" indexed="1" stored="1">
+    <field name="irn" indexed="1" stored="1" />
+    <field name="MulTitle" indexed="1" stored="1" />
+    <field name="MulIdentifier" indexed="1" stored="1" />
+    <field name="MulMimeFormat" indexed="1" stored="1" />
+    <field name="MulDescription" indexed="1" stored="1" />
+    <field name="" indexed="1" stored="1" />
+    <field name="DetSource" indexed="1" stored="1" />
 
-    <field name="MulCreator_tab" indexed="1" stored="1">
-    <field name="DetSubject_tab" indexed="1" stored="1">
+    <field name="MulCreator_tab" indexed="1" stored="1" />
+    <field name="DetSubject_tab" indexed="1" stored="1" />
  </table>
--->
 
   <table name="esites" type="attach">
     <field name="irn" indexed="1" stroed="1"/>
