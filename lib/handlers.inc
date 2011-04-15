@@ -178,26 +178,19 @@ class NullHandler extends FieldHandlerBase {
 class NesttabHandler extends TextHandler {
 
   public function map(KiwiEmuField $field_info, $value, Apache_Solr_Document $document, $field_prefix = '') {
-    //KiwiOutput::get()->setThreshold(LOG_DEBUG);
     if ($value) {
-      debug('In ' . __CLASS__);
-      $info = (string)$field_info;
-      debug($info);
-      //debug(array_keys($info));
-      //debug($info['*schema']);
-      //KiwiOutput::debug($field_info, 'Field info');
-      KiwiOutput::debug($value, 'Field value');
 
+      // Because we do not know in advance what the structure of the field is,
+      // nor can we get that data from Emu, we will simply collapse it all
+      // together into a multi-value text field.  That's useful for searching
+      // but not really for display.  If we want a display-useful field, we
+      // will have to write our own handler and assign it to that one field.
       foreach ($value as $v) {
         $data[] = recursive_implode(';', $v);
       }
 
-      $prefix = $this->getTypePrefix($field_info);
-
-      $solr_field_name = $prefix . '_' . ($field_prefix ? ($field_prefix . '_') : '') . $field_info->itemName();
-      $document->$solr_field_name = $data;
+      parent::map($field_info, $data, $document, $field_prefix);
     }
-    //KiwiOutput::get()->setThreshold();
   }
 }
 
