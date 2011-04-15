@@ -80,9 +80,8 @@ class KiwiImuSession extends IMuSession {
    *
    * @return IMuModule
    */
-  public function newModuleHandler($destroy = TRUE) {
-    $base_table = $this->config->baseTable();
-    $module = new IMuModule($base_table['name'], $this);
+  public function newModuleHandler($base_table, $destroy = TRUE) {
+    $module = new IMuModule($base_table, $this);
 
     // Leave the result set open on the server.  That allows us to reconnect
     // to it from the child processes later.

@@ -43,7 +43,8 @@ class KiwiQueryGenerator {
     // Connect to Emu server.
     $session = $this->getConnection();
 
-    $module = $session->newModuleHandler(FALSE);
+    $base_table = $this->config->baseTable();
+    $module = $session->newModuleHandler($base_table['name'], FALSE);
 
     // Run initial query as defined by the config object.
     // This may require a query builder.
