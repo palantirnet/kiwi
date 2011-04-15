@@ -566,7 +566,7 @@
     <field name="LocElevationASLFromFt" indexed="1" stored="1"/>
     <field name="LocElevationASLToMt" indexed="1" stored="1"/>
     <field name="LocElevationASLToFt" indexed="1" stored="1"/>-->
-    <field name="LatLatitudeDecimal_nesttab" handler="AlternateHandler" indexed="1" stored="1"/>
+    <field name="LatLatitudeDecimal_nesttab" handler="NesttabHandler" indexed="1" stored="1"/>
 <!--    <field name="LatLongitudeDecimal_nesttab" indexed="1" stored="1"/>-->
 <!--    <field name="AquHabitat_tab" indexed="1" stored="1"/>
     <field name="TerEcologicalZone" indexed="1" stored="1"/>

@@ -170,6 +170,39 @@ class NullHandler extends FieldHandlerBase {
 }
 
 /**
+ * Handler for nested-table fields.
+ *
+ * This is a generic handler.  Many nesttab fields will want their own custom
+ * handlers.
+ */
+class NesttabHandler extends TextHandler {
+
+  public function map(KiwiEmuField $field_info, $value, Apache_Solr_Document $document, $field_prefix = '') {
+    //KiwiOutput::get()->setThreshold(LOG_DEBUG);
+    if ($value) {
+      debug('In ' . __CLASS__);
+      $info = (string)$field_info;
+      debug($info);
+      //debug(array_keys($info));
+      //debug($info['*schema']);
+      //KiwiOutput::debug($field_info, 'Field info');
+      KiwiOutput::debug($value, 'Field value');
+
+      foreach ($value as $v) {
+        $data[] = recursive_implode(';', $v);
+      }
+
+      $prefix = $this->getTypePrefix($field_info);
+
+      $solr_field_name = $prefix . '_' . ($field_prefix ? ($field_prefix . '_') : '') . $field_info->itemName();
+      $document->$solr_field_name = $data;
+    }
+    //KiwiOutput::get()->setThreshold();
+  }
+}
+
+
+/**
  * Handler for attachment fields.
  *
  * These are single-value 1:1 reference fields.
