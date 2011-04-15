@@ -103,6 +103,7 @@ class KiwiQueryProcessor {
 
         $documents = array();
         foreach ($result->rows as $row) {
+          debug($row);
           KiwiOutput::debug("Processor {$this->processorId}: Processing IRN #" . $counter++ . ": " . $row['irn']);
           if ($last_irn == $row['irn']) {
             break 2;
@@ -202,7 +203,7 @@ class KiwiQueryProcessor {
       }
     }
 
-    //debug($columns);
+    debug($columns);
     return $columns;
   }
 

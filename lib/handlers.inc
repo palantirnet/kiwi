@@ -200,8 +200,14 @@ class MergeHandler extends FieldHandlerBase {
 
   public function map(KiwiEmuField $field_info, $value, Apache_Solr_Document $document, $field_prefix = '') {
     //KiwiOutput::get()->setThreshold(LOG_DEBUG);
+    debug('Using MergeHandler for field: ' . $field_info->columnName());
+    debug($value, "Value");
     if ($value) {
       KiwiOutput::debug("\tMapping " . $field_info->columnName() . " using " . get_class($this));
+
+      throw new Exception('Found an example.');
+      debug("Found an example");
+      exit();
 
       debug((string)$field_info);
       debug($field_info->isMergeField() ? "Is Merge" : "Is not merge");
