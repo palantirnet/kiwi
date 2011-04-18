@@ -224,35 +224,40 @@ class AttachmentReferenceHandler extends FieldHandlerBase {
 
 class MergeHandler extends FieldHandlerBase {
 
-  public function map(KiwiEmuField $field_info, $value, Apache_Solr_Document $document, $field_prefix = '') {
-    //KiwiOutput::get()->setThreshold(LOG_DEBUG);
-    debug('Using MergeHandler for field: ' . $field_info->columnName());
-    debug($value, "Value");
+  public function map(KiwiEmuField $field_info, $value, Apache_Solr_Document $document, $field_prefix = '', $force_multi = FALSE) {
     if ($value) {
       KiwiOutput::debug("\tMapping " . $field_info->columnName() . " using " . get_class($this));
 
-      throw new Exception('Found an example.');
-      debug("Found an example");
-      exit();
-
-      debug((string)$field_info);
-      debug($field_info->isMergeField() ? "Is Merge" : "Is not merge");
-      debug($value, 'Field value');
+      //debug((string)$field_info);
+      //debug($field_info->isMergeField() ? "Is Merge" : "Is not merge");
+      //debug($value, 'Field value');
 
       $ref_table = $this->session->getTable($field_info->refTable());
-      KiwiOutput::debug("\tThis field references: " . $ref_table->getName());
+      //KiwiOutput::debug("\tThis field references: " . $ref_table->getName());
 
-      foreach ($value as $key => $v) {
+      foreach ($value as $i => $sub_record) {
+        foreach ($sub_record as $field_name => $v) {
+          $fields[$field_name][] = $v;
+        }
+      }
+
+      //debug($fields, "Processed fields");
+
+      foreach ($fields as $field_name => $v) {
+        $ref_field = $ref_table->getField($field_name);
+        $ref_field->getHandler()->map($ref_field, $v, $document, $field_info->itemName(), TRUE);
+      }
+
+
 //        $ref_field = $ref_table->getField($key);
 //        $handler = $ref_field->getHandler();
 //        KiwiOutput::debug("\t\tSub-mapping " . $ref_field->columnName() . " using " . get_class($handler));
 //        $handler->map($ref_field, $v, $document, $field_prefix . $field_info->itemName());
-      }
 
-      $prefix = ($field_info->isMultiValue()) ? $this->prefix['multi'] : $this->prefix['single'];
-      $solr_field_name = $prefix . '_' . ($field_prefix ? ($field_prefix . '_') : '') . $field_info->itemName();
+
+      //$prefix = ($field_info->isMultiValue()) ? $this->prefix['multi'] : $this->prefix['single'];
+      //$solr_field_name = $prefix . '_' . ($field_prefix ? ($field_prefix . '_') : '') . $field_info->itemName();
       //$document->$solr_field_name = $value;
     }
-    //KiwiOutput::get()->setThreshold();
   }
 }
