@@ -186,7 +186,7 @@ class NesttabHandler extends TextHandler {
       // but not really for display.  If we want a display-useful field, we
       // will have to write our own handler and assign it to that one field.
       foreach ($value as $v) {
-        $data[] = recursive_implode(';', $v);
+        $data[] = '"' . recursive_implode('", "', $v) . '"';
       }
 
       parent::map($field_info, $data, $document, $field_prefix);
