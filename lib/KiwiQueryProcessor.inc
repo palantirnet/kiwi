@@ -306,13 +306,13 @@ class FieldHandlerBase implements FieldHandlerInterface {
     $this->session = $session;
   }
 
-  public function map(KiwiEmuField $field_info, $value, Apache_Solr_Document $document, $field_prefix = '') {
+  public function map(KiwiEmuField $field_info, $value, Apache_Solr_Document $document, $field_prefix = '', $force_multi = FALSE) {
     // Some field types will die if there's no value specified, so skip empty
     // values entirely.
     if ($value) {
       KiwiOutput::debug("\tMapping " . $field_info->columnName() . " using " . get_class($this));
 
-      $prefix = $this->getTypePrefix($field_info);
+      $prefix = $this->getTypePrefix($field_info, $force_multi);
       $solr_field_name = $prefix . '_' . ($field_prefix ? ($field_prefix . '_') : '') . $field_info->itemName();
       $document->$solr_field_name = $value;
 
@@ -333,8 +333,8 @@ class FieldHandlerBase implements FieldHandlerInterface {
    *   The prefix for this field type.  Note it does not include the trailing _,
    *   so you'll have to add it yourself.
    */
-  protected function getTypePrefix(KiwiEmuField $field_info) {
-    return ($field_info->isMultiValue()) ? $this->prefix['multi'] : $this->prefix['single'];
+  protected function getTypePrefix(KiwiEmuField $field_info, $force_multi = FALSE) {
+    return ($force_multi || $field_info->isMultiValue()) ? $this->prefix['multi'] : $this->prefix['single'];
   }
 }
 
@@ -345,7 +345,7 @@ class FieldHandlerBase implements FieldHandlerInterface {
  */
 class AlternateHandler extends FieldHandlerBase {
 
-  public function map(KiwiEmuField $field_info, $value, Apache_Solr_Document $document, $field_prefix = '') {
+  public function map(KiwiEmuField $field_info, $value, Apache_Solr_Document $document, $field_prefix = '', $force_multi = FALSE) {
     //KiwiOutput::get()->setThreshold(LOG_DEBUG);
     if ($value) {
       debug('In AlternateHandler');

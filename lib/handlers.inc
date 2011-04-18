@@ -15,7 +15,7 @@ class TextHandler extends FieldHandlerBase {
  */
 class DateHandler extends TextHandler {
 
-  public function map(KiwiEmuField $field_info, $value, Apache_Solr_Document $document, $field_prefix = '') {
+  public function map(KiwiEmuField $field_info, $value, Apache_Solr_Document $document, $field_prefix = '', $force_multi = FALSE) {
     //KiwiOutput::get()->setThreshold(LOG_DEBUG);
     if ($value) {
       if (!is_array($value)) {
@@ -97,8 +97,8 @@ class IntegerHandler extends FieldHandlerBase {
     'multi' => 'im'
   );
 
-  protected function getTypePrefix(KiwiEmuField $field_info) {
-    if ($field_info->isSortable() && !$field_info->isMultiValue()) {
+  protected function getTypePrefix(KiwiEmuField $field_info, $force_multi = FALSE) {
+    if ($field_info->isSortable() && !($force_multi ||$field_info->isMultiValue())) {
       return 'sint';
     }
     parent::getTypePrefix($field_info);
@@ -114,8 +114,8 @@ class FloatHandler extends FieldHandlerBase {
     'multi' => 'tfm'
   );
 
-  protected function getTypePrefix(KiwiEmuField $field_info) {
-    if ($field_info->isSortable() && !$field_info->isMultiValue()) {
+  protected function getTypePrefix(KiwiEmuField $field_info, $force_multi = FALSE) {
+    if ($field_info->isSortable() && !($force_multi || $field_info->isMultiValue())) {
       return 'sfloat';
     }
     parent::getTypePrefix($field_info);
@@ -127,7 +127,7 @@ class FloatHandler extends FieldHandlerBase {
  */
 class LatLongHandler extends FloatHandler {
 
-  public function map(KiwiEmuField $field_info, $value, Apache_Solr_Document $document, $field_prefix = '') {
+  public function map(KiwiEmuField $field_info, $value, Apache_Solr_Document $document, $field_prefix = '', $force_multi = FALSE) {
     if ($value) {
       if ($field_info->isMultiValue() || is_array($value)) {
         $new_values = array();
@@ -166,7 +166,7 @@ class LatLongHandler extends FloatHandler {
  * Use this handler for defaults, or for fields that should be supressed entirely.
  */
 class NullHandler extends FieldHandlerBase {
-  public function map(KiwiEmuField $field_info, $value, Apache_Solr_Document $document, $field_prefix = '') {}
+  public function map(KiwiEmuField $field_info, $value, Apache_Solr_Document $document, $field_prefix = '', $force_multi = FALSE) {}
 }
 
 /**
@@ -177,7 +177,7 @@ class NullHandler extends FieldHandlerBase {
  */
 class NesttabHandler extends TextHandler {
 
-  public function map(KiwiEmuField $field_info, $value, Apache_Solr_Document $document, $field_prefix = '') {
+  public function map(KiwiEmuField $field_info, $value, Apache_Solr_Document $document, $field_prefix = '', $force_multi = FALSE) {
     if ($value) {
 
       // Because we do not know in advance what the structure of the field is,
@@ -201,7 +201,7 @@ class NesttabHandler extends TextHandler {
  * These are single-value 1:1 reference fields.
  */
 class AttachmentReferenceHandler extends FieldHandlerBase {
-  public function map(KiwiEmuField $field_info, $value, Apache_Solr_Document $document, $field_prefix = '') {
+  public function map(KiwiEmuField $field_info, $value, Apache_Solr_Document $document, $field_prefix = '', $force_multi = FALSE) {
     //debug($field_info);
 
     if ($value) {
