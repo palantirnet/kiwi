@@ -70,6 +70,16 @@ class KiwiImuSession extends IMuSession {
   }
 
   /**
+   * Destructor.
+   */
+  public function  __destruct() {
+    // I'm not certain if PHP will properly clean up the resource properties on
+    // this object in the parent class when it goes out of scope, so just
+    // to be safe we'll do it explicitly.
+    $this->disconnect();
+  }
+
+  /**
    * Returns a new IMuModule object for a new handler.
    *
    * @see KiwiImuSession::resumeModuleHandler();
