@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<config name="ecatalogue" full-rebuild="0">
+  <!--
+    This include specifies the file that defines the server configuration.
+    That is different for each server.  Use the template below to populate
+    a new file with the appropriate data.
+   -->
+  <xi:include xmlns:xi="http://www.w3.org/2003/XInclude" href="servers.xml" />
+  <!--
+    <servers>
+      <solr host="66.158.71.71" port="8080" core="kiwi" path="/emu0/core0" />
+      <emu host="66.158.71.71" port="40000" reconnect-port="45000" />
+    </servers>
+  -->
+
+  <!--
+    The configuration for each processor.  This does not affect the fields that
+    are retrieved.
+  -->
+  <processors count="1" batch-size="1" max-size="100" />
+
+  <!--
+    The base table of this index.  This must be one of the tables listed below.
+  -->
+  <base-table name="ecatalogue" />
+
+  <!--
+    The supported field types and the handler each one should use.  The default-hander
+    will be used for any field type not listed here.  Each handler name corresponds
+    to a PHP class.
+  -->
+  <field-types default-handler="NullHandler">
+    <field-type name="Text" handler="TextHandler" />
+    <field-type name="Integer" handler="IntegerHandler" />
+    <field-type name="Date" handler="DateHandler" />
+    <field-type name="Float" handler="FloatHandler" />
+    <field-type name="Currency" handler="FloatHandler" />
+    <field-type name="Latitude" handler="LatLongHandler" />
+    <field-type name="Longitude" handler="LatLongHandler" />
+    <field-type name="Attachment" handler="AttachmentReferenceHandler" fulltext="0" sort="0" />
+  </field-types>
+
+  <!--
+    These filters apply to the base table when building the initial query.
+    Note: Always include the AdmPublishWebNoPassword filter.  Emu requires
+    that there always be at least one filter.  All other filters are optional.
+  -->
+  <filters>
+    <!-- ecatalogue -->
+    <filter name="AdmPublishWebNoPassword" value="Yes" />
+    <filter name="CatMuseum" value="Field Museum of Natural History" operator="matches"/>
+    <filter name="CatDepartment" value="Anthropology" operator="matches" />
+	<filter name="CatCatalog" value="Anthropology" operator="matches" />
+  </filters>
+
+
+  <!--
+    The table definitions are the "meat" of the configuration file.  Although
+    they can be included via an XInclude directive, don't bother for now.
+
+    Each <table> defines a name and its usage or "type".  For now, the only supported
+    type is "attach".  The name attribute is the name of the table in Emu.
+
+    Each <table> contains one or more <field> elements.  Each <field> element
+    represents a field in Emu in that table.  Each field has the following keys:
+      - name (required): The name of the field in Emu.
+      - fulltext: Whether or not to include this field in fulltext searches of
+          This record.  Specify 1 for true or 0 for false.  The default is false.
+      - sort: Whether or not this field should be sortable.  At this time, single-value
+          Text fields are always sortable.  Single-value Integer and Float fields
+          are sortable only if this value is 1.  All other fields are never sortable.
+          This may change later.
+      - indexed: Whether or not this field should be searchable. (Currently ignored.)
+      - stored: Whether or not this field should be displayable. (Currently ignored.)
+
+      For now, don't bother filling in "indexed" or "stored" as they don't do
+      anything.
+
+      For a typical field that does not need to be sorted, it is valid to specify
+      only the name, like so:
+
+      <field name="CatCatalogueNo" />
+
+  -->
+
+  <table name="ecatalogue" type="attach">
+     <!-- The PKey, which is also an integer field. -->
+     <field name="irn" search="1" display="1" />
+ 
+<!-- Sample text field, single-value. -->
+     <field name="SummaryData" indexed="1" stored="1"/>
+     <field name="CatCatalogSubset" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="CatAccessionYearLocal" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="CatAccessionNumberLocal" indexed="1" stored="1" fulltext="1" sort="1" />  
+     <field name="CatAnthroCatalogNumber" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="CatObjectId" indexed="1" stored="1" fulltext="1" sort="1" />
+	 <field name="CatSubNumbers" indexed="1" stored="1" fulltext="1" sort="1" />
+	 <field name="CatRecordType" indexed="1" stored="1" fulltext="1" sort="1" />
+	 <field name="DesDescription" indexed="1" stored="1" fulltext="1" sort="1" />
+	 <field name="DesTechnicalDescription" indexed="1" stored="1" fulltext="1" sort="1" />
+	 <field name="DesPeriod" indexed="1" stored="1" fulltext="1" sort="1" />
+	 <field name="DesSubjectCode" indexed="1" stored="1" fulltext="1" sort="1" />
+	 <field name="ColContinentLocal_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+	 <field name="ColCountryLocal_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+	 <field name="ColProvinceStateTerritoryLocal_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+	 <field name="ColDistrictCountyShireLocal_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+	 <field name="ColTownshipLocal_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+	 <field name="ColNearestNamedPlaceLocal" indexed="1" stored="1" fulltext="1" sort="1" />
+	 <field name="ColPreciseLocationLocal" indexed="1" stored="1" fulltext="1" sort="1" />
+	 <field name="RelIsParent" indexed="1" stored="1" fulltext="0" sort="1" />
+
+
+	 <!--  PHP chokes on the next lines with:
+	 	PHP Fatal error:  Uncaught [500] InternalError (Server error: Unknown column name "RelParentObject". -->
+	 <field name="RelParentObjectRef" indexed="1" stored="1" fulltext="0" sort="1" /> 
+	<!--
+	 <field name="RelObjects_tab" indexed="1" stored="1" fulltext="1" sort="1" /> 
+     <field name="ColSiteLocation" indexed="1" stored="1" fulltext="1" sort="1" />
+	 <field name="SecRecordStatus" indexed="1" stored="1" fulltext="0" sort="1" />
+    -->
+	 
+<!-- Sample text field, multi-value. -->
+	 <field name="CatOtherNumbersValue_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+	 <field name="CatOtherNumbersType_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+	 <field name="CatOtherNumbersNotes_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+     <field name="DesMaterials_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+	 <field name="DesEthnicGroupSubgroup_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+	 <field name="NotFisNotes_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+	 <field name="NotDate0" indexed="1" stored="1" fulltext="1" sort="1" />
+	 <field name="NotKind_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+	 <field name="NotNotebookNote_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+	 <field name="NotNotebookMakeNoteAvailable_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+	 <field name="NotNotebookResearcher_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+	 <field name="CatNegativeNumber_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+	
+	 <field name="RelRelationship_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+	 <field name="RelNotes" indexed="1" stored="1" fulltext="1" sort="1" />
+	 
+	 <field name="MeaMeasurementKind_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+	 <field name="MeaUnit_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+	 
+<!-- Sample date fields, multi-value. -->
+     <field name="NotDate0" indexed="1" stored="1" fulltext="1" sort="1" />
+	 <field name="NotNotebookDate0" indexed="1" stored="1" fulltext="1" sort="1" />     
+
+<!-- Sample floating point field, single-value. -->
+
+ 
+<!-- Sample floating point field, multi-value. -->
+     <field name="MeaMeasurementNumberValue_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+     
+ 
+<!-- Sample integer field, single-value. -->
+     <field name="CatItemsCat" indexed="1" stored="1" fulltext="1" sort="1" />
+	 <field name="CatItemsInv" indexed="1" stored="1" fulltext="1" sort="1" />
+	 <field name="CatItemsSub" indexed="1" stored="1" fulltext="1" sort="1" />
+ 
+<!-- Sample reference field, multi-value. -->
+	 <field name="MulMultiMediaRef_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+ </table>
+
+ <table name="eparties" type="attach">
+    <field name="SummaryData" indexed="1" stored="1"/>
+    <field name="NamBriefName" indexed="1" stored="1"/>
+    <field name="NamOrganisationAcronym" indexed="1" stored="1"/>
+ </table> 
+
+ <table name="emultimedia" type="attach">
+    <field name="irn" indexed="1" stored="1" />
+    <field name="MulTitle" indexed="1" stored="1"/>
+    <field name="MulIdentifier" indexed="1" stored="1" fulltext="1" sort="1" />
+	<field name="MulMimeType" indexed="1" stored="1" fulltext="1" sort="1" />
+    <field name="MulMimeFormat" indexed="1" stored="1" fulltext="1" sort="1" />
+    <field name="MulDescription" indexed="1" stored="1" fulltext="1" sort="1" />
+    <field name="DetSource" indexed="1" stored="1"/>
+    <field name="MulCreator_tab" indexed="1" stored="1"/>
+    <field name="DetSubject_tab" indexed="1" stored="1"/>
+	<field name="DetDate0" indexed="1" stored="1"/>
+ </table>
+
+ <table name="esites" type="attach">
+    <field name="irn" indexed="1" stored="1"/>
+    <field name="SummaryData" indexed="1" stored="1"/>
+    <field name="LocContinent_tab" indexed="1" stored="1"/>
+    <field name="LocCountry_tab" indexed="1" stored="1"/>
+    <field name="LocProvinceStateTerritory_tab" indexed="1" stored="1"/>
+    <field name="LocDistrictCountyShire_tab" indexed="1" stored="1" />
+    <field name="LocTownship_tab" indexed="1" stored="1" />
+    <field name="LocNearestNamedPlace_tab" indexed="1" stored="1" />
+    <field name="LocSpecialGeographicUnit_tab" indexed="1" stored="1"/>
+    <field name="LocPreciseLocation" indexed="1" stored="1"/>
+ </table> 
+
+ <table name = "eaccessionlots" type="attach">
+	<field name="LotLotNumber" indexed="1" stored="1" fulltext="1" sort="1" />
+	<field name="LotDescription" indexed="1" stored="1" fulltext="1" sort="1" />
+	<field name="AcqDateOwnership" indexed="1" stored="1" fulltext="1" sort="1" />
+ </table>
+</config>
