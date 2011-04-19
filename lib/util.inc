@@ -36,6 +36,84 @@ function recursive_implode($glue, $pieces) {
   return implode($glue, $ret_val);
 }
 
+
+class KiwiInput {
+
+  /**
+   * Command line arguments provided to our script.
+   *
+   * @var array
+   */
+  protected $argv;
+
+  /**
+   * The number of elements in $this->argv.
+   *
+   * @var int
+   */
+  protected $argc;
+
+  /**
+   * The name of the configuration file to use for this run.
+   *
+   * @var string
+   */
+  protected $configFileName;
+
+  public function  __construct() {
+    $this->argv = $_SERVER['argv'];
+    $this->argc = $_SERVER['argc'];
+
+    $options['config'] = 'config.xml';
+    $options['debug'] = LOG_INFO;
+
+    $matches = array();
+
+    foreach ($this->argv as $argument) {
+      // Match long-form options.
+      if (preg_match('/--(\w+)=(\w+)/', $argument, $matches)) {
+        $options[$matches[1]] = $matches[2];
+      }
+
+      // Match short-form options, if any.
+      // @TODO: Implement this, I guess. :-)
+
+      // Handle boolean options and other flags.
+      if (preg_match('/-(v+)/', $argument, $matches)) {
+        $chars = count_chars($matches[1], 1);
+        $options['debug'] += $chars[ord('v')];
+      }
+
+    }
+
+    debug($options);
+
+    // Save the options, including defaults, to the object.
+    $this->options = $options;
+  }
+
+  public function getConfigFile() {
+
+    if (empty($this->configFileName)) {
+      foreach ($this->argv as $argument) {
+        if (strpos($argument, '-') !== 0) {
+          $this->configFileName = $argument;
+          break;
+        }
+      }
+    }
+
+    return $this->configFileName;
+  }
+
+
+  public function getOption($option, $default = '') {
+    return isset($this->options[$option]) ? $this->options[$option] : $default;
+  }
+
+}
+
+
 /**
  * Output manager for Kiwi.
  *
