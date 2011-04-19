@@ -51,7 +51,9 @@ function main() {
   date_default_timezone_set('America/Chicago');
   set_error_handler('exceptions_error_handler');
 
-  $config = new KiwiConfiguration('config.xml');
+  $input = new KiwiInput();
+
+  $config = new KiwiConfiguration($input->getOption('config'));
 
   $config_info = $config->getConfigInfo();
 
