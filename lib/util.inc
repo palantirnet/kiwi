@@ -102,7 +102,7 @@ class KiwiInput {
 /**
  * Exception for a missing Kiwi configuration file.
  */
-class ConfigFileNotFound extends UnexpectedValueException {}
+class ConfigFileNotFoundException extends UnexpectedValueException {}
 
 /**
  * Output manager for Kiwi.
