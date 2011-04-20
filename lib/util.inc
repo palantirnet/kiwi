@@ -73,7 +73,12 @@ class KiwiInput {
       // Match long-form options.
       // This regex matches --<word>=<word allowing periods for file names>.
       if (preg_match('/--(\w+)=([\w\.]+)/', $argument, $matches)) {
-        $options[$matches[1]] = $matches[2];
+        if (in_array($matches[1], array_keys($options))) {
+          $options[$matches[1]] = $matches[2];
+        }
+        else {
+          throw new InvalidConfigOptionException("{$matches[1]} is not a valid configuration directive.");
+        }
       }
 
       // Match short-form options, if any.
@@ -103,6 +108,11 @@ class KiwiInput {
  * Exception for a missing Kiwi configuration file.
  */
 class ConfigFileNotFoundException extends UnexpectedValueException {}
+
+/**
+ * Exception for an invalid and unexpected command line switch.
+ */
+class InvalidConfigOptionException extends UnexpectedValueException {}
 
 /**
  * Output manager for Kiwi.

@@ -107,6 +107,10 @@ function main() {
   catch (ConfigFileNotFoundException $e) {
     KiwiOutput::get()->writeMessage($e->getMessage(), LOG_ERR);
   }
+  catch (InvalidConfigOptionException $e) {
+    KiwiOutput::get()->writeMessage($e->getMessage(), LOG_ERR);
+    KiwiOutput::info($input->getInstructions());
+  }
   catch (Exception $e) {
     KiwiOutput::get()->writeMessage('Unknown error: ' . $e->getMessage(), LOG_ERR);
   }
