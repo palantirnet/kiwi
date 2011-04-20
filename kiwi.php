@@ -51,9 +51,10 @@ function main() {
   date_default_timezone_set('America/Chicago');
   set_error_handler('exceptions_error_handler');
 
-  $input = new KiwiInput();
-
   try {
+    $input = new KiwiInput();
+    $input->parse();
+
     $config = new KiwiConfiguration($input);
 
     $config_info = $config->getConfigInfo();
@@ -109,7 +110,7 @@ function main() {
   }
   catch (InvalidConfigOptionException $e) {
     KiwiOutput::get()->writeMessage($e->getMessage(), LOG_ERR);
-    KiwiOutput::info($input->getInstructions());
+    KiwiOutput::get()->writeMessage(PHP_EOL . PHP_EOL . $input->getInstructions());
   }
   catch (Exception $e) {
     KiwiOutput::get()->writeMessage('Unknown error: ' . $e->getMessage(), LOG_ERR);

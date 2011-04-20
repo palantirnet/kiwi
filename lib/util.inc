@@ -60,15 +60,27 @@ class KiwiInput {
    */
   protected $configFileName;
 
-  public function  __construct() {
+  public function defaultOptions() {
+    $options['config'] = array(
+      'value' => 'config.xml',
+      'description' => 'The configuration file to process.  If a path is specified, it will be interpreted relative to the current working directory.',
+    );
+    $options['debug'] = array(
+      'value' => LOG_INFO,
+      'description' => 'The level of output verbosity. To increase it, specify -v, -vv, -vvv, etc. to increase the verbosity.',
+    );
+
+
+    return $options;
+  }
+
+  public function parse() {
     $this->argv = $_SERVER['argv'];
     $this->argc = $_SERVER['argc'];
 
-    $options['config'] = 'config.xml';
-    $options['debug'] = LOG_INFO;
+    $options = $this->defaultOptions();
 
     $matches = array();
-
     foreach ($this->argv as $argument) {
       // Match long-form options.
       // This regex matches --<word>=<word allowing periods for file names>.
@@ -100,6 +112,26 @@ class KiwiInput {
 
   public function getOption($option, $default = '') {
     return isset($this->options[$option]) ? $this->options[$option] : $default;
+  }
+
+  public function getInstructions() {
+    $output = array();
+
+    $total_width = 80;
+    $columns['option'] = 10;
+    $columns['default'] = 15;
+    $columns['description'] = $total_width - $columns['option'] - $columns['default'];
+
+    $output[] = sprintf("%-{$columns['option']}s%-{$columns['default']}s%-{$columns['description']}s", 'Option', 'Default value', 'Description');
+    $output[] = str_repeat('-', $total_width);
+
+    $break = PHP_EOL . str_repeat(' ', $columns['option'] + $columns['default']);
+
+    foreach ($this->defaultOptions() as $option => $info) {
+      $output[] = sprintf("%-{$columns['option']}s%-{$columns['default']}s%-{$columns['description']}s", $option, $info['value'], wordwrap($info['description'], $columns['description'], $break, TRUE));
+    }
+
+    return implode(PHP_EOL, $output);
   }
 
 }
