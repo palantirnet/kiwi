@@ -41,9 +41,9 @@ function includeSolr() {
  */
 function main() {
   includeEmu();
+  includeSolr();
   includeKiwi();
   includeQueryPath();
-  includeSolr();
 
   IMuTrace::setFile('trace.txt');
   IMuTrace::setLevel(1);
