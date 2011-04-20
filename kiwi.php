@@ -52,6 +52,9 @@ function main() {
   set_error_handler('exceptions_error_handler');
 
   try {
+
+    $timer_run = new KiwiTimer();
+
     $input = new KiwiInput();
     $input->parse();
 
@@ -62,17 +65,21 @@ function main() {
     KiwiOutput::get()->setThreshold($config_info['debug']);
 
     // Build the main query on the Emu server.
+    $timer_generator = new KiwiTimer();
     $module_id = main_generator($config);
+    KiwiOutput::info('Generator time: ' . number_format($timer_generator->stop(), 2) . ' seconds');
 
     KiwiOutput::debug($module_id, 'Module ID');
 
     // If specified, clear the existing Solr core before adding new content.
     if ($config_info['full-rebuild']) {
+      $timer_solr_clear = new KiwiTimer();
       $server_info = $config->getSolrInfo();
       KiwiOutput::info("Purging old solr index...");
       $solr = new Apache_Solr_Service($server_info['host'], $server_info['port'], $server_info['path']);
       $solr->deleteByQuery('*:*');
       unset($solr); // Close the connection.
+      KiwiOutput::info('Solr purge time: ' . number_format($timer_solr_clear->stop(), 2) . ' seconds');
     }
 
     $children = array();
@@ -116,6 +123,7 @@ function main() {
     KiwiOutput::get()->writeMessage('Unknown error: ' . $e->getMessage(), LOG_ERR);
   }
 
+  KiwiOutput::info('Total run time: ' . number_format($timer_run->stop(), 2) . ' seconds');
   exit();
 }
 
