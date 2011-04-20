@@ -65,7 +65,7 @@ class KiwiConfiguration {
       $this->configFile->get(0)->ownerDocument->xinclude();
     }
     else {
-      throw new ConfigFileNotFoundException('No configuration file found.');
+      throw new ConfigFileNotFoundException('Configuration file not found: ' . $file);
     }
   }
 
