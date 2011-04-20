@@ -76,7 +76,7 @@ function main() {
       $timer_solr_clear = new KiwiTimer();
       $server_info = $config->getSolrInfo();
       KiwiOutput::info("Purging old solr index...");
-      $solr = new Apache_Solr_Service($server_info['host'], $server_info['port'], $server_info['path']);
+      $solr = new KiwiSolrService($server_info['host'], $server_info['port'], $server_info['path']);
       $solr->deleteByQuery('*:*');
       unset($solr); // Close the connection.
       KiwiOutput::info('Solr purge time: ' . number_format($timer_solr_clear->stop(), 2) . ' seconds');
@@ -177,7 +177,7 @@ function main_cleanup(KiwiConfiguration $config) {
   // process including Solr rebuild.  It may or may not make sense for this to
   // be synchronous later.
   $server_info = $config->getSolrInfo();
-  $solr = new Apache_Solr_Service($server_info['host'], $server_info['port'], $server_info['path']);
+  $solr = new KiwiSolrService($server_info['host'], $server_info['port'], $server_info['path']);
   KiwiOutput::info("Committing Solr data...");
   $solr->commit();
   KiwiOutput::info("Optimizing Solr index...");
@@ -201,7 +201,7 @@ function main_processor(KiwiConfiguration $config, $child_id, $module_id) {
   $session->login($server_info['user'], $server_info['password']);
 
   $server_info = $config->getSolrInfo();
-  $solr = new Apache_Solr_Service($server_info['host'], $server_info['port'], $server_info['path']);
+  $solr = new KiwiSolrService($server_info['host'], $server_info['port'], $server_info['path']);
 
   $processor = new KiwiQueryProcessor($child_id, $module_id, $config, $session, $solr);
 
