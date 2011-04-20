@@ -43,16 +43,6 @@ class IMuHandler
 	}
 
 	public function
-	getModules()
-	{
-		$request = array();
-		$request['method'] = "getModules";
-		$request['params'] = array();
-		$response = $this->request($request);
-		return $response['result'];
-	}
-
-	public function
 	close()
 	{
 		$this->destroy = true;

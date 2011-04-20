@@ -335,7 +335,7 @@ class IMuStream
 			$size = ftell($value);
 			if (fseek($value, 0, SEEK_SET) < 0)
 				raise(500, 'StreamFileSeek');
-			$this->putData('*%d', $size);
+			$this->putData(sprintf('*%d', $size));
 			$this->putLine();
 
 			$left = $size;

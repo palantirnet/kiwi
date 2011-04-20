@@ -7,10 +7,12 @@ Copyright:
 */
 class IMu
 {
+	public static $api;
 	public static $lib;
 	public static $lang;
 }
 
-IMu::$lib = dirname(__FILE__);
+IMu::$api = dirname(__FILE__);
+IMu::$lib = IMu::$api;
 IMu::$lang = 'en';
 ?>

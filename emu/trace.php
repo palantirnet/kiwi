@@ -80,6 +80,12 @@ class IMuTrace
 		if (is_null(self::$Prefix))
 			self::$Prefix = '%D %T: ';
 
+		/* Process the arguments
+		*/
+		$strs = array();
+		foreach ($args as $arg)
+			$strs[] = print_r($arg, true);
+
 		/* Build the prefix
 		*/
 		$prefix = self::$Prefix;
@@ -122,6 +128,7 @@ class IMuTrace
 						$f = $frame['class'] . '::' . $frame['function'];
 					else
 						$f = $frame['function'];
+					$g = preg_replace('/^IMu/', '', $f);
 				}
 				break;
 			}
@@ -148,13 +155,17 @@ class IMuTrace
 		*/
 		$mesg = "$mesg";
 		if (count($args) > 0)
-			$mesg = vsprintf($mesg, $args);
-		$text = '';
-		foreach (explode("\n", $mesg) as $line)
-		{
-			$line = preg_replace('/\r$/', '', $line);
-			$text .= $prefix . $line . "\n";
-		}
+			$mesg = vsprintf($mesg, $strs);
+//		$text = '';
+//		foreach (explode("\n", $mesg) as $line)
+//		{
+//			$line = preg_replace('/\r$/', '', $line);
+//			$text .= $prefix . $line . "\n";
+//		}
+		$text = $prefix . $mesg;
+		$text = preg_replace('/\r/', '', $text);
+		$text = preg_replace('/\s+$/', '', $text);
+		$text .= "\n";
 
 		/* Write it out
 		*/

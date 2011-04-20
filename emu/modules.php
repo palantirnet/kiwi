@@ -52,6 +52,21 @@ class IMuModules extends IMuHandler
 	}
 
 	public function
+	addSortSet($name, $set)
+	{
+		$args = array();
+		$args['name'] = $name;
+		$args['set'] = $set;
+		return $this->call('addSortSet', $args);
+	}
+
+	public function
+	addSortSets($sets)
+	{
+		return $this->call('addSortSets', $sets);
+	}
+
+	public function
 	fetch($flag, $offset, $count, $columns = false)
 	{
 		$params = array();
@@ -98,6 +113,16 @@ class IMuModules extends IMuHandler
 	}
 
 	public function
+	findAttachments($table, $column, $key)
+	{
+		$args = array();
+		$args['table'] = $table;
+		$args['column'] = $column;
+		$args['key'] = $key;
+		return $this->call('findAttachments', $args);
+	}
+
+	public function
 	findKeys($keys, $include = false)
 	{
 		$args = array();
@@ -129,6 +154,19 @@ class IMuModules extends IMuHandler
 	{
 		$data = $this->call('setModules', $list);
 		return $data + 0;
+	}
+
+	public function
+	sort($set, $flags = false, $langid = false)
+	{
+		$args = array();
+		$args['set'] = $set;
+		if ($flags !== false)
+			$args['flags'] = $flags;
+		if ($langid !== false)
+			$args['langid'] = $langid;
+		$data = $this->call('sort', $args);
+		return $data;
 	}
 }
 
