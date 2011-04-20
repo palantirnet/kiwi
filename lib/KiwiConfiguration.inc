@@ -34,12 +34,26 @@ class KiwiConfiguration {
   protected $fieldTableInfo;
 
   /**
+   * The input options from the command line.
+   *
+   * @var KiwiInput
+   */
+  protected $input;
+
+  /**
    * Constructor.
    *
    * @param string $file
    *   The name of the file with the configuration to load.
    */
-  public function __construct($file = '') {
+  public function __construct(KiwiInput $input) {
+
+    $this->input = $input;
+
+    $file = $this->input->getOption('config');
+
+    debug($file, "The config file");
+    debug((boolean)file_exists($file), "Does the file exist");
 
     if ($file && file_exists($file)) {
 

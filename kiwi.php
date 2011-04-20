@@ -53,7 +53,7 @@ function main() {
 
   $input = new KiwiInput();
 
-  $config = new KiwiConfiguration($input->getOption('config'));
+  $config = new KiwiConfiguration($input);
 
   $config_info = $config->getConfigInfo();
 
