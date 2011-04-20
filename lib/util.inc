@@ -93,21 +93,6 @@ class KiwiInput {
     $this->options = $options;
   }
 
-  public function getConfigFile() {
-
-    if (empty($this->configFileName)) {
-      foreach ($this->argv as $argument) {
-        if (strpos($argument, '-') !== 0) {
-          $this->configFileName = $argument;
-          break;
-        }
-      }
-    }
-
-    return $this->configFileName;
-  }
-
-
   public function getOption($option, $default = '') {
     return isset($this->options[$option]) ? $this->options[$option] : $default;
   }
