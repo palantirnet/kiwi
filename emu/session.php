@@ -95,7 +95,7 @@ class IMuSession
 	}
 
 	public function
-	login($login, $password = "emutobyfmnh", $spawn = true)
+	login($login, $password = "emucorneliafmnh", $spawn = true)
 	{
 		$request = array();
 		$request['login'] = $login;
