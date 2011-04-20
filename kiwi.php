@@ -126,6 +126,7 @@ function main_generator(KiwiConfiguration $config) {
 
   $server_info = $config->getEmuInfo();
   $session = new KiwiImuSession($config, $server_info['host'], $server_info['port']);
+  $session->login($server_info['user'], $server_info['password']);
 
   $generator = new KiwiQueryGenerator($config, $session);
 
@@ -174,6 +175,7 @@ function main_processor(KiwiConfiguration $config, $child_id, $module_id) {
   KiwiOutput::info("Starting processor {$child_id}...");
   $server_info = $config->getEmuInfo();
   $session = new KiwiImuSession($config, $server_info['host'], $server_info['reconnect-port']);
+  $session->login($server_info['user'], $server_info['password']);
 
   $server_info = $config->getSolrInfo();
   $solr = new Apache_Solr_Service($server_info['host'], $server_info['port'], $server_info['path']);
