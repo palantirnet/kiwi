@@ -89,7 +89,7 @@ class KiwiInput {
           $options[$matches[1]] = $matches[2];
         }
         else {
-          throw new InvalidConfigOptionException("{$matches[1]} is not a valid configuration directive.");
+          throw new InvalidConfigOptionException("'{$matches[1]}' is not a valid configuration directive.");
         }
       }
 
