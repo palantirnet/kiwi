@@ -102,6 +102,29 @@ class IMuSession
 		$this->request($request);
 	}
 
+	public function
+	getModules()
+	{
+		$request = array();
+		$request['name'] = 'System';
+		$request['method'] = 'getModules';
+
+		$result = $this->request($request);
+		return $result;
+	}
+
+	public function
+	getTableSchema($table)
+	{
+		$request = array();
+		$request['name'] = 'System';
+		$request['method'] = 'getTableSchema';
+		$request['params'] = $table;
+
+		$result = $this->request($request);
+		return $result;
+	}
+
 	/*
 	Method: request
 		Submits a low-level request to the server. This method is
