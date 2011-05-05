@@ -132,6 +132,16 @@ function main() {
   exit();
 }
 
+/**
+ * Replacement global error handler.
+ *
+ * This handler converts all PHP errors into exceptions so that they can be
+ * centrally handled.  This does make all errors "harder" in that they are not
+ * recoverable, but that's OK.  We want the system to die fast and hard so we
+ * can fix bugs.
+ *
+ * @link http://www.php.net/set_error_handler
+ */
 function exceptions_error_handler($severity, $message, $filename, $lineno) {
   if (error_reporting() == 0) {
     return;
