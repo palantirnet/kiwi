@@ -124,26 +124,15 @@ class KiwiQueryProcessor {
         KiwiOutput::get()->writeMessage(sprintf('%s in %s on line %s', (string)$e, $e->getFile(), $e->getLine()), LOG_ERR);
         break;
       }
+      catch (KiwiSolrException $e) {
+        KiwiOutput::get()->writeMessage("Processor {$this->processorId}: Error processing Solr document.", LOG_ERR);
+        KiwiOutput::debug($e->getMessage(), 'Solr error');
+        KiwiOutput::debug($e->getSolrMessage(), 'Failing Solr message');
+      }
       catch (ErrorException $e) {
         KiwiOutput::get()->writeMessage("Processor {$this->processorId}: Error processing Solr document.", LOG_ERR);
         KiwiOutput::get()->writeMessage(sprintf('%s in %s on line %s', $e->getMessage(), $e->getFile(), $e->getLine()), LOG_ERR);
         break;
-      }
-      // The ApacheSolr library doesn't have its own Exception classes, because
-      // it's dumb.  We'll hope that the general class means it came from Solr.
-      catch (Exception $e) {
-        KiwiOutput::get()->writeMessage("Processor {$this->processorId}: Error processing Solr document.", LOG_ERR);
-        KiwiOutput::debug($e->getMessage(), 'Solr error');
-        $trace = $e->getTrace();
-        if (isset($trace[0]['class']) && $trace[0]['class'] == 'Apache_Solr_Service' && $trace[0]['function'] == '_sendRawPost') {
-          // To ease debugging, print out the failing Solr document. If the
-          // Tidy extension is available, also use that to pretty-print the XML.
-          $solr_xml = $trace[0]['args'][1];
-          if (extension_loaded('tidy')) {
-            $solr_xml = (string)tidy_parse_string($solr_xml, array('indent' => TRUE, 'input-xml' => TRUE, 'wrap' => 300));
-          }
-          KiwiOutput::debug($solr_xml, "Solr document\n");
-        }
       }
     }
   }
@@ -319,7 +308,7 @@ class FieldHandlerBase implements FieldHandlerInterface {
       // If appropriate, throw this field into the content solr field as well.  We
       // use that for all fulltext index searching.
       if ($field_info->indexFulltext()) {
-        $document->content = is_array($value) ? implode(', ', $value) : $value;
+        $document->content = is_array($value) ? recursive_implode(', ', $value) : $value;
       }
     }
   }
@@ -346,7 +335,7 @@ class FieldHandlerBase implements FieldHandlerInterface {
 class AlternateHandler extends FieldHandlerBase {
 
   public function map(KiwiEmuField $field_info, $value, Apache_Solr_Document $document, $field_prefix = '') {
-    KiwiOutput::get()->setThreshold(LOG_DEBUG);
+    //KiwiOutput::get()->setThreshold(LOG_DEBUG);
     if ($value) {
       debug('In AlternateHandler');
       $info = (string)$field_info;
@@ -359,6 +348,6 @@ class AlternateHandler extends FieldHandlerBase {
       $solr_field_name = $prefix . '_' . ($field_prefix ? ($field_prefix . '_') : '') . $field_info->itemName();
       //$document->$solr_field_name = $value;
     }
-    KiwiOutput::get()->setThreshold();
+    //KiwiOutput::get()->setThreshold();
   }
 }

@@ -1,7 +1,7 @@
 <?php
 /* First we'll import the base API library
 */
-require_once 'emu/imu.php';
+require_once '../emu/imu.php';
 /* Next we'll import the module library, as that will
 ** provide useful tools for querying and returning
 ** results
@@ -24,6 +24,7 @@ $session = new IMuSession;
 $session->host = "66.158.71.71";
 $session->port = "40000";
 $session->connect();
+$session->login('emu', 'emucorneliafmnh');
 
 /* We'll grab a list of all the tables using the new
 ** feature of the API I created

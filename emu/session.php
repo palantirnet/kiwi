@@ -18,7 +18,7 @@ Class: IMuSession
 class IMuSession
 {
 	public static $defaultHost = '127.0.0.1';
-	public static $defaultPort = null;
+	public static $defaultPort = 40000;
 
 	public function
 	__construct($host = false, $port = false)
@@ -32,12 +32,8 @@ class IMuSession
 
 		if ($port !== false)
 			$this->port = $port;
-		else if (self::$defaultPort !== null)
-			$this->port = self::$defaultPort;
-		else if (getenv('IMUSERVICE'))
-			$this->port = getenv('IMUSERVICE');
 		else
-			$this->port = 40000;
+			$this->port = self::$defaultPort;
 
 		unset($this->connection);
 		$this->socket = false;
@@ -95,7 +91,7 @@ class IMuSession
 	}
 
 	public function
-	login($login, $password = "emutobyfmnh", $spawn = true)
+	login($login, $password = null, $spawn = true)
 	{
 		$request = array();
 		$request['login'] = $login;
@@ -110,7 +106,8 @@ class IMuSession
 	getModules()
 	{
 		$request = array();
-		$request['getModules'] = 1;
+		$request['name'] = 'System';
+		$request['method'] = 'getModules';
 
 		$result = $this->request($request);
 		return $result;
@@ -120,7 +117,9 @@ class IMuSession
 	getTableSchema($table)
 	{
 		$request = array();
-		$request['getTableSchema'] = $table;
+		$request['name'] = 'System';
+		$request['method'] = 'getTableSchema';
+		$request['params'] = $table;
 
 		$result = $this->request($request);
 		return $result;
@@ -176,7 +175,11 @@ class IMuSession
 		if ($response['status'] == 'error')
 		{
 			trace(2, 'server error');
-			$exception = new IMuException(500);
+			$code = 500;
+			if (array_key_exists('code', $response))
+				if (! is_null($response['code']))
+					$code = $response['code'];
+			$exception = new IMuException($code);
 			if (array_key_exists('error', $response))
 				$exception->id = $response['error'];
 			else

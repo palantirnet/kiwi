@@ -13,7 +13,38 @@ function debug($message, $label = '') {
   print $message;
 }
 
+/**
+ * Recursively implodes an array.
+ *
+ * @see http://www.php.net/manual/en/function.implode.php#96100
+ * @param string $glue
+ *   The value to append between each piece.
+ * @param array $pieces
+ *   The array of strings to implode.
+ * @return string
+ */
+function recursive_implode($glue, $pieces) {
+  $ret_val = array();
+  foreach($pieces as $r_pieces) {
+    if (is_array($r_pieces)) {
+      $ret_val[] = recursive_implode($glue, $r_pieces);
+    }
+    else {
+      $ret_val[] = $r_pieces;
+    }
+  }
+  return implode($glue, $ret_val);
+}
 
+/**
+ * Exception for a missing Kiwi configuration file.
+ */
+class ConfigFileNotFoundException extends UnexpectedValueException {}
+
+/**
+ * Exception for an invalid and unexpected command line switch.
+ */
+class InvalidConfigOptionException extends UnexpectedValueException {}
 
 /**
  * Output manager for Kiwi.
@@ -209,3 +240,36 @@ class KiwiOutput {
   }
 }
 
+/**
+ * Timer class.
+ *
+ * This class is a simple wrapper for doing internal timing.  The timer starts
+ * when the object is instantiated.  Calling stop() will return the total runtime
+ * of the timer.
+ */
+class KiwiTimer {
+
+  /**
+   * The starting timestamp, in ms.
+   *
+   * @var float
+   */
+  protected $start;
+
+  /**
+   * Constructor.
+   */
+  public function __construct() {
+    $this->start = microtime(TRUE);
+  }
+
+  /**
+   * Stops the timer and returns the time the timer ran.
+   *
+   * @return float
+   *   The runtime of the timer, in seconds, accurate to milliseconds.
+   */
+  public function stop() {
+    return microtime(TRUE) - $this->start;
+  }
+}

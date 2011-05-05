@@ -66,7 +66,26 @@ class KiwiImuSession extends IMuSession {
   public function __construct(KiwiConfiguration $config, $host = FALSE, $port = FALSE) {
     $this->config = $config;
 
+    // If no host and port were specified, extract them from the system configuration.
+    $server_info = $this->config->getEmuInfo();
+    if (!$host) {
+      $host = $server_info['host'];
+    }
+    if (!$port) {
+      $port = $server_info['port'];
+    }
+
     parent::__construct($host, $port);
+  }
+
+  /**
+   * Destructor.
+   */
+  public function  __destruct() {
+    // I'm not certain if PHP will properly clean up the resource properties on
+    // this object in the parent class when it goes out of scope, so just
+    // to be safe we'll do it explicitly.
+    $this->disconnect();
   }
 
   /**
@@ -139,8 +158,15 @@ class KiwiImuSession extends IMuSession {
    */
   public function getSchemaInfo($table) {
     if (empty($this->tableInfo[$table])) {
-      $this->tableInfo[$table] = $this->getTableSchema($table);
+      $result = $this->getTableSchema($table);
+      if ($result['status'] == 'ok') {
+        $this->tableInfo[$table] = $result['result'];
+      }
+      else {
+        throw new KiwiEmuConnectionException("Unable to retrieve table schema: {$able}", $result['status']);
+      }
     }
+
     return $this->tableInfo[$table];
   }
 
@@ -178,6 +204,11 @@ class KiwiImuSession extends IMuSession {
     return $this->handlers[$class];
   }
 }
+
+/**
+ * Exception for connection errors from Emu.
+ */
+class KiwiEmuConnectionException extends Exception {}
 
 class KiwiEmuTable implements IteratorAggregate {
 
@@ -229,11 +260,11 @@ class KiwiEmuTable implements IteratorAggregate {
 
     // Split out our fields up front, since we're almost certain to need them.
     foreach ($this->config->getFields($this->getName()) as $field_name) {
-      if (isset($this->schema['schema']['columns'][$field_name])) {
-        $this->fields[$field_name] = new KiwiEmuField($this->config, $this->session, $this->getName(), $this->schema['schema']['columns'][$field_name]);
+      if (isset($this->schema['columns'][$field_name])) {
+        $this->fields[$field_name] = new KiwiEmuField($this->config, $this->session, $this->getName(), $this->schema['columns'][$field_name]);
       }
       else {
-        KiwiOutput::get()->writeMessage("Field '{$field_name}' not found in schema for table '{$this->schema['schema']['table']}'", LOG_WARNING);
+        KiwiOutput::get()->writeMessage("Field '{$field_name}' not found in schema for table '{$this->schema['table']}'", LOG_WARNING);
       }
     }
   }
@@ -244,7 +275,7 @@ class KiwiEmuTable implements IteratorAggregate {
    * @return string
    */
   public function getName() {
-    return $this->schema['schema']['table'];
+    return $this->schema['table'];
   }
 
   /**
@@ -435,5 +466,9 @@ class KiwiEmuField {
    */
   public function isSortable() {
     return in_array($this->columnName(), $this->config->getFields($this->table, 'sort'));
+  }
+
+  public function  __toString() {
+    return print_r($this->schema, 1);
   }
 }

@@ -170,6 +170,34 @@ class NullHandler extends FieldHandlerBase {
 }
 
 /**
+ * Handler for nested-table fields.
+ *
+ * This is a generic handler.  Many nesttab fields will want their own custom
+ * handlers.
+ */
+class NesttabHandler extends TextHandler {
+
+  protected $separator = ' | ';
+
+  public function map(KiwiEmuField $field_info, $value, Apache_Solr_Document $document, $field_prefix = '') {
+    if ($value) {
+
+      // Because we do not know in advance what the structure of the field is,
+      // nor can we get that data from Emu, we will simply collapse it all
+      // together into a multi-value text field.  That's useful for searching
+      // but not really for display.  If we want a display-useful field, we
+      // will have to write our own handler and assign it to that one field.
+      foreach ($value as $v) {
+        $data[] = '"' . recursive_implode($this->separator, $v) . '"';
+      }
+
+      parent::map($field_info, $data, $document, $field_prefix);
+    }
+  }
+}
+
+
+/**
  * Handler for attachment fields.
  *
  * These are single-value 1:1 reference fields.

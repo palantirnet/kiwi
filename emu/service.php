@@ -11,16 +11,6 @@ require_once IMu::$lib . '/handler.php';
 require_once IMu::$lib . '/session.php';
 require_once IMu::$lib . '/trace.php';
 
-function
-error($code, $message)
-{
-	trace(2, "Error: code $code: $message");
-	header("HTTP/1.0 $code");
-	header("Content-Type: text/plain");
-	print("Error: $message ($code)\r\n");
-	exit(1);
-}
-
 class IMuService
 {
 	public $dir;
@@ -46,18 +36,11 @@ class IMuService
 		/* ... defaults */
 		$config['host'] = IMuSession::$defaultHost;
 		$config['port'] = IMuSession::$defaultPort;
-		$config['trace-file'] = "$dir/trace.log";
-		$config['trace-level'] = 1;
 
 		/* ... service-specific */
 		$this->loadConfig($config);
 
 		$this->config = $config;
-
-		if (isset($this->config['trace-file']))
-			IMuTrace::setFile($this->config['trace-file']);
-		if (isset($this->config['trace-level']))
-			IMuTrace::setLevel($this->config['trace-level']);
 	}
 
 	public function
@@ -93,7 +76,7 @@ class IMuService
 	public function
 	process()
 	{
-		/* Overridden */
+		/* Do nothing by default */
 	}
 
 	/* Protected */
