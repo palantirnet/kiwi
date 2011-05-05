@@ -146,8 +146,12 @@ function exceptions_error_handler($severity, $message, $filename, $lineno) {
  *
  * @param KiwiConfiguration $config
  *   The configuration object for this run.
- * @return string
- *   The Module ID of the result set object.
+ * @return array
+ *   A three element array containing information about how to reconnect to the
+ *   session and module used in the generator.  The keys are:
+ *     - session_context
+ *     - session_port
+ *     - module_id
  */
 function main_generator(KiwiConfiguration $config, KiwiImuFactory $factory) {
   KiwiOutput::info("Generating initial Emu query...");
@@ -168,6 +172,12 @@ function main_generator(KiwiConfiguration $config, KiwiImuFactory $factory) {
   // resources.
 }
 
+/**
+ * Factory generator for all Emu connection objects.
+ *
+ * There are a myriad of ways to connect to Emu, so it's eaiser to handle them
+ * in a factory rather than via constructors.
+ */
 class KiwiImuFactory {
 
   /**
@@ -187,6 +197,14 @@ class KiwiImuFactory {
     $this->config = $config;
   }
 
+  /**
+   * Returns a new Emu session object.
+   *
+   * @param boolean $suspend
+   *   Whether or not to suspend the session object when we're done with it.
+   *   A suspended session may be reconnected to later in another process.
+   * @return KiwiImuSession
+   */
   public function getNewEmuSession($suspend = FALSE) {
     $server_info = $this->config->getEmuInfo();
     $session = new KiwiImuSession($this->config);
@@ -199,6 +217,17 @@ class KiwiImuFactory {
     return $session;
   }
 
+  /**
+   * Resumes and returns an Emu session.
+   *
+   * @param string $context
+   *   The context ID of the session to which we are reconnecting.
+   * @param int $port
+   *   The TCP port on which we need to reconnect.  This is different for every
+   *   connection and the original session object will tell us what port to use
+   *   to reconnect to it.
+   * @return KiwiImuSession
+   */
   public function resumeEmuSession($context, $port) {
     $server_info = $this->config->getEmuInfo();
     $session = new KiwiImuSession($this->config, FALSE, $port);
