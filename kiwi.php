@@ -64,9 +64,7 @@ function main() {
     $config_info = $config->getConfigInfo();
 
     // Build the main query on the Emu server.
-    $module_id = main_generator($config, $imu_factory);
-
-    $config_info = $config->getConfigInfo();
+    $reconnect = main_generator($config, $imu_factory);
 
     KiwiOutput::get()->setThreshold($config_info['debug']);
 
@@ -102,7 +100,7 @@ function main() {
       }
       else {
         // This is the child.
-        main_processor($config, $child_id, $module_id);
+        main_processor($config, $child_id, $imu_factory, $reconnect);
         // Kill the child process when done.
         exit(0);
       }
@@ -116,6 +114,7 @@ function main() {
     foreach ($children as $pid) {
      pcntl_waitpid($pid, $status);
     }
+
     main_cleanup($config);
   }
   catch (ConfigFileNotFoundException $e) {
@@ -157,7 +156,13 @@ function main_generator(KiwiConfiguration $config, KiwiImuFactory $factory) {
 
   $generator = new KiwiQueryGenerator($config, $session);
 
-  return $generator->run();
+  $module_id = $generator->run();
+
+  return array(
+    'session_context' => $session->context,
+    'session_port' => $session->port,
+    'module_id' => $module_id,
+  );
 
   // The generator object goes out of scope here, clearing all outstanding
   // resources.
@@ -186,6 +191,15 @@ class KiwiImuFactory {
     $server_info = $this->config->getEmuInfo();
     $session = new KiwiImuSession($this->config);
     $session->login($server_info['user'], $server_info['password']);
+
+    return $session;
+  }
+
+  public function resumeEmuSession($context, $port) {
+    $server_info = $this->config->getEmuInfo();
+    $session = new KiwiImuSession($this->config, FALSE, $port);
+
+    $session->context = $context;
 
     return $session;
   }
@@ -226,16 +240,15 @@ function main_cleanup(KiwiConfiguration $config) {
  * @param string $module_id
  *   The Module ID of the result set object on whic to work.
  */
-function main_processor(KiwiConfiguration $config, $child_id, $module_id) {
+function main_processor(KiwiConfiguration $config, $child_id, KiwiImuFactory $factory, $reconnect) {
   KiwiOutput::info("Starting processor {$child_id}...");
-  $server_info = $config->getEmuInfo();
-  $session = new KiwiImuSession($config, $server_info['host'], $server_info['reconnect-port']);
-  $session->login($server_info['user'], $server_info['password']);
+
+  $session = $factory->resumeEmuSession($reconnect['session_context'], $reconnect['session_port']);
 
   $server_info = $config->getSolrInfo();
   $solr = new KiwiSolrService($server_info['host'], $server_info['port'], $server_info['path']);
 
-  $processor = new KiwiQueryProcessor($child_id, $module_id, $config, $session, $solr);
+  $processor = new KiwiQueryProcessor($child_id, $reconnect['module_id'], $config, $session, $solr);
 
   try {
     //KiwiOutput::get()->setThreshold(LOG_INFO);
