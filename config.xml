@@ -10,7 +10,7 @@
   <!--
     <servers>
       <solr host="66.158.71.71" port="8080" core="kiwi" path="/emu0/core0" />
-      <emu host="66.158.71.71" port="40000" reconnect-port="45000" />
+      <emu host="66.158.71.71" port="40000" user="emu" password="emucorneliafmnh" />
     </servers>
   -->
 
@@ -87,14 +87,14 @@
   <table name="ecatalogue" type="attach">
      <!-- The PKey, which is also an integer field. -->
      <field name="irn" search="1" display="1" />
- 
+
 <!-- Sample text field, single-value. -->
 <!--     <field name="ColOReceivedBy" indexed="1" stored="1" fulltext="1" sort="1" /> -->
 <!--     <field name="SummaryData" indexed="1" stored="1"/>
      <field name="CatCatalogSubset" indexed="1" stored="1" fulltext="1" sort="1" />
      <field name="PriMammalsPrepSkin" indexed="1" stored="1" fulltext="1" sort="1" />
      <field name="CatTypesPresent" indexed="1" stored="1" fulltext="1" sort="1" />
-     <field name="CatCatalogNo3" indexed="1" stored="1" fulltext="1" sort="1" />  
+     <field name="CatCatalogNo3" indexed="1" stored="1" fulltext="1" sort="1" />
      <field name="CatCatalogNo1" indexed="1" stored="1" fulltext="1" sort="1" />
      <field name="ColCollectionNumber" indexed="1" stored="1" fulltext="1" sort="1" />
      <field name="DarCollectionCode" indexed="1" stored="1" fulltext="1" sort="1" />
@@ -284,9 +284,9 @@
      <field name="IdeFiledAsQualifier" indexed="1" stored="1" fulltext="1" sort="1" />
      <field name="IdeFiledAsQualifierRank" indexed="1" stored="1" fulltext="1" sort="1" />
      <field name="IdeFiledAsConfidence" indexed="1" stored="1" fulltext="1" sort="1" /> -->
- 
+
 <!-- Sample text field, multi-value. -->
- 
+
 <!--     <field name="LotLotsTypeStatus_tab" indexed="1" stored="1" fulltext="1" sort="1" />
      <field name="TisTissueRemarks_tab" indexed="1" stored="1" fulltext="1" sort="1" />
      <field name="HosOtherPrepType_tab" indexed="1" stored="1" fulltext="1" sort="1" />
@@ -375,9 +375,9 @@
      <field name="GenOtherTubeNumber_tab" indexed="1" stored="1" fulltext="1" sort="1" />
      <field name="GenOtherPrepType_tab" indexed="1" stored="1" fulltext="1" sort="1" />
      <field name="LotRegion_tab" indexed="1" stored="1" fulltext="1" sort="1" />-->
-    
+
 <!-- Sample date fields, single-value. -->
-   
+
 <!--     <field name="ColLatestDateCollected" indexed="1" stored="1" fulltext="1" sort="1" />
      <field name="IdeFiledAsDateIdentified" indexed="1" stored="1" fulltext="1" sort="1" />
      <field name="ColEarliestDateCollected" indexed="1" stored="1" fulltext="1" sort="1" />
@@ -422,7 +422,7 @@
 <!--     <field name="XraMa_tab" indexed="1" stored="1" fulltext="1" sort="1" />
      <field name="MeaMeasurementNumberValue_tab" indexed="1" stored="1" fulltext="1" sort="1" />
      <field name="XraKv_tab" indexed="1" stored="1" fulltext="1" sort="1" />-->
- 
+
 <!-- Sample integer field, single-value. -->
 
 <!--     <field name="DarStartMonthCollected" indexed="1" stored="1" fulltext="1" sort="1" />
@@ -461,7 +461,7 @@
      <field name="PriAlcohol" indexed="1" stored="1" fulltext="1" sort="1" />
      <field name="PriSkeleton" indexed="1" stored="1" fulltext="1" sort="1" />
      <field name="LotCountWet" indexed="1" stored="1" fulltext="1" sort="1" />-->
- 
+
  <!-- Sample integer field, multi-value. -->
 
 <!--     <field name="LotNoOfSpecimens_tab" indexed="1" stored="1" fulltext="1" sort="1" />
@@ -474,12 +474,12 @@
      <field name="LotSlideCount_tab" indexed="1" stored="1" fulltext="1" sort="1" />
      <field name="LotWetCount_tab" indexed="1" stored="1" fulltext="1" sort="1" />
      <field name="PreOriginalCount_tab" indexed="1" stored="1" fulltext="1" sort="1" />-->
- 
+
 <!-- Sample latitude field, single value. -->
-  
+
 <!--    <field name="ColCentroidLatitudeLocal" indexed="1" stored="1" fulltext="1" sort="1" />-->
- 
- 
+
+
 <!-- Sample longitude field, single value. -->
 
 <!--    <field name="ColCentroidLongitudeLocal" indexed="1" stored="1" fulltext="1" sort="1" />-->
@@ -502,7 +502,7 @@
      <field name="HosRepositoryRef_tab" indexed="1" stored="1" fulltext="1" sort="1" />
      <field name="IdeFiledAsIdentifiedByRef_tab" indexed="1" stored="1" fulltext="1" sort="1" />
      <field name="IdeFiledAsRef" indexed="1" stored="1" fulltext="1" sort="1" />
-     <field name="IdeFilingFamilyRef_tab" indexed="1" stored="1" fulltext="1" sort="1" /> 
+     <field name="IdeFilingFamilyRef_tab" indexed="1" stored="1" fulltext="1" sort="1" />
      <field name="IdeTaxonRef_tab" indexed="1" stored="1" fulltext="1" sort="1" />
      <field name="LotOwnerRef_tab" indexed="1" stored="1" fulltext="1" sort="1" />
      <field name="PriAccessionNumberRef" indexed="1" stored="1" fulltext="1" sort="1" />
@@ -524,13 +524,13 @@
 
  <table name="efmnhtransactions" type="attach">
     <fieldname="SummaryData" indexed="1" stored="1"/>
- </table> 
+ </table>
 
  <table name="eparties" type="attach">
     <field name="SummaryData" indexed="1" stored="1"/>
     <field name="NamBriefName" indexed="1" stored="1"/>
     <field name="NamOrganisationAcronym" indexed="1" stored="1"/>
- </table> 
+ </table>
  <table name="etaxonomy" type="attach">
     <field name="SummaryData" indexed="1" stored="1"/>
     <field name="ClaFamilyNumber" indexed="1" stored="1"/>
