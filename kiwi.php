@@ -63,14 +63,11 @@ function main() {
 
     $config_info = $config->getConfigInfo();
 
-    // Build the main query on the Emu server.
-    $reconnect = main_generator($config, $imu_factory);
-
     KiwiOutput::get()->setThreshold($config_info['debug']);
 
     // Build the main query on the Emu server.
     $timer_generator = new KiwiTimer();
-    $module_id = main_generator($config);
+    $module_id = main_generator($config, $imu_factory);
     KiwiOutput::info('Generator time: ' . number_format($timer_generator->stop(), 2) . ' seconds');
 
     KiwiOutput::debug($module_id, 'Module ID');
