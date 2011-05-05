@@ -148,7 +148,7 @@ function main_generator(KiwiConfiguration $config) {
   KiwiOutput::info("Generating initial Emu query...");
 
   $server_info = $config->getEmuInfo();
-  $session = new KiwiImuSession($config, $server_info['host'], $server_info['port']);
+  $session = new KiwiImuSession($config);
   $session->login($server_info['user'], $server_info['password']);
 
   $generator = new KiwiQueryGenerator($config, $session);

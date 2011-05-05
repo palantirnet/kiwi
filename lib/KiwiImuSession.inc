@@ -66,6 +66,15 @@ class KiwiImuSession extends IMuSession {
   public function __construct(KiwiConfiguration $config, $host = FALSE, $port = FALSE) {
     $this->config = $config;
 
+    // If no host and port were specified, extract them from the system configuration.
+    $server_info = $this->config->getEmuInfo();
+    if (!$host) {
+      $host = $server_info['host'];
+    }
+    if (!$port) {
+      $port = $server_info['port'];
+    }
+
     parent::__construct($host, $port);
   }
 
