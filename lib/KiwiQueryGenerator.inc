@@ -29,21 +29,9 @@ class KiwiQueryGenerator {
     $this->session = $session;
   }
 
-  public function getConnection() {
-    $this->session->connect();
-
-    // Leave the session open for later use when the child processors come by.
-    $this->session->suspend = TRUE;
-
-    return $this->session;
-  }
-
   public function run() {
-    
-    // Connect to Emu server.
-    $session = $this->getConnection();
 
-    $module = $session->newModuleHandler(FALSE);
+    $module = $this->session->newModuleHandler(FALSE);
 
     // Run initial query as defined by the config object.
     // This may require a query builder.

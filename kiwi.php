@@ -152,7 +152,7 @@ function exceptions_error_handler($severity, $message, $filename, $lineno) {
 function main_generator(KiwiConfiguration $config, KiwiImuFactory $factory) {
   KiwiOutput::info("Generating initial Emu query...");
 
-  $session = $factory->getNewEmuSession();
+  $session = $factory->getNewEmuSession(TRUE);
 
   $generator = new KiwiQueryGenerator($config, $session);
 
@@ -187,10 +187,14 @@ class KiwiImuFactory {
     $this->config = $config;
   }
 
-  public function getNewEmuSession() {
+  public function getNewEmuSession($suspend = FALSE) {
     $server_info = $this->config->getEmuInfo();
     $session = new KiwiImuSession($this->config);
     $session->login($server_info['user'], $server_info['password']);
+
+    $session->connect();
+
+    $session->suspend = $suspend;
 
     return $session;
   }
