@@ -1,7 +1,7 @@
 <?php
 /* First we'll import the base API library
 */
-require_once '../emu/imu.php';
+require_once '../../emu/imu.php';
 /* Next we'll import the module library, as that will
 ** provide useful tools for querying and returning 
 ** results
@@ -15,20 +15,13 @@ require_once IMu::$lib . '/trace.php';
 IMuTrace::setFile('trace.txt');
 IMuTrace::setLevel(1);
 
-print "Timeout Before: " . ini_get('default_socket_timeout') . PHP_EOL;
-
-ini_set('default_socket_timeout', 1024);
-
-print "Timeout After: " . ini_get('default_socket_timeout') . PHP_EOL;
-
-
-
 /* We start with a new session
 */
 $session = new IMuSession;
 $session->host = "66.158.71.71";
 $session->port = "40000";
 $session->connect();
+$session->login('emu', 'emucorneliafmnh');
 
 /* Now we'll fork off a couple of children who will each
 ** wait until the same moment to make a getModules request
