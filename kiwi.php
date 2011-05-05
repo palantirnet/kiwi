@@ -41,9 +41,9 @@ function includeSolr() {
  */
 function main() {
   includeEmu();
+  includeSolr();
   includeKiwi();
   includeQueryPath();
-  includeSolr();
 
   IMuTrace::setFile('trace.txt');
   IMuTrace::setLevel(1);
@@ -51,59 +51,97 @@ function main() {
   date_default_timezone_set('America/Chicago');
   set_error_handler('exceptions_error_handler');
 
-  $config = new KiwiConfiguration('config.xml');
+  try {
 
-  $config_info = $config->getConfigInfo();
+    $timer_run = new KiwiTimer();
+    $input = new KiwiInput();
+    $input->parse();
 
-  KiwiOutput::get()->setThreshold($config_info['debug']);
+    $config = new KiwiConfiguration($input);
 
-  // Build the main query on the Emu server.
-  $module_id = main_generator($config);
+    $imu_factory = new KiwiImuFactory($config);
 
-  KiwiOutput::debug($module_id, 'Module ID');
+    $config_info = $config->getConfigInfo();
 
-  // If specified, clear the existing Solr core before adding new content.
-  if ($config_info['full-rebuild']) {
-    $server_info = $config->getSolrInfo();
-    KiwiOutput::info("Purging old solr index...");
-    $solr = new Apache_Solr_Service($server_info['host'], $server_info['port'], $server_info['path']);
-    $solr->deleteByQuery('*:*');
-    unset($solr); // Close the connection.
+    // Build the main query on the Emu server.
+    $reconnect = main_generator($config, $imu_factory);
+
+    KiwiOutput::get()->setThreshold($config_info['debug']);
+
+    // Build the main query on the Emu server.
+    $timer_generator = new KiwiTimer();
+    $module_id = main_generator($config);
+    KiwiOutput::info('Generator time: ' . number_format($timer_generator->stop(), 2) . ' seconds');
+
+    KiwiOutput::debug($module_id, 'Module ID');
+
+    // If specified, clear the existing Solr core before adding new content.
+    if ($config_info['full-rebuild']) {
+      $timer_solr_clear = new KiwiTimer();
+      $server_info = $config->getSolrInfo();
+      KiwiOutput::info("Purging old solr index...");
+      $solr = new KiwiSolrService($server_info['host'], $server_info['port'], $server_info['path']);
+      $solr->deleteByQuery('*:*');
+      unset($solr); // Close the connection.
+      KiwiOutput::info('Solr purge time: ' . number_format($timer_solr_clear->stop(), 2) . ' seconds');
+    }
+
+    $children = array();
+
+    // Spawn off children to do work.
+    for ($child_id = 1, $num_processors = $config->numChildProcesses(); $child_id <= $num_processors; ++$child_id) {
+      $pid = pcntl_fork();
+      if ($pid == -1) {
+        die('could not fork');
+      }
+      else if ($pid) {
+        // This is the parent. Do nothing here but let the loop complete.
+        $children[] = $pid;
+      }
+      else {
+        // This is the child.
+        main_processor($config, $child_id, $imu_factory, $reconnect);
+        // Kill the child process when done.
+        exit(0);
+      }
+    }
+
+    // Wait for all of the spawned children to die.
+    // This may end up waiting for process 1 long after process 3 is done, but
+    // that's OK. It ensures that all processes are truly done before continuing,
+    // whatever order they finish in, which is what we want.
+    $status = 0;
+    foreach ($children as $pid) {
+     pcntl_waitpid($pid, $status);
+    }
+
+    main_cleanup($config);
+  }
+  catch (ConfigFileNotFoundException $e) {
+    KiwiOutput::get()->writeMessage($e->getMessage(), LOG_ERR);
+  }
+  catch (InvalidConfigOptionException $e) {
+    KiwiOutput::get()->writeMessage($e->getMessage(), LOG_ERR);
+    KiwiOutput::get()->writeMessage(PHP_EOL . PHP_EOL . $input->getInstructions());
+  }
+  catch (Exception $e) {
+    KiwiOutput::get()->writeMessage('Unknown error: ' . $e->getMessage(), LOG_ERR);
   }
 
-  $children = array();
-
-  // Spawn off children to do work.
-  for ($child_id = 1, $num_processors = $config->numChildProcesses(); $child_id <= $num_processors; ++$child_id) {
-    $pid = pcntl_fork();
-    if ($pid == -1) {
-      die('could not fork');
-    }
-    else if ($pid) {
-      // This is the parent. Do nothing here but let the loop complete.
-      $children[] = $pid;
-    }
-    else {
-      // This is the child.
-      main_processor($config, $child_id, $module_id);
-      // Kill the child process when done.
-      exit(0);
-    }
-  }
-
-  // Wait for all of the spawned children to die.
-  // This may end up waiting for process 1 long after process 3 is done, but
-  // that's OK. It ensures that all processes are truly done before continuing,
-  // whatever order they finish in, which is what we want.
-  $status = 0;
-  foreach ($children as $pid) {
-   pcntl_waitpid($pid, $status);
-  }
-  main_cleanup($config);
-
+  KiwiOutput::info('Total run time: ' . number_format($timer_run->stop(), 2) . ' seconds');
   exit();
 }
 
+/**
+ * Replacement global error handler.
+ *
+ * This handler converts all PHP errors into exceptions so that they can be
+ * centrally handled.  This does make all errors "harder" in that they are not
+ * recoverable, but that's OK.  We want the system to die fast and hard so we
+ * can fix bugs.
+ *
+ * @link http://www.php.net/set_error_handler
+ */
 function exceptions_error_handler($severity, $message, $filename, $lineno) {
   if (error_reporting() == 0) {
     return;
@@ -118,21 +156,96 @@ function exceptions_error_handler($severity, $message, $filename, $lineno) {
  *
  * @param KiwiConfiguration $config
  *   The configuration object for this run.
- * @return string
- *   The Module ID of the result set object.
+ * @return array
+ *   A three element array containing information about how to reconnect to the
+ *   session and module used in the generator.  The keys are:
+ *     - session_context
+ *     - session_port
+ *     - module_id
  */
-function main_generator(KiwiConfiguration $config) {
+function main_generator(KiwiConfiguration $config, KiwiImuFactory $factory) {
   KiwiOutput::info("Generating initial Emu query...");
 
-  $server_info = $config->getEmuInfo();
-  $session = new KiwiImuSession($config, $server_info['host'], $server_info['port']);
+  $session = $factory->getNewEmuSession(TRUE);
 
   $generator = new KiwiQueryGenerator($config, $session);
 
-  return $generator->run();
+  $module_id = $generator->run();
+
+  return array(
+    'session_context' => $session->context,
+    'session_port' => $session->port,
+    'module_id' => $module_id,
+  );
 
   // The generator object goes out of scope here, clearing all outstanding
   // resources.
+}
+
+/**
+ * Factory generator for all Emu connection objects.
+ *
+ * There are a myriad of ways to connect to Emu, so it's eaiser to handle them
+ * in a factory rather than via constructors.
+ */
+class KiwiImuFactory {
+
+  /**
+   * The configuration object for this session.
+   *
+   * @var KiwiConfiguration
+   */
+  protected $config;
+
+  /**
+   * Constructor.
+   *
+   * @param KiwiConfiguration $config
+   */
+  public function __construct(KiwiConfiguration $config) {
+
+    $this->config = $config;
+  }
+
+  /**
+   * Returns a new Emu session object.
+   *
+   * @param boolean $suspend
+   *   Whether or not to suspend the session object when we're done with it.
+   *   A suspended session may be reconnected to later in another process.
+   * @return KiwiImuSession
+   */
+  public function getNewEmuSession($suspend = FALSE) {
+    $server_info = $this->config->getEmuInfo();
+    $session = new KiwiImuSession($this->config);
+    $session->login($server_info['user'], $server_info['password']);
+
+    $session->connect();
+
+    $session->suspend = $suspend;
+
+    return $session;
+  }
+
+  /**
+   * Resumes and returns an Emu session.
+   *
+   * @param string $context
+   *   The context ID of the session to which we are reconnecting.
+   * @param int $port
+   *   The TCP port on which we need to reconnect.  This is different for every
+   *   connection and the original session object will tell us what port to use
+   *   to reconnect to it.
+   * @return KiwiImuSession
+   */
+  public function resumeEmuSession($context, $port) {
+    $server_info = $this->config->getEmuInfo();
+    $session = new KiwiImuSession($this->config, FALSE, $port);
+
+    $session->context = $context;
+
+    return $session;
+  }
 }
 
 /**
@@ -153,7 +266,7 @@ function main_cleanup(KiwiConfiguration $config) {
   // process including Solr rebuild.  It may or may not make sense for this to
   // be synchronous later.
   $server_info = $config->getSolrInfo();
-  $solr = new Apache_Solr_Service($server_info['host'], $server_info['port'], $server_info['path']);
+  $solr = new KiwiSolrService($server_info['host'], $server_info['port'], $server_info['path']);
   KiwiOutput::info("Committing Solr data...");
   $solr->commit();
   KiwiOutput::info("Optimizing Solr index...");
@@ -170,15 +283,15 @@ function main_cleanup(KiwiConfiguration $config) {
  * @param string $module_id
  *   The Module ID of the result set object on whic to work.
  */
-function main_processor(KiwiConfiguration $config, $child_id, $module_id) {
+function main_processor(KiwiConfiguration $config, $child_id, KiwiImuFactory $factory, $reconnect) {
   KiwiOutput::info("Starting processor {$child_id}...");
-  $server_info = $config->getEmuInfo();
-  $session = new KiwiImuSession($config, $server_info['host'], $server_info['reconnect-port']);
+
+  $session = $factory->resumeEmuSession($reconnect['session_context'], $reconnect['session_port']);
 
   $server_info = $config->getSolrInfo();
-  $solr = new Apache_Solr_Service($server_info['host'], $server_info['port'], $server_info['path']);
+  $solr = new KiwiSolrService($server_info['host'], $server_info['port'], $server_info['path']);
 
-  $processor = new KiwiQueryProcessor($child_id, $module_id, $config, $session, $solr);
+  $processor = new KiwiQueryProcessor($child_id, $reconnect['module_id'], $config, $session, $solr);
 
   try {
     //KiwiOutput::get()->setThreshold(LOG_INFO);

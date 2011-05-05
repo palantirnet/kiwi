@@ -37,6 +37,16 @@ function recursive_implode($glue, $pieces) {
 }
 
 /**
+ * Exception for a missing Kiwi configuration file.
+ */
+class ConfigFileNotFoundException extends UnexpectedValueException {}
+
+/**
+ * Exception for an invalid and unexpected command line switch.
+ */
+class InvalidConfigOptionException extends UnexpectedValueException {}
+
+/**
  * Output manager for Kiwi.
  *
  * This class uses the error reporting constants defined in PHP core, as
@@ -230,3 +240,36 @@ class KiwiOutput {
   }
 }
 
+/**
+ * Timer class.
+ *
+ * This class is a simple wrapper for doing internal timing.  The timer starts
+ * when the object is instantiated.  Calling stop() will return the total runtime
+ * of the timer.
+ */
+class KiwiTimer {
+
+  /**
+   * The starting timestamp, in ms.
+   *
+   * @var float
+   */
+  protected $start;
+
+  /**
+   * Constructor.
+   */
+  public function __construct() {
+    $this->start = microtime(TRUE);
+  }
+
+  /**
+   * Stops the timer and returns the time the timer ran.
+   *
+   * @return float
+   *   The runtime of the timer, in seconds, accurate to milliseconds.
+   */
+  public function stop() {
+    return microtime(TRUE) - $this->start;
+  }
+}

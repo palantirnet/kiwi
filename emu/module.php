@@ -52,6 +52,21 @@ class IMuModule extends IMuHandler
 	}
 
 	public function
+	addSortSet($name, $columns)
+	{
+		$args = array();
+		$args['name'] = $name;
+		$args['columns'] = $columns;
+		return $this->call('addSortSet', $args);
+	}
+
+	public function
+	addSortSets($sets)
+	{
+		return $this->call('addSortSets', $sets);
+	}
+
+	public function
 	fetch($flag, $offset, $count, $columns = false)
 	{
 		$args = array();

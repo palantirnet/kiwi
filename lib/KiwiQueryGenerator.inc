@@ -29,35 +29,13 @@ class KiwiQueryGenerator {
     $this->session = $session;
   }
 
-  public function getConnection() {
-    $this->session->connect();
-
-    // Leave the session open for later use when the child processors come by.
-    $this->session->suspend = TRUE;
-
-    return $this->session;
-  }
-
   public function run() {
-    
-    // Connect to Emu server.
-    $session = $this->getConnection();
 
-    $base_table = $this->config->baseTable();
-    $module = $session->newModuleHandler($base_table['name'], FALSE);
+    $module = $this->session->newModuleHandler($base_table['name'], FALSE);
 
     // Run initial query as defined by the config object.
-    // This may require a query builder.
-
-    // This is just a placeholder.  Apparently you cannot findTerms() without
-    // specifing terms; that is, you must have a WHERE clause. Bah.
-    // @TODO do something else here.
     $terms = array();
-    //$terms[] = array('CatDepartment', 'Zoology');
-    //$terms[] = array('ColEarliestDateCollected', '18/09/1939');
-
-    $filters = $this->config->getFilters();
-    foreach ($filters as $filter) {
+    foreach ($this->config->getFilters() as $filter) {
       $term = array($filter->attr('name'), $filter->attr('value'));
       if ($operator = $filter->attr('operator')) {
         $term[] = $operator;

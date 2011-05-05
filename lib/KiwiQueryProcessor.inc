@@ -125,26 +125,15 @@ class KiwiQueryProcessor {
         KiwiOutput::get()->writeMessage(sprintf('%s in %s on line %s', (string)$e, $e->getFile(), $e->getLine()), LOG_ERR);
         break;
       }
+      catch (KiwiSolrException $e) {
+        KiwiOutput::get()->writeMessage("Processor {$this->processorId}: Error processing Solr document.", LOG_ERR);
+        KiwiOutput::debug($e->getMessage(), 'Solr error');
+        KiwiOutput::debug($e->getSolrMessage(), 'Failing Solr message');
+      }
       catch (ErrorException $e) {
         KiwiOutput::get()->writeMessage("Processor {$this->processorId}: Error processing Solr document.", LOG_ERR);
         KiwiOutput::get()->writeMessage(sprintf('%s in %s on line %s', $e->getMessage(), $e->getFile(), $e->getLine()), LOG_ERR);
         break;
-      }
-      // The ApacheSolr library doesn't have its own Exception classes, because
-      // it's dumb.  We'll hope that the general class means it came from Solr.
-      catch (Exception $e) {
-        KiwiOutput::get()->writeMessage("Processor {$this->processorId}: Error processing Solr document.", LOG_ERR);
-        KiwiOutput::debug($e->getMessage(), 'Solr error');
-        $trace = $e->getTrace();
-        if (isset($trace[0]['class']) && $trace[0]['class'] == 'Apache_Solr_Service' && $trace[0]['function'] == '_sendRawPost') {
-          // To ease debugging, print out the failing Solr document. If the
-          // Tidy extension is available, also use that to pretty-print the XML.
-          $solr_xml = $trace[0]['args'][1];
-          if (extension_loaded('tidy')) {
-            $solr_xml = (string)tidy_parse_string($solr_xml, array('indent' => TRUE, 'input-xml' => TRUE, 'wrap' => 300));
-          }
-          KiwiOutput::debug($solr_xml, "Solr document\n");
-        }
       }
     }
   }

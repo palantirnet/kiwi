@@ -34,12 +34,22 @@ class KiwiConfiguration {
   protected $fieldTableInfo;
 
   /**
+   * The input options from the command line.
+   *
+   * @var KiwiInput
+   */
+  protected $input;
+
+  /**
    * Constructor.
    *
    * @param string $file
    *   The name of the file with the configuration to load.
    */
-  public function __construct($file = '') {
+  public function __construct(KiwiInput $input) {
+    $this->input = $input;
+
+    $file = $this->input->getOption('config');
 
     if ($file && file_exists($file)) {
 
@@ -51,7 +61,7 @@ class KiwiConfiguration {
       $this->configFile->get(0)->ownerDocument->xinclude();
     }
     else {
-      throw new Exception('No configuration file found.');
+      throw new ConfigFileNotFoundException('Configuration file not found: ' . $file);
     }
   }
 
