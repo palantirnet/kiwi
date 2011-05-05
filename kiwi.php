@@ -54,11 +54,17 @@ function main() {
   try {
 
     $timer_run = new KiwiTimer();
-
     $input = new KiwiInput();
     $input->parse();
 
     $config = new KiwiConfiguration($input);
+
+    $imu_factory = new KiwiImuFactory($config);
+
+    $config_info = $config->getConfigInfo();
+
+    // Build the main query on the Emu server.
+    $module_id = main_generator($config, $imu_factory);
 
     $config_info = $config->getConfigInfo();
 
@@ -144,12 +150,10 @@ function exceptions_error_handler($severity, $message, $filename, $lineno) {
  * @return string
  *   The Module ID of the result set object.
  */
-function main_generator(KiwiConfiguration $config) {
+function main_generator(KiwiConfiguration $config, KiwiImuFactory $factory) {
   KiwiOutput::info("Generating initial Emu query...");
 
-  $server_info = $config->getEmuInfo();
-  $session = new KiwiImuSession($config);
-  $session->login($server_info['user'], $server_info['password']);
+  $session = $factory->getNewEmuSession();
 
   $generator = new KiwiQueryGenerator($config, $session);
 
