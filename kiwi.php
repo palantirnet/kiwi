@@ -159,6 +159,34 @@ function main_generator(KiwiConfiguration $config) {
   // resources.
 }
 
+class KiwiImuFactory {
+
+  /**
+   * The configuration object for this session.
+   *
+   * @var KiwiConfiguration
+   */
+  protected $config;
+
+  /**
+   * Constructor.
+   *
+   * @param KiwiConfiguration $config
+   */
+  public function __construct(KiwiConfiguration $config) {
+
+    $this->config = $config;
+  }
+
+  public function getNewEmuSession() {
+    $server_info = $this->config->getEmuInfo();
+    $session = new KiwiImuSession($this->config);
+    $session->login($server_info['user'], $server_info['password']);
+
+    return $session;
+  }
+}
+
 /**
  * Runs the cleanup routines for after all child processes are done.
  *
