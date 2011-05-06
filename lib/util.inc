@@ -261,7 +261,7 @@ class KiwiOutput {
    *
    * @param mixed $string
    *   The message to record.  Alternatively, a non-string value (array or object)
-   *   that will first be serialized for display.  That makes it useful for 
+   *   that will first be serialized for display.  That makes it useful for
    *   all sorts of debugging.
    * @param string $label
    *   An optional title for this message.
