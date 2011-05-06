@@ -294,9 +294,11 @@ function main_processor(KiwiConfiguration $config, $child_id, KiwiImuFactory $fa
     $processor->run();
   }
   catch(Exception $e) {
-    debug($e->getTrace());
+    //debug($e->getTrace());
     debug('Error message is: ' . (string)$e);
     debug('Error code is: ' . $e->getCode());
+    debug('Error line is: ' . $e->getFile() . ', line '. $e->getLine());
+    debug(get_stack($e));
   }
 
   KiwiOutput::debug("Processor {$child_id}: Maximum memory used (bytes): " . number_format(memory_get_peak_usage(TRUE)));
