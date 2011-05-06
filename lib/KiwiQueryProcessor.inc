@@ -192,7 +192,7 @@ class KiwiQueryProcessor {
       }
     }
 
-    debug($columns);
+    //debug($columns);
     return $columns;
   }
 

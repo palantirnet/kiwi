@@ -70,8 +70,6 @@ function main() {
     $module_id = main_generator($config, $imu_factory);
     KiwiOutput::info('Generator time: ' . number_format($timer_generator->stop(), 2) . ' seconds');
 
-    KiwiOutput::debug($module_id, 'Module ID');
-
     // If specified, clear the existing Solr core before adding new content.
     if ($config_info['full-rebuild']) {
       $timer_solr_clear = new KiwiTimer();
