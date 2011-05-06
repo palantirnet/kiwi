@@ -120,7 +120,8 @@ function main() {
     KiwiOutput::get()->writeMessage(PHP_EOL . PHP_EOL . $input->getInstructions());
   }
   catch (Exception $e) {
-    KiwiOutput::get()->writeMessage('Unknown error: ' . $e->getMessage(), LOG_ERR);
+    $message = sprintf("Unknown error: %s\n\tin %s on line %s", $e->getMessage(), $e->getFile(), $e->getLine());
+    KiwiOutput::get()->writeMessage($message, LOG_ERR);
   }
 
   KiwiOutput::info('Total run time: ' . number_format($timer_run->stop(), 2) . ' seconds');
