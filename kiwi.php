@@ -67,7 +67,7 @@ function main() {
 
     // Build the main query on the Emu server.
     $timer_generator = new KiwiTimer();
-    $module_id = main_generator($config, $imu_factory);
+    $reconnect = main_generator($config, $imu_factory);
     KiwiOutput::info('Generator time: ' . number_format($timer_generator->stop(), 2) . ' seconds');
 
     // If specified, clear the existing Solr core before adding new content.
