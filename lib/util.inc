@@ -59,8 +59,8 @@ function get_stack(Exception $e) {
 
   for ($i = 0, $stack_count = count($stack); $i < $stack_count; ++$i) {
     $line = array(
-      'file' => $stack[$i]['file'],
-      'line' => $stack[$i]['line'],
+      'file' => isset($stack[$i]['file']) ? $stack[$i]['file'] : NULL,
+      'line' => isset($stack[$i]['line']) ? $stack[$i]['line'] : NULL,
       'function' => isset($stack[$i + 1]['function']) ? $stack[$i + 1]['function'] : NULL,
       'class' => isset($stack[$i + 1]['class']) ? $stack[$i + 1]['class'] : NULL,
       'type' => isset($stack[$i + 1]['type']) ? $stack[$i + 1]['type'] : NULL,
