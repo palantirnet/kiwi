@@ -39,6 +39,7 @@
     <field-type name="Latitude" handler="LatLongHandler" />
     <field-type name="Longitude" handler="LatLongHandler" />
     <field-type name="Attachment" handler="AttachmentReferenceHandler" fulltext="0" sort="0" />
+    <field-type name="Merge" handler="MergeHandler" fulltext="0" sort="0" />
   </field-types>
 
   <!--

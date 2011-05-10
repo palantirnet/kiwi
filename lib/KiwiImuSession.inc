@@ -470,9 +470,18 @@ class KiwiEmuField {
    * @return FieldHandlerInterface
    */
   public function getHandler() {
-    // If it's an attachment field, override the type since Emu files them
-    // as integers.
-    $data_type = $this->isAttachmentField() ? 'Attachment' : $this->dataType();
+
+    // Reference fields are stored as integers, so we need to override the type
+    // on those.
+     if ($this->isMergeField()) {
+      $data_type = 'Merge';
+    }
+    else if ($this->isAttachmentField()) {
+      $data_type = 'Attachment';
+    }
+    else {
+      $data_type = $this->dataType();
+    }
 
     $field_options = $this->config->getFieldOptions($this->table, $this->columnName(), $data_type);
     $class = $field_options['handler'];
