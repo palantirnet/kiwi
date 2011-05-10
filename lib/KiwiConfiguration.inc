@@ -79,7 +79,7 @@ class KiwiConfiguration {
   }
 
   /**
-   * Returns the connection information for the Emu server.
+   * Returns the connection information for the Solr server.
    *
    * @return array
    */
@@ -92,7 +92,7 @@ class KiwiConfiguration {
   }
 
   /**
-   * Returns the connection information for the Solr server.
+   * Returns the connection information for the Emu server.
    *
    * @return array
    */
