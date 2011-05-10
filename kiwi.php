@@ -214,7 +214,14 @@ class KiwiImuFactory {
   public function getNewEmuSession($suspend = FALSE) {
     $server_info = $this->config->getEmuInfo();
     $session = new KiwiImuSession($this->config);
-    $session->login($server_info['user'], $server_info['password']);
+
+    // Depending on the Emu configuration, we may need to authenticate against
+    // the user account.  If not, though, calling login() when we don't need to
+    // can cause the Emu process to hang.  We therefore only try to authenticate
+    // if a username and password were provided in the configuration.
+    if ($server_info['user'] && $server_info['password']) {
+      $session->login($server_info['user'], $server_info['password']);
+    }
 
     $session->connect();
 

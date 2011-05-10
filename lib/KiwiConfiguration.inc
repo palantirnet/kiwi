@@ -100,6 +100,8 @@ class KiwiConfiguration {
     return $this->configFile->branch()->find('servers > emu')->attr() + array(
       'host' => 'localhost',
       'port' => 40000,
+      'user' => '',
+      'password' => '',
     );
   }
 
