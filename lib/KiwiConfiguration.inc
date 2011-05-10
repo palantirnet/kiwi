@@ -66,6 +66,13 @@ class KiwiConfiguration {
   }
 
   /**
+   * Returns the default verbosity level of the system.
+   */
+  public function defaultVerbosity() {
+    return $this->input->getOption('verbosity');
+  }
+
+  /**
    * Returns general information about this configuration.
    *
    * @return array

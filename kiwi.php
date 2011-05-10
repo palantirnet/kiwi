@@ -63,7 +63,7 @@ function main() {
 
     $config_info = $config->getConfigInfo();
 
-    KiwiOutput::get()->setThreshold($config_info['debug']);
+    KiwiOutput::get()->setThreshold($config->defaultVerbosity());
 
     // Build the main query on the Emu server.
     $timer_generator = new KiwiTimer();
