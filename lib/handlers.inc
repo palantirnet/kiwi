@@ -224,7 +224,7 @@ class AttachmentReferenceHandler extends FieldHandlerBase {
   }
 }
 
-class MergeHandler extends FieldHandlerBase {
+class MergeReferenceHandler extends FieldHandlerBase {
 
   public function map(KiwiEmuField $field_info, $value, Apache_Solr_Document $document, $field_prefix = '', $force_multi = FALSE) {
     if ($value) {
