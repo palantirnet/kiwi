@@ -25,7 +25,7 @@ class KiwiQueryProcessor {
   /**
    * The Solr server to which to add documents.
    *
-   * @var Apache_Solr_Service
+   * @var KiwiSolrService
    */
   protected $solr;
 
