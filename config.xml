@@ -38,6 +38,7 @@
     <field-type name="Currency" handler="FloatHandler" />
     <field-type name="Latitude" handler="LatLongHandler" />
     <field-type name="Longitude" handler="LatLongHandler" />
+    <field-type name="Nesttab" handler="NesttabHandler" fulltext="0" sort="0" />
     <field-type name="Attachment" handler="AttachmentReferenceHandler" fulltext="0" sort="0" />
     <field-type name="Merge" handler="MergeReferenceHandler" fulltext="0" sort="0" />
   </field-types>

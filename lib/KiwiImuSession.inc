@@ -431,6 +431,15 @@ class KiwiEmuField {
   }
 
   /**
+   * Returns True if htis field is a Nested table field, False otherwise.
+   *
+   * @return boolean
+   */
+  public function isNesttabField() {
+    return ($this->schema['DataKind'] == 'dkNested');
+  }
+
+  /**
    * Returns True if this field is a reference to another module/table.
    *
    * There are multiple kinds of reference field, as far as we're concerned, but
@@ -478,6 +487,9 @@ class KiwiEmuField {
     }
     else if ($this->isAttachmentField()) {
       $data_type = 'Attachment';
+    }
+    else if ($this->isNesttabField()) {
+      $data_type = 'Nesttab';
     }
     else {
       $data_type = $this->dataType();
