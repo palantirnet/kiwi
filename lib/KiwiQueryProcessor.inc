@@ -92,11 +92,13 @@ class KiwiQueryProcessor {
     $last_irn = 0;
     $processed = 0;
     $counter = 1;
-    while ($processed < $max_records) {
+    $total_records = PHP_INT_MAX;
+    while ($processed < min($max_records, $total_records)) {
       try {
         $result = $this->module->fetch($position, $offset, $count, 'attachFields');
         if (!$processed) {
-          $total_string = number_format($result->hits);
+          $total_records = $result->hits;
+          $total_string = number_format($total_records);
           $max_string = number_format($max_records);
           KiwiOutput::info("Processor {$this->processorId}: Approximately {$total_string} records to process.  Will process {$max_string} at most.");
         }
