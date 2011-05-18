@@ -90,8 +90,7 @@
      <!-- The PKey, which is also an integer field. -->
      <field name="irn" search="1" display="1" />
 
-<!-- Sample text field, single-value. -->
-<!--     <field name="ColOReceivedBy" indexed="1" stored="1" fulltext="1" sort="1" /> -->
+     <comment>Sample text fields, single-value</comment>
      <field name="SummaryData" indexed="1" stored="1"/>
      <field name="CatCatalogSubset" indexed="1" stored="1" fulltext="1" sort="1" />
      <field name="PriMammalsPrepSkin" indexed="1" stored="1" fulltext="1" sort="1" />
@@ -287,8 +286,8 @@
      <field name="IdeFiledAsQualifierRank" indexed="1" stored="1" fulltext="1" sort="1" />
      <field name="IdeFiledAsConfidence" indexed="1" stored="1" fulltext="1" sort="1" />
 
-<!-- Sample text field, multi-value. -->
 
+     <comment>Sample text field, multi-value.</comment>
      <field name="LotLotsTypeStatus_tab" indexed="1" stored="1" fulltext="1" sort="1" />
      <field name="TisTissueRemarks_tab" indexed="1" stored="1" fulltext="1" sort="1" />
      <field name="HosOtherPrepType_tab" indexed="1" stored="1" fulltext="1" sort="1" />
@@ -378,10 +377,8 @@
      <field name="GenOtherPrepType_tab" indexed="1" stored="1" fulltext="1" sort="1" />
      <field name="LotRegion_tab" indexed="1" stored="1" fulltext="1" sort="1" />
 
-<!-- Sample date fields, single-value. -->
-
+     <comment>Sample date fields, single-value.</comment>
      <field name="ColLatestDateCollected" indexed="1" stored="1" fulltext="1" sort="1" />
-
      <field name="IdeFiledAsDateIdentified" indexed="1" stored="1" fulltext="1" sort="1" />
      <field name="ColEarliestDateCollected" indexed="1" stored="1" fulltext="1" sort="1" />
      <field name="TisDateTissuePrepared0" indexed="1" stored="1" fulltext="1" sort="1" />
@@ -392,8 +389,7 @@
      <field name="LocDateReturned0" indexed="1" stored="1" fulltext="1" sort="1" />
      <field name="GenDateOtherPrepared0" indexed="1" stored="1" fulltext="1" sort="1" />
 
-<!-- Sample floating point field, single-value. -->
-
+     <comment>Sample floating point fields, single-value.</comment>
      <field name="DarMaximumDepth" indexed="1" stored="1" fulltext="1" sort="1" />
      <field name="DarCoordinateUncertaintyInMeter" indexed="1" stored="1" fulltext="1" sort="1" />
      <field name="DarDecimalLatitude" indexed="1" stored="1" fulltext="1" sort="1" />
@@ -420,16 +416,13 @@
      <field name="DarTemperature" indexed="1" stored="1" fulltext="1" sort="1" />
      <field name="DarMinimumDepthInMeters" indexed="1" stored="1" fulltext="1" sort="1" />
 
-<!-- Sample floating point field, multi-value. -->
-
+     <comment>Sample floating point fields, multi-value.</comment>
      <field name="XraMa_tab" indexed="1" stored="1" fulltext="1" sort="1" />
      <field name="MeaMeasurementNumberValue_tab" indexed="1" stored="1" fulltext="1" sort="1" />
      <field name="XraKv_tab" indexed="1" stored="1" fulltext="1" sort="1" />
-
      <field name="XraKv_tab" indexed="1" stored="1" fulltext="1" sort="1" />
 
-<!-- Sample integer field, single-value. -->
-
+     <comment>Sample integer fields, single-value.</comment>
      <field name="DarStartMonthCollected" indexed="1" stored="1" fulltext="1" sort="1" />
      <field name="DarStartJulianDay" indexed="1" stored="1" fulltext="1" sort="1" />
      <field name="DarStartDayCollected" indexed="1" stored="1" fulltext="1" sort="1" />
@@ -467,8 +460,7 @@
      <field name="PriSkeleton" indexed="1" stored="1" fulltext="1" sort="1" />
      <field name="LotCountWet" indexed="1" stored="1" fulltext="1" sort="1" />
 
- <!-- Sample integer field, multi-value. -->
-
+     <comment>Sample integer fields, multi-value.</comment>
      <field name="LotNoOfSpecimens_tab" indexed="1" stored="1" fulltext="1" sort="1" />
      <field name="PrvEventSequence_tab" indexed="1" stored="1" fulltext="1" sort="1" />
      <field name="LotPinnedCount_tab" indexed="1" stored="1" fulltext="1" sort="1" />
@@ -480,17 +472,14 @@
      <field name="LotWetCount_tab" indexed="1" stored="1" fulltext="1" sort="1" />
      <field name="PreOriginalCount_tab" indexed="1" stored="1" fulltext="1" sort="1" />
 
-<!-- Sample latitude field, single value. -->
-
+    <comment>Sample latitude fields, single value.</comment>
     <field name="ColCentroidLatitudeLocal" indexed="1" stored="1" fulltext="1" sort="1" />
 
 
-<!-- Sample longitude field, single value. -->
-
+    <comment>Sample longitude fields, single value.</comment>
     <field name="ColCentroidLongitudeLocal" indexed="1" stored="1" fulltext="1" sort="1" />
 
-<!-- Sample reference field, single-value. -->
-
+     <comment>Sample reference fields, single-value.</comment>
      <field name="CatCheckedByRef" indexed="1" stored="1" fulltext="1" sort="1" />
      <field name="ColCollectionEventRef" indexed="1" stored="1" fulltext="1" sort="1" />
      <field name="ColCollectorRef_tab" indexed="1" stored="1" fulltext="1" sort="1" />
