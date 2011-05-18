@@ -443,7 +443,6 @@
     <field name="CatCatalogueNo" indexed="1" stored="1" fulltext="1" sort="1" />
     <field name="CatMammalsCatalogNo" indexed="1" stored="1" fulltext="1" sort="1" />
     <field name="DarCatalogNumberNumeric" indexed="1" stored="1" fulltext="1" sort="1" />
-    <field name="irn" indexed="1" stored="1" fulltext="1" sort="1" />
     <field name="DarDayCollected" indexed="1" stored="1" fulltext="1" sort="1" />
     <field name="DarDayIdentified" indexed="1" stored="1" fulltext="1" sort="1" />
     <field name="DarEndMonthCollected" indexed="1" stored="1" fulltext="1" sort="1" />
