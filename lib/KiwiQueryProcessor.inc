@@ -113,7 +113,9 @@ class KiwiQueryProcessor {
           else {
             $last_irn = $row['irn'];
           }
-          $documents[] = $this->createSolrDocument($row);
+          $doc = $this->createSolrDocument($row);
+          //debug($this->solr->renderDocument($doc));
+          $documents[] = $doc;
         }
 
         $this->solr->addDocuments($documents);
