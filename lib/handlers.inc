@@ -224,6 +224,11 @@ class AttachmentReferenceHandler extends FieldHandlerBase {
   }
 }
 
+/**
+ * Handler for Merge reference fields.
+ *
+ * These are multi-value reference fields.
+ */
 class MergeReferenceHandler extends FieldHandlerBase {
 
   protected $separator = ' | ';
@@ -240,7 +245,6 @@ class MergeReferenceHandler extends FieldHandlerBase {
       KiwiOutput::debug("\tThis field references: " . $ref_table->getName());
       foreach ($value as $i => $sub_record) {
         foreach ($sub_record as $field_name => $v) {
-          debug($v, 'Individual value');
           // If the sub-field is multi-value, it needs to get folded down to
           // a single string.  Solr can't handle sub-array fields.
           if (is_array($v)) {
