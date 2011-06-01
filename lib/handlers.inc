@@ -234,21 +234,21 @@ class MergeReferenceHandler extends FieldHandlerBase {
 
       //debug((string)$field_info);
       //debug($field_info->isMergeField() ? "Is Merge" : "Is not merge");
-      debug($value, 'Field value');
+      //debug($value, 'Field value');
 
       $ref_table = $this->session->getTable($field_info->refTable());
       KiwiOutput::debug("\tThis field references: " . $ref_table->getName());
       foreach ($value as $i => $sub_record) {
         foreach ($sub_record as $field_name => $v) {
           debug($v, 'Individual value');
+          // If the sub-field is multi-value, it needs to get folded down to
+          // a single string.  Solr can't handle sub-array fields.
           if (is_array($v)) {
-            $v = implode('|', array_filter($v));
+            $v = recursive_implode($this->separator, array_filter($v));
           }
           $fields[$field_name][] = $v;
         }
       }
-
-      //debug($fields, "Processed fields");
 
       foreach ($fields as $field_name => $v) {
         //debug(__LINE__, __FILE__);
