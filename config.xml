@@ -497,7 +497,7 @@
     <field name="IdeFiledAsIdentifiedByRef_tab" indexed="1" stored="1" fulltext="1" sort="1" />
     <field name="IdeFiledAsRef" indexed="1" stored="1" fulltext="1" sort="1" />
     <field name="IdeFilingFamilyRef_tab" indexed="1" stored="1" fulltext="1" sort="1" />-->
-    <field name="IdeTaxonRef_tab" handler="MergeReferenceHandler" indexed="1" stored="1" fulltext="1" sort="1" />
+    <field name="IdeTaxonRef_tab" indexed="1" stored="1" fulltext="1" sort="1" />
 <!--    <field name="LotOwnerRef_tab" indexed="1" stored="1" fulltext="1" sort="1" />
     <field name="PriAccessionNumberRef" indexed="1" stored="1" fulltext="1" sort="1" />
     <field name="PriCataloguedByRef" indexed="1" stored="1" fulltext="1" sort="1" />
