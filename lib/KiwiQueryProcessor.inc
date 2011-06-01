@@ -305,6 +305,8 @@ class FieldHandlerBase implements FieldHandlerInterface {
     if ($value) {
       KiwiOutput::debug("\tMapping " . $field_info->columnName() . " using " . get_class($this));
 
+      $value = $this->normalizeCharset($value);
+
       $prefix = $this->getTypePrefix($field_info, $force_multi);
       $solr_field_name = $prefix . '_' . ($field_prefix ? ($field_prefix . '_') : '') . $field_info->itemName();
       $document->$solr_field_name = $value;
@@ -315,6 +317,44 @@ class FieldHandlerBase implements FieldHandlerInterface {
         $document->content = is_array($value) ? recursive_implode(', ', $value) : $value;
       }
     }
+  }
+
+  /**
+   * Normalize a value to UTF-8 character encoding.
+   *
+   * This method is a horrid hack, but the best we can do at the moment.  The
+   * problem is that the incoming data may be of unknown character encoding,
+   * and PHP has no reliable way to detect the character encoding.  We therefore
+   * make a good faith attempt to convert extended characters (accents, etc.)
+   * to UTF-8.
+   *
+   * @todo Verify that this still works with non-Latin input strings.
+   * @param mixed $value
+   *   The value to be normalized.  If it is an array, this method will be called
+   *   recursively on each element.
+   * @return mixed
+   *   The passed value, translated to UTF-8.
+   */
+  protected function normalizeCharset($value) {
+    // If we're processing an array, process each value of the array individually.
+    if (is_array($value)) {
+      return array_map(array($this, 'normalizeCharset'), $value);
+    }
+
+    // Convert any characters we possibly can to their HTML encoded entities.
+    // If we don't specify a character encoding then this should do at least
+    // a passingly decent job of detecting it, or at least doesn't care as much
+    // as other APIs do.  This won't catch every character, but should catch all
+    // normal accented characters at least.
+    $value = htmlentities($value, ENT_NOQUOTES);
+
+    // Now convert those HTML entities back into real characters, but this time
+    // insist on UTF-8.  If all goes well, this will at worst convert UTF-8
+    // characters back to UTF-8 and at best convert ISO-8859-1 characters to
+    // HTML entities and from HTML entities to UTF-8 characters.
+    $value = html_entity_decode($value, ENT_NOQUOTES, 'UTF-8');
+
+    return $value;
   }
 
   /**
