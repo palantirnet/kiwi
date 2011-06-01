@@ -226,18 +226,24 @@ class AttachmentReferenceHandler extends FieldHandlerBase {
 
 class MergeReferenceHandler extends FieldHandlerBase {
 
+  protected $separator = ' | ';
+
   public function map(KiwiEmuField $field_info, $value, Apache_Solr_Document $document, $field_prefix = '', $force_multi = FALSE) {
     if ($value) {
       KiwiOutput::debug("\tMapping " . $field_info->columnName() . " using " . get_class($this));
 
       //debug((string)$field_info);
       //debug($field_info->isMergeField() ? "Is Merge" : "Is not merge");
-      //debug($value, 'Field value');
+      debug($value, 'Field value');
 
       $ref_table = $this->session->getTable($field_info->refTable());
       KiwiOutput::debug("\tThis field references: " . $ref_table->getName());
       foreach ($value as $i => $sub_record) {
         foreach ($sub_record as $field_name => $v) {
+          debug($v, 'Individual value');
+          if (is_array($v)) {
+            $v = implode('|', array_filter($v));
+          }
           $fields[$field_name][] = $v;
         }
       }
