@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<config name="ecatalogue" full-rebuild="0">
+<config name="ecatalogue" full-rebuild="1">
   <!--
     This include specifies the file that defines the server configuration.
     That is different for each server.  Use the template below to populate
@@ -50,7 +50,9 @@
   -->
   <filters>
     <filter name="AdmPublishWebNoPassword" value="Yes" />
-<!--    <filter name="irn" value="2548884" />-->
+    <filter name="irn" value="1809084" />
+<!--    <filter name="irn" value="150552" />-->
+<!--    <filter name="irn" value="830062" />-->
     <filter name="CatDepartment" value="Zoology" operator="matches" />
 <!--    <filter name="ObjOtherNumbersNumber_tab" value="0" operator="&lt;>" />-->
 <!--    <filter name="ColEarliestDateCollected" value="18/09/1939" />-->
@@ -91,6 +93,7 @@
     <field name="irn" search="1" display="1" />
 
     <comment>Sample text fields, single-value</comment>
+    <field name="DarRelatedCatalogItem" indexed="1" stored="1" fulltext="1" sort="1" />
     <field name="SummaryData" indexed="1" stored="1"/>
     <field name="CatCatalogSubset" indexed="1" stored="1" fulltext="1" sort="1" />
     <field name="PriMammalsPrepSkin" indexed="1" stored="1" fulltext="1" sort="1" />
@@ -286,7 +289,6 @@
     <field name="IdeFiledAsQualifierRank" indexed="1" stored="1" fulltext="1" sort="1" />
     <field name="IdeFiledAsConfidence" indexed="1" stored="1" fulltext="1" sort="1" />
 
-
     <comment>Sample text field, multi-value.</comment>
     <field name="LotLotsTypeStatus_tab" indexed="1" stored="1" fulltext="1" sort="1" />
     <field name="TisTissueRemarks_tab" indexed="1" stored="1" fulltext="1" sort="1" />
@@ -474,12 +476,11 @@
     <comment>Sample latitude fields, single value.</comment>
     <field name="ColCentroidLatitudeLocal" indexed="1" stored="1" fulltext="1" sort="1" />
 
-
     <comment>Sample longitude fields, single value.</comment>
     <field name="ColCentroidLongitudeLocal" indexed="1" stored="1" fulltext="1" sort="1" />
 
     <comment>Sample reference fields, single-value.</comment>
-    <field name="CatCheckedByRef" indexed="1" stored="1" fulltext="1" sort="1" />
+<!--    <field name="CatCheckedByRef" indexed="1" stored="1" fulltext="1" sort="1" />
     <field name="ColCollectionEventRef" indexed="1" stored="1" fulltext="1" sort="1" />
     <field name="ColCollectorRef_tab" indexed="1" stored="1" fulltext="1" sort="1" />
     <field name="ColMammalsCollectorRef" indexed="1" stored="1" fulltext="1" sort="1" />
@@ -495,56 +496,56 @@
     <field name="HosRepositoryRef_tab" indexed="1" stored="1" fulltext="1" sort="1" />
     <field name="IdeFiledAsIdentifiedByRef_tab" indexed="1" stored="1" fulltext="1" sort="1" />
     <field name="IdeFiledAsRef" indexed="1" stored="1" fulltext="1" sort="1" />
-    <field name="IdeFilingFamilyRef_tab" indexed="1" stored="1" fulltext="1" sort="1" />
-    <field name="IdeTaxonRef_tab" indexed="1" stored="1" fulltext="1" sort="1" />
-    <field name="LotOwnerRef_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+    <field name="IdeFilingFamilyRef_tab" indexed="1" stored="1" fulltext="1" sort="1" />-->
+    <field name="IdeTaxonRef_tab" handler="MergeReferenceHandler" indexed="1" stored="1" fulltext="1" sort="1" />
+<!--    <field name="LotOwnerRef_tab" indexed="1" stored="1" fulltext="1" sort="1" />
     <field name="PriAccessionNumberRef" indexed="1" stored="1" fulltext="1" sort="1" />
     <field name="PriCataloguedByRef" indexed="1" stored="1" fulltext="1" sort="1" />
     <field name="TisCollectorRef_tab" indexed="1" stored="1" fulltext="1" sort="1" />
     <field name="TisPreparedByRef_tab" indexed="1" stored="1" fulltext="1" sort="1" />
     <field name="XraXrayPreparedByRef_tab" indexed="1" stored="1" fulltext="1" sort="1" />
-    <field name="ZooZooRef" indexed="1" stored="1" fulltext="1" sort="1" />
+    <field name="ZooZooRef" indexed="1" stored="1" fulltext="1" sort="1" />-->
   </table>
 
-<!--
- <table name="ecollectionevents" type="attach">
+
+  <table name="ecollectionevents" type="attach">
     <field name="ColDateVisitedFrom" indexed="1" stored="1"/>
     <field name="SummaryData" indexed="1" stored="1"/>
     <field name="ColParticipantLocal_tab" indexed="1" stored="1"/>
     <field name="ColDateVisitedFrom" indexed="1" stored="1"/>
     <field name="ColSiteRef" indexed="1" stored="1"/>
- </table>
+  </table>
 
- <table name="efmnhtransactions" type="attach">
-    <fieldname="SummaryData" indexed="1" stored="1"/>
- </table>
+  <table name="efmnhtransactions" type="attach">
+    <field name="SummaryData" indexed="1" stored="1"/>
+  </table>
 
- <table name="eparties" type="attach">
+  <table name="eparties" type="attach">
     <field name="SummaryData" indexed="1" stored="1"/>
     <field name="NamBriefName" indexed="1" stored="1"/>
     <field name="NamOrganisationAcronym" indexed="1" stored="1"/>
- </table>
- <table name="etaxonomy" type="attach">
+  </table>
+
+  <table name="etaxonomy" type="attach">
     <field name="SummaryData" indexed="1" stored="1"/>
     <field name="ClaFamilyNumber" indexed="1" stored="1"/>
- </table>
+    <field name="ComName_tab" indexed="1" stored="1"/>
+    <field name="ComGeographicLocation_tab" indexed="1" stored="1"/>
+    <field name="ComLanguage_tab" indexed="1" stored="1"/>
+    <field name="ComComments_tab" indexed="1" stored="1"/>
+<!--    <field name="ComReferenceRef_tab" indexed="1" stored="1"/>-->
+  </table>
 
- <table name="emultimedia" type="attach">
-    <field name="irn" indexed="1" stored="1">
-    <field name="MulTitle" indexed="1" stored="1">
-    <field name="MulIdentifier" indexed="1" stored="1">
-    <field name="MulMimeFormat" indexed="1" stored="1">
-    <field name="MulDescription" indexed="1" stored="1">
-    <field name="" indexed="1" stored="1">
-    <field name="DetSource" indexed="1" stored="1">
-    <field name="" indexed="1" stored="1">
-    <field name="" indexed="1" stored="1">
-    <field name="" indexed="1" stored="1">
-
-    <field name="MulCreator_tab" indexed="1" stored="1">
-    <field name="DetSubject_tab" indexed="1" stored="1">
- </table>
--->
+  <table name="emultimedia" type="attach">
+    <field name="irn" indexed="1" stored="1" />
+    <field name="MulTitle" indexed="1" stored="1" />
+    <field name="MulIdentifier" indexed="1" stored="1" />
+    <field name="MulMimeFormat" indexed="1" stored="1" />
+    <field name="MulDescription" indexed="1" stored="1" />
+    <field name="DetSource" indexed="1" stored="1" />
+    <field name="MulCreator_tab" indexed="1" stored="1" />
+    <field name="DetSubject_tab" indexed="1" stored="1" />
+  </table>
 
   <table name="esites" type="attach">
     <field name="irn" indexed="1" stroed="1"/>
