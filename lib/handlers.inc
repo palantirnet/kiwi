@@ -237,32 +237,47 @@ class MergeReferenceHandler extends FieldHandlerBase {
   protected $separator = ' | ';
 
   public function map(KiwiEmuField $field_info, $value, Apache_Solr_Document $document, $field_prefix = '', $force_multi = FALSE) {
-    if ($value) {
+    if ($value && current($value)) {
       KiwiOutput::debug("\tMapping " . $field_info->columnName() . " using " . get_class($this));
+
+      $ref_table = $this->session->getTable($field_info->refTable());
+      KiwiOutput::debug("\tThis field references: " . $ref_table->getName());
 
       //debug((string)$field_info);
       //debug($field_info->isMergeField() ? "Is Merge" : "Is not merge");
       //debug($value, 'Field value');
 
-      $ref_table = $this->session->getTable($field_info->refTable());
-      KiwiOutput::debug("\tThis field references: " . $ref_table->getName());
       foreach ($value as $i => $sub_record) {
         foreach ($sub_record as $field_name => $v) {
-          // If the sub-field is multi-value, it needs to get folded down to
-          // a single string.  Solr can't handle sub-array fields.
-          if (is_array($v)) {
-            $v = recursive_implode($this->separator, array_filter($v));
+
+          $ref_field = $ref_table->getField($field_name);
+          if ($ref_field->isReferenceField()) {
+            // Attachment fields referenced from a Merge field are handled directly
+            // rather than being folded.  Fortunately we know that Attachment
+            // fields are single-value.  We need to include the _ in the prefix
+            // though, because we're nesting prefixes here.
+            $ref_field->getHandler()->map($ref_field, $v, $document, $field_prefix . $field_info->itemName() . '_');
           }
-          $fields[$field_name][] = $v;
+          else {
+            // If the sub-field is multi-value, it needs to get folded down to
+            // a single string.  Solr can't handle sub-array fields.
+            if (is_array($v)) {
+              $v = recursive_implode($this->separator, array_filter($v));
+            }
+            $fields[$field_name][] = $v;
+          }
         }
       }
 
+      //debug($fields, "Reformatted fields");
+
       foreach ($fields as $field_name => $v) {
-        //debug(__LINE__, __FILE__);
         $ref_field = $ref_table->getField($field_name);
         $handler = $ref_field->getHandler();
-        $handler->map($ref_field, $v, $document, $field_info->itemName(), TRUE);
+        $handler->map($ref_field, $v, $document, $field_prefix . $field_info->itemName(), TRUE);
       }
+
+      unset($GLOBALS['merge']);
     }
   }
 }
