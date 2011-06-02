@@ -66,6 +66,13 @@ class KiwiConfiguration {
   }
 
   /**
+   * Returns the default verbosity level of the system.
+   */
+  public function defaultVerbosity() {
+    return $this->input->getOption('verbosity');
+  }
+
+  /**
    * Returns general information about this configuration.
    *
    * @return array
@@ -79,7 +86,7 @@ class KiwiConfiguration {
   }
 
   /**
-   * Returns the connection information for the Emu server.
+   * Returns the connection information for the Solr server.
    *
    * @return array
    */
@@ -92,7 +99,7 @@ class KiwiConfiguration {
   }
 
   /**
-   * Returns the connection information for the Solr server.
+   * Returns the connection information for the Emu server.
    *
    * @return array
    */
@@ -100,6 +107,8 @@ class KiwiConfiguration {
     return $this->configFile->branch()->find('servers > emu')->attr() + array(
       'host' => 'localhost',
       'port' => 40000,
+      'user' => '',
+      'password' => '',
     );
   }
 
@@ -182,21 +191,23 @@ class KiwiConfiguration {
    *     - fulltext: The field should be included in fulltext searches.
    *     - sort: The field is sortable in Solr.
    *     - all (default): Do not filter at all; return all fields for this table.
+   * @param string $table_type
+   *   The type of the table.  Legal values are attach, merge, and collapse.
    * @return QuerPath
    */
-  public function getFields($table, $use = 'all') {
-    if (empty($this->fieldTableInfo[$table][$use])) {
-      $this->fieldTableInfo[$table][$use] = array();
+  public function getFields($table, $use = 'all', $table_type = 'attach') {
+    if (empty($this->fieldTableInfo[$table][$table_type][$use])) {
+      $this->fieldTableInfo[$table][$table_type][$use] = array();
       $names = array();
-      $fields = $this->configFile->branch()->find("table[name='{$table}'] field");
+      $fields = $this->configFile->branch()->find("table[name='{$table}'][type='{$table_type}'] field");
       if ($use != 'all') {
         $fields->filter("[{$use}=1]");
       }
       foreach ($fields as $field) {
-        $this->fieldTableInfo[$table][$use][] = $field->attr('name');
+        $this->fieldTableInfo[$table][$table_type][$use][] = $field->attr('name');
       }
     }
-    return $this->fieldTableInfo[$table][$use];
+    return $this->fieldTableInfo[$table][$table_type][$use];
   }
 
   /**

@@ -63,7 +63,7 @@ function main() {
 
     $config_info = $config->getConfigInfo();
 
-    KiwiOutput::get()->setThreshold($config_info['debug']);
+    KiwiOutput::get()->setThreshold($config->defaultVerbosity());
 
     // Build the main query on the Emu server.
     $timer_generator = new KiwiTimer();
@@ -120,7 +120,8 @@ function main() {
     KiwiOutput::get()->writeMessage(PHP_EOL . PHP_EOL . $input->getInstructions());
   }
   catch (Exception $e) {
-    KiwiOutput::get()->writeMessage('Unknown error: ' . $e->getMessage(), LOG_ERR);
+    $message = sprintf("Unknown error: %s\n\tin %s on line %s", $e->getMessage(), $e->getFile(), $e->getLine());
+    KiwiOutput::get()->writeMessage($message, LOG_ERR);
   }
 
   KiwiOutput::info('Total run time: ' . number_format($timer_run->stop(), 2) . ' seconds');
@@ -213,7 +214,14 @@ class KiwiImuFactory {
   public function getNewEmuSession($suspend = FALSE) {
     $server_info = $this->config->getEmuInfo();
     $session = new KiwiImuSession($this->config);
-    $session->login($server_info['user'], $server_info['password']);
+
+    // Depending on the Emu configuration, we may need to authenticate against
+    // the user account.  If not, though, calling login() when we don't need to
+    // can cause the Emu process to hang.  We therefore only try to authenticate
+    // if a username and password were provided in the configuration.
+    if ($server_info['user'] && $server_info['password']) {
+      $session->login($server_info['user'], $server_info['password']);
+    }
 
     $session->connect();
 
@@ -262,10 +270,15 @@ function main_cleanup(KiwiConfiguration $config) {
   // be synchronous later.
   $server_info = $config->getSolrInfo();
   $solr = new KiwiSolrService($server_info['host'], $server_info['port'], $server_info['path']);
+  $timer_commit = new KiwiTimer();
   KiwiOutput::info("Committing Solr data...");
   $solr->commit();
+  KiwiOutput::info('Solr commit time: ' . number_format($timer_commit->stop(), 2) . ' seconds');
+
+  $timer_optimize = new KiwiTimer();
   KiwiOutput::info("Optimizing Solr index...");
   $solr->optimize();
+  KiwiOutput::info('Solr optimize time: ' . number_format($timer_optimize->stop(), 2) . ' seconds');
 }
 
 /**
@@ -293,9 +306,11 @@ function main_processor(KiwiConfiguration $config, $child_id, KiwiImuFactory $fa
     $processor->run();
   }
   catch(Exception $e) {
-    debug($e->getTrace());
+    //debug($e->getTrace());
     debug('Error message is: ' . (string)$e);
     debug('Error code is: ' . $e->getCode());
+    debug('Error line is: ' . $e->getFile() . ', line '. $e->getLine());
+    debug(get_stack($e));
   }
 
   KiwiOutput::debug("Processor {$child_id}: Maximum memory used (bytes): " . number_format(memory_get_peak_usage(TRUE)));

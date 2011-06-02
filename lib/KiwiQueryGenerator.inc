@@ -31,7 +31,8 @@ class KiwiQueryGenerator {
 
   public function run() {
 
-    $module = $this->session->newModuleHandler(FALSE);
+    $base_table = $this->config->baseTable();
+    $module = $this->session->newModuleHandler($base_table['name'], FALSE);
 
     // Run initial query as defined by the config object.
     $terms = array();

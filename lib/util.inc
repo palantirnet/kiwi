@@ -36,6 +36,47 @@ function recursive_implode($glue, $pieces) {
   return implode($glue, $ret_val);
 }
 
+
+/**
+ * Returns the call stack for the specified exception.
+ *
+ * The normal getTrace() method of an exception includes all arguments, which
+ * when passing objects around results in uselessly large variables.  It also
+ * mismatches line numbers due to stupidity in PHP's backtrace logic.  This
+ * utility function works around both issues and returns a formatted
+ * string of the call stack, without the arguments or other flotsam.
+ *
+ * @param Exception $e
+ *   The exception whose stack we want to decode.
+ * @return string
+ */
+function get_stack(Exception $e) {
+
+  $trace = array();
+  $return = array();
+
+  $stack = $e->getTrace();
+
+  for ($i = 0, $stack_count = count($stack); $i < $stack_count; ++$i) {
+    $line = array(
+      'file' => isset($stack[$i]['file']) ? $stack[$i]['file'] : NULL,
+      'line' => isset($stack[$i]['line']) ? $stack[$i]['line'] : NULL,
+      'function' => isset($stack[$i + 1]['function']) ? $stack[$i + 1]['function'] : NULL,
+      'class' => isset($stack[$i + 1]['class']) ? $stack[$i + 1]['class'] : NULL,
+      'type' => isset($stack[$i + 1]['type']) ? $stack[$i + 1]['type'] : NULL,
+    );
+    $line['stack_call'] = (!empty($line['class']) ? $line['class'] . '::' : '') . $line['function'];
+    $trace[] = $line;
+  }
+
+  foreach ($trace as $call) {
+    $return[] = sprintf('%-30s in %s line %s', $call['stack_call'], $call['file'], $call['line']);
+  }
+
+  return implode(PHP_EOL, $return);
+}
+
+
 /**
  * Exception for a missing Kiwi configuration file.
  */
@@ -220,7 +261,7 @@ class KiwiOutput {
    *
    * @param mixed $string
    *   The message to record.  Alternatively, a non-string value (array or object)
-   *   that will first be serialized for display.  That makes it useful for 
+   *   that will first be serialized for display.  That makes it useful for
    *   all sorts of debugging.
    * @param string $label
    *   An optional title for this message.

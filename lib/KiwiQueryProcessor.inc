@@ -25,7 +25,7 @@ class KiwiQueryProcessor {
   /**
    * The Solr server to which to add documents.
    *
-   * @var Apache_Solr_Service
+   * @var KiwiSolrService
    */
   protected $solr;
 
@@ -92,25 +92,30 @@ class KiwiQueryProcessor {
     $last_irn = 0;
     $processed = 0;
     $counter = 1;
-    while ($processed < $max_records) {
+    $total_records = PHP_INT_MAX;
+    while ($processed < min($max_records, $total_records)) {
       try {
         $result = $this->module->fetch($position, $offset, $count, 'attachFields');
         if (!$processed) {
-          $total_string = number_format($result->hits);
+          $total_records = $result->hits;
+          $total_string = number_format($total_records);
           $max_string = number_format($max_records);
           KiwiOutput::info("Processor {$this->processorId}: Approximately {$total_string} records to process.  Will process {$max_string} at most.");
         }
 
         $documents = array();
         foreach ($result->rows as $row) {
+          //debug($row);
           KiwiOutput::debug("Processor {$this->processorId}: Processing IRN #" . $counter++ . ": " . $row['irn']);
-          $documents[] = $this->createSolrDocument($row);
           if ($last_irn == $row['irn']) {
             break 2;
           }
           else {
             $last_irn = $row['irn'];
           }
+          $doc = $this->createSolrDocument($row);
+          //debug($this->solr->renderDocument($doc));
+          $documents[] = $doc;
         }
 
         $this->solr->addDocuments($documents);
@@ -130,7 +135,7 @@ class KiwiQueryProcessor {
         KiwiOutput::debug($e->getSolrMessage(), 'Failing Solr message');
       }
       catch (ErrorException $e) {
-        KiwiOutput::get()->writeMessage("Processor {$this->processorId}: Error processing Solr document.", LOG_ERR);
+        KiwiOutput::get()->writeMessage("Processor {$this->processorId}: Generic PHP error.", LOG_ERR);
         KiwiOutput::get()->writeMessage(sprintf('%s in %s on line %s', $e->getMessage(), $e->getFile(), $e->getLine()), LOG_ERR);
         break;
       }
@@ -169,25 +174,6 @@ class KiwiQueryProcessor {
   }
 
   /**
-   * Returns a handler object for the specified field.
-   *
-   * @param string $table
-   *   The table to which the field belongs.
-   * @param KiwiEmuField $field
-   *   The field we want to be able to map.
-   * @return FieldHandlerInterface
-   */
-  protected function getHandler($table, KiwiEmuField $field) {
-
-    $field_options = $this->config->getFieldOptions($table, $field->columnName(), $field->dataType());
-    $class = $field_options['handler'];
-    if (empty($this->handlers[$class])) {
-      $this->handlers[$class] = new $class($this->config, $this->session);
-    }
-    return $this->handlers[$class];
-  }
-
-  /**
    * Returns an array of the tables/fields for the query.
    *
    * @todo Handle reference fields properly.
@@ -201,9 +187,9 @@ class KiwiQueryProcessor {
     $columns = array();
     $base_table = $this->config->baseTable();
 
-    foreach ($this->session->getTable($base_table['name']) as $field) {
-      if ($field->isAttachmentField()) {
-        $columns[] = $this->getNestedFetchSet($field);
+    foreach ($this->session->getTable($base_table['name'], 'attach') as $field) {
+      if ($field->isReferenceField()) {
+        $columns[] = $this->getNestedFetchSet($field, $base_table['name']);
       }
       else {
         $columns[] = $field->columnName();
@@ -214,13 +200,31 @@ class KiwiQueryProcessor {
     return $columns;
   }
 
-  protected function getNestedFetchSet(KiwiEmuField $field) {
+  /**
+   * Returns a nested set of fields for the fetch set from referenced tables.
+   *
+   * @param KiwiEmuField $field
+   *   The reference field we want to traverse to get more fields from a dependent
+   *   table.
+   * @param string $parent_table
+   *   The name of the table from which we are referencing.  This is used to
+   *   detect and avoid infinite loops.
+   * @return array
+   */
+  protected function getNestedFetchSet(KiwiEmuField $field, $parent_table) {
     $columns = array();
     $table = $field->refTable();
-    $refTable = $this->session->getTable($table);
-    foreach ($refTable as $ref_field) {
-      if ($ref_field->isAttachmentField()) {
-        $columns[] = $this->getNestedFetchSet($ref_field);
+    $ref_table = $this->session->getTable($table);
+    foreach ($ref_table as $ref_field) {
+      // A table can reference itself, which if we kept on going would result
+      // in an infinite loop.  Instead, we check for a reference back to the
+      // original table and only traverse one level.  That is, we can go from
+      // ecatalogue->ecatalogue, but ecatalogue->ecatalogue->ecatalogue will
+      // be skipped.
+      if ($ref_field->isReferenceField()) {
+        if ($ref_field->refTable() != $parent_table) {
+          $columns[] = $this->getNestedFetchSet($ref_field, $ref_table->getName());
+        }
       }
       else {
         $columns[] = $ref_field->columnName();
@@ -295,13 +299,15 @@ class FieldHandlerBase implements FieldHandlerInterface {
     $this->session = $session;
   }
 
-  public function map(KiwiEmuField $field_info, $value, Apache_Solr_Document $document, $field_prefix = '') {
+  public function map(KiwiEmuField $field_info, $value, Apache_Solr_Document $document, $field_prefix = '', $force_multi = FALSE) {
     // Some field types will die if there's no value specified, so skip empty
     // values entirely.
     if ($value) {
       KiwiOutput::debug("\tMapping " . $field_info->columnName() . " using " . get_class($this));
 
-      $prefix = $this->getTypePrefix($field_info);
+      $value = $this->normalizeCharset($value);
+
+      $prefix = $this->getTypePrefix($field_info, $force_multi);
       $solr_field_name = $prefix . '_' . ($field_prefix ? ($field_prefix . '_') : '') . $field_info->itemName();
       $document->$solr_field_name = $value;
 
@@ -314,6 +320,44 @@ class FieldHandlerBase implements FieldHandlerInterface {
   }
 
   /**
+   * Normalize a value to UTF-8 character encoding.
+   *
+   * This method is a horrid hack, but the best we can do at the moment.  The
+   * problem is that the incoming data may be of unknown character encoding,
+   * and PHP has no reliable way to detect the character encoding.  We therefore
+   * make a good faith attempt to convert extended characters (accents, etc.)
+   * to UTF-8.
+   *
+   * @todo Verify that this still works with non-Latin input strings.
+   * @param mixed $value
+   *   The value to be normalized.  If it is an array, this method will be called
+   *   recursively on each element.
+   * @return mixed
+   *   The passed value, translated to UTF-8.
+   */
+  protected function normalizeCharset($value) {
+    // If we're processing an array, process each value of the array individually.
+    if (is_array($value)) {
+      return array_map(array($this, 'normalizeCharset'), $value);
+    }
+
+    // Convert any characters we possibly can to their HTML encoded entities.
+    // If we don't specify a character encoding then this should do at least
+    // a passingly decent job of detecting it, or at least doesn't care as much
+    // as other APIs do.  This won't catch every character, but should catch all
+    // normal accented characters at least.
+    $value = htmlentities($value, ENT_NOQUOTES);
+
+    // Now convert those HTML entities back into real characters, but this time
+    // insist on UTF-8.  If all goes well, this will at worst convert UTF-8
+    // characters back to UTF-8 and at best convert ISO-8859-1 characters to
+    // HTML entities and from HTML entities to UTF-8 characters.
+    $value = html_entity_decode($value, ENT_NOQUOTES, 'UTF-8');
+
+    return $value;
+  }
+
+  /**
    * Returns the solr field prefix for the provided field.
    *
    * @param KiwiEmuField $field_info
@@ -322,8 +366,8 @@ class FieldHandlerBase implements FieldHandlerInterface {
    *   The prefix for this field type.  Note it does not include the trailing _,
    *   so you'll have to add it yourself.
    */
-  protected function getTypePrefix(KiwiEmuField $field_info) {
-    return ($field_info->isMultiValue()) ? $this->prefix['multi'] : $this->prefix['single'];
+  protected function getTypePrefix(KiwiEmuField $field_info, $force_multi = FALSE) {
+    return ($force_multi || $field_info->isMultiValue()) ? $this->prefix['multi'] : $this->prefix['single'];
   }
 }
 
@@ -334,10 +378,11 @@ class FieldHandlerBase implements FieldHandlerInterface {
  */
 class AlternateHandler extends FieldHandlerBase {
 
-  public function map(KiwiEmuField $field_info, $value, Apache_Solr_Document $document, $field_prefix = '') {
+  public function map(KiwiEmuField $field_info, $value, Apache_Solr_Document $document, $field_prefix = '', $force_multi = FALSE) {
     //KiwiOutput::get()->setThreshold(LOG_DEBUG);
     if ($value) {
       debug('In AlternateHandler');
+      debug("IRN: " . $document->id);
       $info = (string)$field_info;
       debug($info);
       //debug(array_keys($info));
@@ -351,3 +396,4 @@ class AlternateHandler extends FieldHandlerBase {
     //KiwiOutput::get()->setThreshold();
   }
 }
+

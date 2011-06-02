@@ -38,7 +38,7 @@ class KiwiInput {
       'value' => 'config.xml',
       'description' => 'The configuration file to process.  If a path is specified, it will be interpreted relative to the current working directory.',
     );
-    $options['debug'] = array(
+    $options['verbosity'] = array(
       'value' => LOG_INFO,
       'description' => 'The level of output verbosity. To increase it, specify -v, -vv, -vvv, etc. to increase the verbosity.',
     );
@@ -80,7 +80,7 @@ class KiwiInput {
       // Handle boolean options and other flags.
       if (preg_match('/-(v+)/', $argument, $matches)) {
         $chars = count_chars($matches[1], 1);
-        $options['debug']['value'] += $chars[ord('v')];
+        $options['verbosity']['value'] += $chars[ord('v')];
       }
 
     }

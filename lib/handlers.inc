@@ -15,13 +15,15 @@ class TextHandler extends FieldHandlerBase {
  */
 class DateHandler extends TextHandler {
 
-  public function map(KiwiEmuField $field_info, $value, Apache_Solr_Document $document, $field_prefix = '') {
-    //KiwiOutput::get()->setThreshold(LOG_DEBUG);
+  public function map(KiwiEmuField $field_info, $value, Apache_Solr_Document $document, $field_prefix = '', $force_multi = FALSE) {
     if ($value) {
       if (!is_array($value)) {
         $value = array($value);
       }
       $values = array();
+      $day_values = array();
+      $month_values = array();
+      $year_values = array();
       foreach ($value as $date_value) {
         // Sometimes, we may get an array that has a NULL value in it.  This is
         // most likely caused by user error entering content into Emu, but we
@@ -84,7 +86,6 @@ class DateHandler extends TextHandler {
       $solr_field_name = $base . '_day';
       $document->$solr_field_name = $day_values;
     }
-    //KiwiOutput::get()->setThreshold();
   }
 }
 
@@ -97,8 +98,8 @@ class IntegerHandler extends FieldHandlerBase {
     'multi' => 'im'
   );
 
-  protected function getTypePrefix(KiwiEmuField $field_info) {
-    if ($field_info->isSortable() && !$field_info->isMultiValue()) {
+  protected function getTypePrefix(KiwiEmuField $field_info, $force_multi = FALSE) {
+    if ($field_info->isSortable() && !($force_multi ||$field_info->isMultiValue())) {
       return 'sint';
     }
     parent::getTypePrefix($field_info);
@@ -114,8 +115,8 @@ class FloatHandler extends FieldHandlerBase {
     'multi' => 'tfm'
   );
 
-  protected function getTypePrefix(KiwiEmuField $field_info) {
-    if ($field_info->isSortable() && !$field_info->isMultiValue()) {
+  protected function getTypePrefix(KiwiEmuField $field_info, $force_multi = FALSE) {
+    if ($field_info->isSortable() && !($force_multi || $field_info->isMultiValue())) {
       return 'sfloat';
     }
     parent::getTypePrefix($field_info);
@@ -127,7 +128,7 @@ class FloatHandler extends FieldHandlerBase {
  */
 class LatLongHandler extends FloatHandler {
 
-  public function map(KiwiEmuField $field_info, $value, Apache_Solr_Document $document, $field_prefix = '') {
+  public function map(KiwiEmuField $field_info, $value, Apache_Solr_Document $document, $field_prefix = '', $force_multi = FALSE) {
     if ($value) {
       if ($field_info->isMultiValue() || is_array($value)) {
         $new_values = array();
@@ -166,7 +167,7 @@ class LatLongHandler extends FloatHandler {
  * Use this handler for defaults, or for fields that should be supressed entirely.
  */
 class NullHandler extends FieldHandlerBase {
-  public function map(KiwiEmuField $field_info, $value, Apache_Solr_Document $document, $field_prefix = '') {}
+  public function map(KiwiEmuField $field_info, $value, Apache_Solr_Document $document, $field_prefix = '', $force_multi = FALSE) {}
 }
 
 /**
@@ -179,7 +180,7 @@ class NesttabHandler extends TextHandler {
 
   protected $separator = ' | ';
 
-  public function map(KiwiEmuField $field_info, $value, Apache_Solr_Document $document, $field_prefix = '') {
+  public function map(KiwiEmuField $field_info, $value, Apache_Solr_Document $document, $field_prefix = '', $force_multi = FALSE) {
     if ($value) {
 
       // Because we do not know in advance what the structure of the field is,
@@ -203,7 +204,7 @@ class NesttabHandler extends TextHandler {
  * These are single-value 1:1 reference fields.
  */
 class AttachmentReferenceHandler extends FieldHandlerBase {
-  public function map(KiwiEmuField $field_info, $value, Apache_Solr_Document $document, $field_prefix = '') {
+  public function map(KiwiEmuField $field_info, $value, Apache_Solr_Document $document, $field_prefix = '', $force_multi = FALSE) {
     //debug($field_info);
 
     if ($value) {
@@ -219,6 +220,55 @@ class AttachmentReferenceHandler extends FieldHandlerBase {
         $handler = $ref_field->getHandler();
         KiwiOutput::debug("\t\tSub-mapping " . $ref_field->columnName() . " using " . get_class($handler));
         $handler->map($ref_field, $v, $document, $field_prefix . $field_info->itemName());
+      }
+    }
+  }
+}
+
+/**
+ * Handler for Merge reference fields.
+ *
+ * These are multi-value reference fields.
+ */
+class MergeReferenceHandler extends FieldHandlerBase {
+
+  protected $separator = ' | ';
+
+  public function map(KiwiEmuField $field_info, $value, Apache_Solr_Document $document, $field_prefix = '', $force_multi = FALSE) {
+    if ($value && current($value)) {
+      KiwiOutput::debug("\tMapping " . $field_info->columnName() . " using " . get_class($this));
+
+      $ref_table = $this->session->getTable($field_info->refTable());
+      KiwiOutput::debug("\tThis field references: " . $ref_table->getName());
+
+      foreach ($value as $i => $sub_record) {
+        foreach ($sub_record as $field_name => $v) {
+
+          $ref_field = $ref_table->getField($field_name);
+          if ($ref_field->isReferenceField()) {
+            // Attachment fields referenced from a Merge field are handled directly
+            // rather than being folded.  Fortunately we know that Attachment
+            // fields are single-value.  We need to include the _ in the prefix
+            // though, because we're nesting prefixes here.
+            $ref_field->getHandler()->map($ref_field, $v, $document, $field_prefix . $field_info->itemName() . '_');
+          }
+          else {
+            // If the sub-field is multi-value, it needs to get folded down to
+            // a single string.  Solr can't handle sub-array fields.
+            if (is_array($v)) {
+              $v = recursive_implode($this->separator, array_filter($v));
+            }
+            if ($v) {
+              $fields[$field_name][] = $v;
+            }
+          }
+        }
+      }
+
+      foreach ($fields as $field_name => $v) {
+        $ref_field = $ref_table->getField($field_name);
+        $handler = $ref_field->getHandler();
+        $handler->map($ref_field, $v, $document, $field_prefix . $field_info->itemName(), TRUE);
       }
     }
   }

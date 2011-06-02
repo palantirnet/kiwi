@@ -10,8 +10,8 @@ class KiwiSolrService extends Apache_Solr_Service {
 
   /**
    * Render a single Document fragment.
-   * 
-   * This is just a public wrapper around the foolishly protected 
+   *
+   * This is just a public wrapper around the foolishly protected
    * _documentToXmlFragment() method.  It also pretty prints if possible.
    *
    * @param Apache_Solr_Document $document

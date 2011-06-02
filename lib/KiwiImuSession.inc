@@ -99,9 +99,8 @@ class KiwiImuSession extends IMuSession {
    *
    * @return IMuModule
    */
-  public function newModuleHandler($destroy = TRUE) {
-    $base_table = $this->config->baseTable();
-    $module = new IMuModule($base_table['name'], $this);
+  public function newModuleHandler($base_table, $destroy = TRUE) {
+    $module = new IMuModule($base_table, $this);
 
     // Leave the result set open on the server.  That allows us to reconnect
     // to it from the child processes later.
@@ -178,13 +177,23 @@ class KiwiImuSession extends IMuSession {
    *
    * @param string $name
    *   The name of the table we want information about.
+   * @param string $type
+   *   The type of table.  Values are attach, merge, or collapse.
    * @return KiwiEmuTable
    */
-  public function getTable($name) {
-    if (empty($this->tables[$name])) {
-      $this->tables[$name] = new KiwiEmuTable($this->config, $this, $this->getSchemaInfo($name));
+  public function getTable($name, $type = 'attach') {
+    if (empty($this->tables[$name][$type])) {
+      $this->tables[$name][$type] = new KiwiEmuTable($this->config, $this, $this->getSchemaInfo($name), $type);
     }
-    return $this->tables[$name];
+    return $this->tables[$name][$type];
+  }
+
+  public function getTables($type) {
+    $tables = array();
+    foreach ($this->config->getTables($type) as $name) {
+      $tables[] = $this->getTable($name, $type);
+    }
+    return $tables;
   }
 
   /**
@@ -209,6 +218,11 @@ class KiwiImuSession extends IMuSession {
  * Exception for connection errors from Emu.
  */
 class KiwiEmuConnectionException extends Exception {}
+
+/**
+ * Exception for a missing Field in the schema.
+ */
+class KiwiEmuFieldNotFoundException extends Exception {}
 
 class KiwiEmuTable implements IteratorAggregate {
 
@@ -253,13 +267,13 @@ class KiwiEmuTable implements IteratorAggregate {
    * @param array $schema
    *   The schema definition for this table.
    */
-  public function __construct(KiwiConfiguration $config, KiwiImuSession $session, $schema) {
+  public function __construct(KiwiConfiguration $config, KiwiImuSession $session, $schema, $table_type = 'attach') {
     $this->schema = $schema;
     $this->config = $config;
     $this->session = $session;
 
     // Split out our fields up front, since we're almost certain to need them.
-    foreach ($this->config->getFields($this->getName()) as $field_name) {
+    foreach ($this->config->getFields($this->getName(), 'all', $table_type) as $field_name) {
       if (isset($this->schema['columns'][$field_name])) {
         $this->fields[$field_name] = new KiwiEmuField($this->config, $this->session, $this->getName(), $this->schema['columns'][$field_name]);
       }
@@ -286,6 +300,9 @@ class KiwiEmuTable implements IteratorAggregate {
    * @return KiwiEmuField
    */
   public function getField($field) {
+    if (!isset($this->fields[$field])) {
+      throw new KiwiEmuFieldNotFoundException("Field {$field} not found in schema for table " . $this->getName());
+    }
     return $this->fields[$field];
   }
 
@@ -338,7 +355,7 @@ class KiwiEmuField {
    * @code
    * $this->session->getTable($this->table);
    * @endcode
-   * 
+   *
    * if necessary.
    *
    * @var string
@@ -413,6 +430,36 @@ class KiwiEmuField {
   }
 
   /**
+   * Returns True if this field is a Merge field, False otherwise.
+   *
+   * @return boolean
+   */
+  public function isMergeField() {
+    return ($this->isMultiValue() && substr($this->schema['ColumnName'], -7) == 'Ref_tab');
+  }
+
+  /**
+   * Returns True if htis field is a Nested table field, False otherwise.
+   *
+   * @return boolean
+   */
+  public function isNesttabField() {
+    return ($this->schema['DataKind'] == 'dkNested');
+  }
+
+  /**
+   * Returns True if this field is a reference to another module/table.
+   *
+   * There are multiple kinds of reference field, as far as we're concerned, but
+   * this method will return true for all of them.
+   *
+   * @return boolean
+   */
+  public function isReferenceField() {
+    return $this->isMergeField() || $this->isAttachmentField();
+  }
+
+  /**
    * Returns the name of the table referenced by this field, if any.
    *
    * @return string
@@ -440,9 +487,21 @@ class KiwiEmuField {
    * @return FieldHandlerInterface
    */
   public function getHandler() {
-    // If it's an attachment field, override the type since Emu files them
-    // as integers.
-    $data_type = $this->isAttachmentField() ? 'Attachment' : $this->dataType();
+
+    // Reference fields are stored as integers, so we need to override the type
+    // on those.
+     if ($this->isMergeField()) {
+      $data_type = 'Merge';
+    }
+    else if ($this->isAttachmentField()) {
+      $data_type = 'Attachment';
+    }
+    else if ($this->isNesttabField()) {
+      $data_type = 'Nesttab';
+    }
+    else {
+      $data_type = $this->dataType();
+    }
 
     $field_options = $this->config->getFieldOptions($this->table, $this->columnName(), $data_type);
     $class = $field_options['handler'];
