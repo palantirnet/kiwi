@@ -509,7 +509,6 @@
     <field name="XraXrayPreparedByRef_tab" indexed="1" stored="1" fulltext="1" sort="1" />
   </table>
 
-
   <table name="ecollectionevents" type="attach">
     <field name="ColDateVisitedFrom" indexed="1" stored="1"/>
     <field name="SummaryData" indexed="1" stored="1"/>
