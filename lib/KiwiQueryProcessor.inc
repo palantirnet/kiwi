@@ -294,6 +294,16 @@ class FieldHandlerBase implements FieldHandlerInterface {
    */
   protected $prefix;
 
+  /**
+   * Separator for field concatenation.
+   *
+   * In many cases we fold fields together to make them easily searchable but
+   * not really displayble.  This delimiter is used when doing so.
+   *
+   * @var string
+   */
+  protected $separator = ' | ';
+
   public function __construct(KiwiConfiguration $config, KiwiImuSession $session) {
     $this->config = $config;
     $this->session = $session;
@@ -317,7 +327,7 @@ class FieldHandlerBase implements FieldHandlerInterface {
         if (empty($document->content)) {
           $document->content = '';
         }
-        $document->content .= ' | ' . is_array($value) ? recursive_implode(', ', $value) : $value;
+        $document->content .= $this->separator . is_array($value) ? recursive_implode(', ', $value) : $value;
       }
     }
   }

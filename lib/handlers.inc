@@ -178,8 +178,6 @@ class NullHandler extends FieldHandlerBase {
  */
 class NesttabHandler extends TextHandler {
 
-  protected $separator = ' | ';
-
   public function map(KiwiEmuField $field_info, $value, Apache_Solr_Document $document, $field_prefix = '', $force_multi = FALSE) {
     if ($value) {
 
@@ -231,8 +229,6 @@ class AttachmentReferenceHandler extends FieldHandlerBase {
  * These are multi-value reference fields.
  */
 class MergeReferenceHandler extends FieldHandlerBase {
-
-  protected $separator = ' | ';
 
   public function map(KiwiEmuField $field_info, $value, Apache_Solr_Document $document, $field_prefix = '', $force_multi = FALSE) {
     if ($value && current($value)) {
