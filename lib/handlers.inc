@@ -264,7 +264,9 @@ class MergeReferenceHandler extends FieldHandlerBase {
             if (is_array($v)) {
               $v = recursive_implode($this->separator, array_filter($v));
             }
-            $fields[$field_name][] = $v;
+            if ($v) {
+              $fields[$field_name][] = $v;
+            }
           }
         }
       }
