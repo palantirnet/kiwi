@@ -16,7 +16,6 @@ class TextHandler extends FieldHandlerBase {
 class DateHandler extends TextHandler {
 
   public function map(KiwiEmuField $field_info, $value, Apache_Solr_Document $document, $field_prefix = '', $force_multi = FALSE) {
-    //KiwiOutput::get()->setThreshold(LOG_DEBUG);
     if ($value) {
       if (!is_array($value)) {
         $value = array($value);
@@ -87,7 +86,6 @@ class DateHandler extends TextHandler {
       $solr_field_name = $base . '_day';
       $document->$solr_field_name = $day_values;
     }
-    //KiwiOutput::get()->setThreshold();
   }
 }
 
@@ -243,10 +241,6 @@ class MergeReferenceHandler extends FieldHandlerBase {
       $ref_table = $this->session->getTable($field_info->refTable());
       KiwiOutput::debug("\tThis field references: " . $ref_table->getName());
 
-      //debug((string)$field_info);
-      //debug($field_info->isMergeField() ? "Is Merge" : "Is not merge");
-      //debug($value, 'Field value');
-
       foreach ($value as $i => $sub_record) {
         foreach ($sub_record as $field_name => $v) {
 
@@ -271,15 +265,11 @@ class MergeReferenceHandler extends FieldHandlerBase {
         }
       }
 
-      //debug($fields, "Reformatted fields");
-
       foreach ($fields as $field_name => $v) {
         $ref_field = $ref_table->getField($field_name);
         $handler = $ref_field->getHandler();
         $handler->map($ref_field, $v, $document, $field_prefix . $field_info->itemName(), TRUE);
       }
-
-      unset($GLOBALS['merge']);
     }
   }
 }
