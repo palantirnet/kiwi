@@ -270,10 +270,15 @@ function main_cleanup(KiwiConfiguration $config) {
   // be synchronous later.
   $server_info = $config->getSolrInfo();
   $solr = new KiwiSolrService($server_info['host'], $server_info['port'], $server_info['path']);
+  $timer_commit = new KiwiTimer();
   KiwiOutput::info("Committing Solr data...");
   $solr->commit();
+  KiwiOutput::info('Solr commit time: ' . number_format($timer_commit->stop(), 2) . ' seconds');
+
+  $timer_optimize = new KiwiTimer();
   KiwiOutput::info("Optimizing Solr index...");
   $solr->optimize();
+  KiwiOutput::info('Solr optimize time: ' . number_format($timer_optimize->stop(), 2) . ' seconds');
 }
 
 /**
