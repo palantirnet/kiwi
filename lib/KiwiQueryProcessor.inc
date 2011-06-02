@@ -314,7 +314,10 @@ class FieldHandlerBase implements FieldHandlerInterface {
       // If appropriate, throw this field into the content solr field as well.  We
       // use that for all fulltext index searching.
       if ($field_info->indexFulltext()) {
-        $document->content = is_array($value) ? recursive_implode(', ', $value) : $value;
+        if (empty($document->content)) {
+          $document->content = '';
+        }
+        $document->content .= ' | ' . is_array($value) ? recursive_implode(', ', $value) : $value;
       }
     }
   }
