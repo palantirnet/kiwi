@@ -327,7 +327,7 @@ class FieldHandlerBase implements FieldHandlerInterface {
         if (empty($document->content)) {
           $document->content = '';
         }
-        $document->content .= $this->separator . is_array($value) ? recursive_implode(', ', $value) : $value;
+        $document->content .= $this->separator . (is_array($value) ? recursive_implode(', ', $value) : $value);
       }
     }
   }
