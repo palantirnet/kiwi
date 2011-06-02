@@ -482,29 +482,31 @@
     <comment>Sample reference fields, single-value.</comment>
     <field name="CatCheckedByRef" indexed="1" stored="1" fulltext="1" sort="1" />
     <field name="ColCollectionEventRef" indexed="1" stored="1" fulltext="1" sort="1" />
-    <field name="ColCollectorRef_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+    <field name="EcoHostPhorophyteRef" indexed="1" stored="1" fulltext="1" sort="1" />
+    <field name="EcoHostTargetTaxonRef" indexed="1" stored="1" fulltext="1" sort="1" />
     <field name="ColMammalsCollectorRef" indexed="1" stored="1" fulltext="1" sort="1" />
     <field name="ColSiteLocationRef" indexed="1" stored="1" fulltext="1" sort="1" />
     <field name="ConCheckedByRef" indexed="1" stored="1" fulltext="1" sort="1" />
+    <field name="IdeFiledAsRef" indexed="1" stored="1" fulltext="1" sort="1" />
+    <field name="PriAccessionNumberRef" indexed="1" stored="1" fulltext="1" sort="1" />
+    <field name="ZooZooRef" indexed="1" stored="1" fulltext="1" sort="1" />
+    <field name="PriCataloguedByRef" indexed="1" stored="1" fulltext="1" sort="1" />
+
+    <comment>Sample reference fields, multi-value</comment>
+    <field name="ColCollectorRef_tab" indexed="1" stored="1" fulltext="1" sort="1" />
     <field name="EcoAssociatedTaxaRef_tab" indexed="1" stored="1" fulltext="1" sort="1" />
-    <field name="EcoHostPhorophyteRef" indexed="1" stored="1" fulltext="1" sort="1" />
-    <field name="EcoHostTargetTaxonRef" indexed="1" stored="1" fulltext="1" sort="1" />
     <field name="GenOtherPreparedByRef_tab" indexed="1" stored="1" fulltext="1" sort="1" />
     <field name="GenPreparedByRef_tab" indexed="1" stored="1" fulltext="1" sort="1" />
     <field name="HosCatalogedHostTaxonRef_tab" indexed="1" stored="1" fulltext="1" sort="1" />
     <field name="HosOtherHostTaxonRef_tab" indexed="1" stored="1" fulltext="1" sort="1" />
     <field name="HosRepositoryRef_tab" indexed="1" stored="1" fulltext="1" sort="1" />
     <field name="IdeFiledAsIdentifiedByRef_tab" indexed="1" stored="1" fulltext="1" sort="1" />
-    <field name="IdeFiledAsRef" indexed="1" stored="1" fulltext="1" sort="1" />
     <field name="IdeFilingFamilyRef_tab" indexed="1" stored="1" fulltext="1" sort="1" />
     <field name="IdeTaxonRef_tab" indexed="1" stored="1" fulltext="1" sort="1" />
     <field name="LotOwnerRef_tab" indexed="1" stored="1" fulltext="1" sort="1" />
-    <field name="PriAccessionNumberRef" indexed="1" stored="1" fulltext="1" sort="1" />
-    <field name="PriCataloguedByRef" indexed="1" stored="1" fulltext="1" sort="1" />
     <field name="TisCollectorRef_tab" indexed="1" stored="1" fulltext="1" sort="1" />
     <field name="TisPreparedByRef_tab" indexed="1" stored="1" fulltext="1" sort="1" />
     <field name="XraXrayPreparedByRef_tab" indexed="1" stored="1" fulltext="1" sort="1" />
-    <field name="ZooZooRef" indexed="1" stored="1" fulltext="1" sort="1" />
   </table>
 
 
