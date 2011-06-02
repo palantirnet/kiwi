@@ -22,6 +22,9 @@ class DateHandler extends TextHandler {
         $value = array($value);
       }
       $values = array();
+      $day_values = array();
+      $month_values = array();
+      $year_values = array();
       foreach ($value as $date_value) {
         // Sometimes, we may get an array that has a NULL value in it.  This is
         // most likely caused by user error entering content into Emu, but we
