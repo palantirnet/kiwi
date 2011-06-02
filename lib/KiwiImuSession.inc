@@ -219,6 +219,11 @@ class KiwiImuSession extends IMuSession {
  */
 class KiwiEmuConnectionException extends Exception {}
 
+/**
+ * Exception for a missing Field in the schema.
+ */
+class KiwiEmuFieldNotFoundException extends Exception {}
+
 class KiwiEmuTable implements IteratorAggregate {
 
   /**
@@ -295,6 +300,9 @@ class KiwiEmuTable implements IteratorAggregate {
    * @return KiwiEmuField
    */
   public function getField($field) {
+    if (!isset($this->fields[$field])) {
+      throw new KiwiEmuFieldNotFoundException("Field {$field} not found in schema for table " . $this->getName());
+    }
     return $this->fields[$field];
   }
 
