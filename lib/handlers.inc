@@ -20,10 +20,12 @@ class DateHandler extends TextHandler {
       if (!is_array($value)) {
         $value = array($value);
       }
+
       $values = array();
       $day_values = array();
       $month_values = array();
       $year_values = array();
+
       foreach ($value as $date_value) {
         // Sometimes, we may get an array that has a NULL value in it.  This is
         // most likely caused by user error entering content into Emu, but we
@@ -38,7 +40,7 @@ class DateHandler extends TextHandler {
         else {
           list($day, $month, $year) = explode('/', $date_value);
         }
-        // Some dates have no month or day listed at all. In that case, default
+        // Some dates have no month or day or year listed at all. In that case, default
         // to the 1st so that we have a valid date.
         $format = array();
         if (!$day) {
@@ -50,6 +52,7 @@ class DateHandler extends TextHandler {
           // Force-cast to an int to eliminate leading 0s.
           $day_values[] = (int)$day;
         }
+
         if (!$month) {
           $month = 1;
           $month_values[] = 0;
@@ -59,8 +62,17 @@ class DateHandler extends TextHandler {
           // Force-cast to an int to eliminate leading 0s.
           $month_values[] = (int)$month;
         }
-        $format[] = 'Y';
-        $year_values[] = $year;
+
+        if (!$year) {
+          $year = 1;
+          $year_values[] = 0;
+        }
+        else {
+          $format[] = 'Y';
+          // Force-cast to an int to eliminate leading 0s.
+          $year_values[] = (int)$year;
+        }
+
         $date = new DateTime(NULL, new DateTimeZone('UTC'));
         $date->setDate($year, $month, $day);
 
