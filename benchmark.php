@@ -10,21 +10,24 @@ function benchmark() {
   $input->parse();
   $config = new KiwiConfigurationBenchmark($input);
 
+  $benchmarks = array();
   $benchmarks[] = array(
     'processors' => 3,
     'batch_size' => 1,
     'max_size' => 10,
   );
-  $benchmarks[] = array(
-    'processors' => 3,
-    'batch_size' => 1,
-    'max_size' => 100,
-  );
-  $benchmarks[] = array(
-    'processors' => 3,
-    'batch_size' => 1,
-    'max_size' => 1000,
-  );
+
+  foreach (range(1, 3) as $processors) {
+    foreach (array(1, 10, 25, 50, 100, 200) as $batch_size) {
+      foreach (array(10, 100, 500, 1000, 2000) as $max_size) {
+        $benchmarks[] = array(
+          'processors' => $processors,
+          'batch_size' => $batch_size,
+          'max_size' => $max_size,
+        );
+      }
+    }
+  }
 
   foreach ($benchmarks as $benchmark) {
     debug("-----\nProcessors: {$benchmark['processors']}, Batch size: {$benchmark['batch_size']}, Records: {$benchmark['max_size']}");
