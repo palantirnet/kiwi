@@ -18,7 +18,7 @@
     The configuration for each processor.  This does not affect the fields that
     are retrieved.
   -->
-  <processors count="1" batch-size="50" max-size="1000" />
+  <processors count="1" batch-size="50" max-size="100" />
 
   <!--
     The base table of this index.  This must be one of the tables listed below.
@@ -50,6 +50,7 @@
   -->
   <filters>
     <filter name="AdmPublishWebNoPassword" value="Yes" />
+<!--    <filter name="irn" value="373216" />-->
 <!--    <filter name="irn" value="165933" />-->
 <!--    <filter name="irn" value="1809084" />-->
 <!--    <filter name="irn" value="150552" />-->

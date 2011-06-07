@@ -17,7 +17,7 @@ function benchmark() {
     'max_size' => 10,
   );
 
-  foreach (range(1, 3) as $processors) {
+  foreach (range(3, 4) as $processors) {
     foreach (array(1, 10, 25, 50, 100, 200) as $batch_size) {
       foreach (array(10, 100, 500, 1000, 2000) as $max_size) {
         $benchmarks[] = array(
