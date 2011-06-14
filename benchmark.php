@@ -1,7 +1,7 @@
 #!/usr/bin/php
 <?php
 
-require_once('bootstrap.php');
+require_once('lib/bootstrap.inc');
 
 kiwi_init();
 
