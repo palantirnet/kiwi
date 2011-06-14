@@ -38,6 +38,10 @@ class KiwiInput {
       'value' => 'config.xml',
       'description' => 'The configuration file to process.  If a path is specified, it will be interpreted relative to the current working directory.',
     );
+    $options['directory'] = array(
+      'value' => '',
+      'description' => 'A directory of files to process.  All .xml files in the specified directory will be processed sequentially. If specified, this value overrides the --config directive.',
+    );
     $options['verbosity'] = array(
       'value' => LOG_INFO,
       'description' => 'The level of output verbosity. To increase it, specify -v, -vv, -vvv, etc. to increase the verbosity.',

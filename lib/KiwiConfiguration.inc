@@ -43,13 +43,18 @@ class KiwiConfiguration {
   /**
    * Constructor.
    *
+   * @param KiwiInput $input
+   *   The input object from which this configuration should operate.
    * @param string $file
-   *   The name of the file with the configuration to load.
+   *   The name of the file with the configuration to load.  If not specified
+   *   it wll be derived from the input object.
    */
-  public function __construct(KiwiInput $input) {
+  public function __construct(KiwiInput $input, $file = '') {
     $this->input = $input;
 
-    $file = $this->input->getOption('config');
+    if (empty($file)) {
+      $file = $this->input->getOption('config');
+    }
 
     if ($file && file_exists($file)) {
 
