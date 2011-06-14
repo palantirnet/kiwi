@@ -383,30 +383,3 @@ class FieldHandlerBase implements FieldHandlerInterface {
     return ($force_multi || $field_info->isMultiValue()) ? $this->prefix['multi'] : $this->prefix['single'];
   }
 }
-
-/**
- * Placeholder handler, just to make sure we can override fields if needed.
- *
- * @todo Remove this once the point has been made.
- */
-class AlternateHandler extends FieldHandlerBase {
-
-  public function map(KiwiEmuField $field_info, $value, Apache_Solr_Document $document, $field_prefix = '', $force_multi = FALSE) {
-    //KiwiOutput::get()->setThreshold(LOG_DEBUG);
-    if ($value) {
-      debug('In AlternateHandler');
-      debug("IRN: " . $document->id);
-      $info = (string)$field_info;
-      debug($info);
-      //debug(array_keys($info));
-      //debug($info['*schema']);
-      //KiwiOutput::debug($field_info, 'Field info');
-      KiwiOutput::debug($value, 'Field value');
-      $prefix = ($field_info->isMultiValue()) ? $this->prefix['multi'] : $this->prefix['single'];
-      $solr_field_name = $prefix . '_' . ($field_prefix ? ($field_prefix . '_') : '') . $field_info->itemName();
-      //$document->$solr_field_name = $value;
-    }
-    //KiwiOutput::get()->setThreshold();
-  }
-}
-
