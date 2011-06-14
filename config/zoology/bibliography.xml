@@ -6,7 +6,7 @@
     That is different for each server.  Use the template below to populate
     a new file with the appropriate data.
    -->
-  <xi:include xmlns:xi="http://www.w3.org/2003/XInclude" href="servers.xml" />
+<xi:include xmlns:xi="http://www.w3.org/2003/XInclude" href="../../servers.xml" />
   <!--
     <servers>
       <solr host="66.158.71.71" port="8080" core="kiwi" path="/emu0/core0" />
@@ -314,31 +314,31 @@
   </table>
 
    <table name="ebibliography" type="attach">
-      <field name="SummaryData" indexed="1" stored="1" />  
-  
+      <field name="SummaryData" indexed="1" stored="1" />
+
     <table name="eparties" type="attach">
-    
-     <field name="SummaryData" indexed="1" stored="1" /> 
+
+     <field name="SummaryData" indexed="1" stored="1" />
      <field name="NamCitedName" indexed="1" stored="1" />
      <field name="NamFullName" indexed="1" stored="1" />
-    
-    
+
+
    <table name="emultimedia" type="attach">
-    <field name="DocHeight_tab" indexed="1" stored="1" /> 
-    <field name="DocIdentifier_tab" indexed="1" stored="1" /> 
-    <field name="DocWidth_tab" indexed="1" stored="1" /> 
-    <field name="MulCreator_tab" indexed="1" stored="1" /> 
-    <field name="SummaryData" indexed="1" stored="1" /> 
-    <field name="MulDescription" indexed="1" stored="1" /> 
-    <field name="MulDocumentType" indexed="1" stored="1" /> 
-    <field name="MulIdentifier" indexed="1" stored="1" /> 
-    <field name="MulMimeFormat" indexed="1" stored="1" /> 
-    <field name="MulMimeType" indexed="1" stored="1" /> 
-    <field name="MulTitle" indexed="1" stored="1" /> 
-  
-  
+    <field name="DocHeight_tab" indexed="1" stored="1" />
+    <field name="DocIdentifier_tab" indexed="1" stored="1" />
+    <field name="DocWidth_tab" indexed="1" stored="1" />
+    <field name="MulCreator_tab" indexed="1" stored="1" />
+    <field name="SummaryData" indexed="1" stored="1" />
+    <field name="MulDescription" indexed="1" stored="1" />
+    <field name="MulDocumentType" indexed="1" stored="1" />
+    <field name="MulIdentifier" indexed="1" stored="1" />
+    <field name="MulMimeFormat" indexed="1" stored="1" />
+    <field name="MulMimeType" indexed="1" stored="1" />
+    <field name="MulTitle" indexed="1" stored="1" />
+
+
   <table name="enarratives" type="attach">
-    <field name="SummaryData" indexed="1" stored="1" /> 
+    <field name="SummaryData" indexed="1" stored="1" />
 
 
   </table>

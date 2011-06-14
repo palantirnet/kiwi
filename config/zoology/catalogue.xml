@@ -6,7 +6,7 @@
     That is different for each server.  Use the template below to populate
     a new file with the appropriate data.
    -->
-  <xi:include xmlns:xi="http://www.w3.org/2003/XInclude" href="servers.xml" />
+<xi:include xmlns:xi="http://www.w3.org/2003/XInclude" href="../../servers.xml" />
   <!--
     <servers>
       <solr host="66.158.71.71" port="8080" core="kiwi" path="/emu0/core0" />
@@ -441,8 +441,8 @@
      <field name="LocDateRemoved0" indexed="1" stored="1" fulltext="1" sort="1" />
      <field name="LocDateReturned0" indexed="1" stored="1" fulltext="1" sort="1" />
      <field name="GenDateOtherPrepared0" indexed="1" stored="1" fulltext="1" sort="1" />-->
-     
-<!--sample date fields, multi-value. -->     
+
+<!--sample date fields, multi-value. -->
      <field name=" SliHPrepDate0" indexed="1" stored="1" fulltext="1" sort="1" />
 
 
@@ -521,7 +521,7 @@
      <field name="PriMount" indexed="1" stored="1" fulltext="1" sort="1" />
      <field name="PriAlcohol" indexed="1" stored="1" fulltext="1" sort="1" />
      <field name="PriSkeleton" indexed="1" stored="1" fulltext="1" sort="1" />
-     <field name="LotCountWet" indexed="1" stored="1" fulltext="1" sort="1" />-->     
+     <field name="LotCountWet" indexed="1" stored="1" fulltext="1" sort="1" />-->
         <field name="CatHFMNHNo" indexed="1" stored="1" fulltext="1" sort="1" />
         <field name="ColCollectionEventRef" indexed="1" stored="1" fulltext="1" sort="1" />
         <field name="ColHReceivedFromRef" indexed="1" stored="1" fulltext="1" sort="1" />
@@ -553,7 +553,7 @@
      <field name="IdeMammalsDescriptionStartPage_tab" indexed="1" stored="1" fulltext="1" sort="1" />
      <field name="LotSlideCount_tab" indexed="1" stored="1" fulltext="1" sort="1" />
      <field name="LotWetCount_tab" indexed="1" stored="1" fulltext="1" sort="1" />
-     <field name="PreOriginalCount_tab" indexed="1" stored="1" fulltext="1" sort="1" />--> 
+     <field name="PreOriginalCount_tab" indexed="1" stored="1" fulltext="1" sort="1" />-->
         <field name="BibBibliographyRef_tab" indexed="1" stored="1" fulltext="1" sort="1" />
         <field name="CitTaxonRef_tab" indexed="1" stored="1" fulltext="1" sort="1" />
         <field name="ColCollectorRef_tab" indexed="1" stored="1" fulltext="1" sort="1" />
@@ -591,7 +591,7 @@
         <field name=" TisCollectorRef_tab" indexed="1" stored="1" fulltext="1" sort="1" />
         <field name=" TisPreparedByRef_tab" indexed="1" stored="1" fulltext="1" sort="1" />
         <field name=" XraXrayPreparedByRef_tab" indexed="1" stored="1" fulltext="1" sort="1" />
-        
+
          <!-- Sample integer field, multi-value. -->
 
 

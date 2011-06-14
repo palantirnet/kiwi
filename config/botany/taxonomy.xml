@@ -4,7 +4,7 @@
   <!-- This include specifies the file that defines the server configuration.
     That is different for each server.  Use the template below to populate
     a new file with the appropriate data.   -->
-  <xi:include xmlns:xi="http://www.w3.org/2003/XInclude" href="servers.xml" />
+<xi:include xmlns:xi="http://www.w3.org/2003/XInclude" href="../../servers.xml" />
   <!--    <servers>
       <solr host="66.158.71.71" port="8080" core="kiwi" path="/emu0/core0" />
       <emu host="66.158.71.71" port="40000" reconnect-port="45000" />
@@ -47,16 +47,16 @@
    	<field name="AdmDateInserted" indexed="1" stored="1" sort="1" />
    	<field name="AdmInsertedBy" indexed="1" stored="1" sort="1" />
 	<field name="AutAuthorString" indexed="1" stored="1" fulltext="1" sort="1" />
-	<field name="CitCitedInRef_tab" indexed="1" stored="1" />	
-	<field name="CitLocality_tab" indexed="1" stored="1" />	
-	<field name="CitPrimary_tab" indexed="1" stored="1" />		
+	<field name="CitCitedInRef_tab" indexed="1" stored="1" />
+	<field name="CitLocality_tab" indexed="1" stored="1" />
+	<field name="CitPrimary_tab" indexed="1" stored="1" />
 	<field name="CitRemarks_tab" indexed="1" stored="1" />
 	<field name="CitSpecimenRef_nesttab" indexed="1" stored="1" />
 	<field name="CitTypeStatus_nesttab" indexed="1" stored="1" />
-	<field name="ClaApplicableCode" indexed="1" stored="1" fulltext="1" />	
-	<field name="ClaClass" indexed="1" stored="1" fulltext="1" sort="1" /> 
-	<field name="ClaCultivar" indexed="1" stored="1 " sort="1" /> 
-	<field name="ClaCultivarName" indexed="1" stored="1" fulltext="1" sort="1" /> 
+	<field name="ClaApplicableCode" indexed="1" stored="1" fulltext="1" />
+	<field name="ClaClass" indexed="1" stored="1" fulltext="1" sort="1" />
+	<field name="ClaCultivar" indexed="1" stored="1 " sort="1" />
+	<field name="ClaCultivarName" indexed="1" stored="1" fulltext="1" sort="1" />
 	<field name="ClaCurrentlyAccepted" indexed="1" stored="1" fulltext="1" sort="1" />
 	<field name="ClaCurrentNameRef" indexed="1" stored="1" fulltext="1" sort="1" />
 	<field name="ClaFamily" indexed="1" stored="1" fulltext="1" sort="1" />
@@ -66,7 +66,7 @@
 	<field name="ClaHybridParent2NameRef" indexed="1" stored="1" fulltext="1" sort="1" />
 	<field name="ClaIncertaeSedis" indexed="1" stored="1" />
 	<field name="ClaIncertaeSedisAuthorityRef" indexed="1" stored="1" />
-	<field name="ClaInfraorder" indexed="1" stored="1" />	
+	<field name="ClaInfraorder" indexed="1" stored="1" />
 	<field name="ClaKingdom" indexed="1" stored="1" fulltext="1" sort="1" />
 	<field name="ClaOrder" indexed="1" stored="1" fulltext="1" sort="1" />
 	<field name="ClaOtherRank_tab" indexed="1" stored="1" fulltext="1" sort="1" />
@@ -115,18 +115,18 @@
 	<field name="NamBriefName" indexed="1" stored="1" fulltext="1" sort="1" />
 	<field name="NamOrganisation" indexed="1" stored="1" fulltext="1" sort="1" />
 	<field name="NamTaxonomicName" indexed="1" stored="1" fulltext="1" sort="1" />
- </table> 
+ </table>
 
  <table name="ecatalogue" type="attach">
  	<field name="irn" indexed="1" stored="1" />
  	<field name="SummaryData" indexed="1" stored="1"/>
- </table> 
- 
+ </table>
+
  <table name="egazetteer" type="attach">
  	<field name="irn" indexed="1" stored="1" />
  	<field name="SummaryData" indexed="1" stored="1"/>
- </table> 
- 
+ </table>
+
  <table name="emultimedia" type="attach">
 	<field name="irn" indexed="1" stored="1" />
 	<field name="SummaryData" indexed="1" stored="1" />
@@ -141,5 +141,5 @@
 	<field name="irn" indexed="1" stored="1" />
 	<field name="SummaryData" indexed="1" stored="1" />
  </table>
- 
+
 </config>

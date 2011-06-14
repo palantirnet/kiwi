@@ -6,7 +6,7 @@
     That is different for each server.  Use the template below to populate
     a new file with the appropriate data.
    -->
-  <xi:include xmlns:xi="http://www.w3.org/2003/XInclude" href="servers.xml" />
+<xi:include xmlns:xi="http://www.w3.org/2003/XInclude" href="../../servers.xml" />
   <!--
     <servers>
       <solr host="66.158.71.71" port="8080" core="kiwi" path="/emu0/core0" />
@@ -90,7 +90,7 @@
     <field name="irn" search="1" display="1" />
 
      <!-- Sample text field, single-value. -->
-    
+
    <field name="AquBottomDescription" indexed="1" stored="1" fulltext="1" sort="1" />
    <field name="AquDrainageCode" indexed="1" stored="1" fulltext="1" sort="1" />
    <field name="AquDrainageDivision" indexed="1" stored="1" fulltext="1" sort="1" />
@@ -191,7 +191,7 @@
 
 
     <!-- Sample text field, multi-value. -->
-    
+
    <field name="AquHabitat_tab" indexed="1" stored="1" fulltext="1" sort="1" />
    <field name="AquSubstrateType_tab" indexed="1" stored="1" fulltext="1" sort="1" />
    <field name="ColCollectionEvents_tab" indexed="1" stored="1" fulltext="1" sort="1" />
@@ -280,15 +280,15 @@
 
 
     <!-- Sample date fields, single-value. -->
-    
+
    <field name="LatPreferredDetDate" indexed="1" stored="1" fulltext="1" sort="1" />
-   
+
     <!-- Sample date fields, multi-value. -->
-    
+
     <field name="LatDetDate0" indexed="1" stored="1" fulltext="1" sort="1" />
 
     <!-- Sample floating point field, single-value. -->
-    
+
   <field name="EraDepthFromFt" indexed="1" stored="1" fulltext="1" sort="1" />
   <field name="EraDepthFromMt" indexed="1" stored="1" fulltext="1" sort="1" />
   <field name="EraDepthToFt" indexed="1" stored="1" fulltext="1" sort="1" />
@@ -316,9 +316,9 @@
      <field name="PhyDepthToFt" indexed="1" stored="1" fulltext="1" sort="1" />
      <field name="PhyDepthToMtr" indexed="1" stored="1" fulltext="1" sort="1" />
 
-  
+
      <!-- Sample floating point field, multi-value. -->
-     
+
   <field name="LatCentroidLatitudeDec_tab" indexed="1" stored="1" fulltext="1" sort="1" />
   <field name="LatCentroidLongitudeDec_tab" indexed="1" stored="1" fulltext="1" sort="1" />
   <field name="LatRadiusNumeric_tab" indexed="1" stored="1" fulltext="1" sort="1" />
@@ -326,8 +326,8 @@
   <field name="LatLatitudeDecimal_nesttab" indexed="1" stored="1" fulltext="1" sort="1" />
   <field name="LatLongitudeDecimal_nesttab" indexed="1" stored="1" fulltext="1" sort="1" />
 
-      <!-- Sample integer field, single value. -->  
-      
+      <!-- Sample integer field, single value. -->
+
      <field name="PhyAltitudeFromFtOrig" indexed="1" stored="1" fulltext="1" sort="1" />
      <field name="PhyAltitudeFromMtrOrig" indexed="1" stored="1" fulltext="1" sort="1" />
      <field name="PhyAltitudeToFtOrig" indexed="1" stored="1" fulltext="1" sort="1" />
@@ -339,11 +339,11 @@
      <field name="PhyDepthToFtOrig" indexed="1" stored="1" fulltext="1" sort="1" />
      <field name="PhyDepthToMtrOrig" indexed="1" stored="1" fulltext="1" sort="1" />
 
-      <!-- Sample integer field, multi-value. --> 
+      <!-- Sample integer field, multi-value. -->
 
-   
-  
-      <!-- Sample integer field, Nested. -->  
+
+
+      <!-- Sample integer field, Nested. -->
 
     <field name="LatLatitudeOrig_nesttab" indexed="1" stored="1" fulltext="1" sort="1" />
     <field name="LatLongitudeOrig_nesttab" indexed="1" stored="1" fulltext="1" sort="1" />
@@ -352,38 +352,38 @@
     <field name="LatUtmZone_nesttab" indexed="1" stored="1" fulltext="1" sort="1" />
     <field name="MulHeight_nesttab" indexed="1" stored="1" fulltext="1" sort="1" />
     <field name="MulWidth_nesttab" indexed="1" stored="1" fulltext="1" sort="1" />
-    
+
     <!-- Sample latitude field, single value. -->
-    
+
     <field name="LatPreferredCentroidLatitude" indexed="1" stored="1" fulltext="1" sort="1" />
-    
+
     <!-- Sample latitude field, multi value. -->
-    
+
     <field name="LatCentroidLatitude0" indexed="1" stored="1" fulltext="1" sort="1" />
-    
+
     <!-- Sample latitude field, nested value. -->
 
     <field name="LatLatitude_nesttab" indexed="1" stored="1" fulltext="1" sort="1" />
     <field name="LatLatitudeDM_nesttab" indexed="1" stored="1" fulltext="1" sort="1" />
-    
+
     <!-- Sample longitude field, single value. -->
-    
+
     <field name="LatPreferredCentroidLongitude" indexed="1" stored="1" fulltext="1" sort="1" />
 
     <!-- Sample longitude field, multi value. -->
-    
+
     <field name="LatCentroidLongitude0" indexed="1" stored="1" fulltext="1" sort="1" />
-    
+
     <!-- Sample longitude field, nested value. -->
 
     <field name="LatLongitude_nesttab" indexed="1" stored="1" fulltext="1" sort="1" />
     <field name="LatLongitudeDM_nesttab" indexed="1" stored="1" fulltext="1" sort="1" />
 
     <!-- Sample reference field, single-value. -->
-    
+
     <field name="LatPreferredDeterminedByRef" indexed="1" stored="1" fulltext="1" sort="1" />
 
-    <!-- Sample reference field, multi-value. -->    
+    <!-- Sample reference field, multi-value. -->
 
     <field name="MulMultiMediaRef_tab" indexed="1" stored="1" fulltext="1" sort="1" />
     <field name="ColCollectionEventsRef_tab" indexed="1" stored="1" fulltext="1" sort="1" />
@@ -395,12 +395,12 @@
     <field name="ColSiteRef" indexed="1" stored="0" fulltext="1" sort="1" />
     <field name="SitSitesRef_tab" indexed="1" stored="1" fulltext="1" sort="0" />
     <field name="ColSiteLocationRef" indexed="1" stored="1" fulltext="1" sort="1" />
-        
+
     <!-- Sample reference field, nested-value. -->
-    
+
     <field name="MulMultiMediaRef_tab" indexed="1" stored="1" fulltext="1" sort="1" />
-    
-    
+
+
 
 <!-- These fields are reporting not found in Emu for some reason.  -->
 <!--    <field name="PriCollectionDate" search="1" display="1" fulltext="1" sort="1" />-->
@@ -408,9 +408,9 @@
   </table>
 
   <table name="ecollectionevents" type="attach">
-  
+
       <field name="irn" search="1" display="1" />
-      <field name="SummaryData" indexed="1" stored="1" /> 
+      <field name="SummaryData" indexed="1" stored="1" />
       <field name="AquVolumeSampledOrig" indexed="1" stored="1"  />
         <field name="AquWaterClarity" indexed="1" stored="1"  />
         <field name="AquWaterHardness" indexed="1" stored="1"  />
@@ -507,44 +507,44 @@
        <field name="MulMultiMediaRef_tab" indexed="1" stored="1" />
        <field name="NarNarrativesRef_tab" indexed="1" stored="1" />
        <field name="ObjObjectsRef_tab" indexed="1" stored="1" />
-       <field name="SigSightedByRef_tab" indexed="1" stored="1" />      
-       
+       <field name="SigSightedByRef_tab" indexed="1" stored="1" />
+
   <table name="eparties" type="attach">
-  
+
       <field name="irn" search="1" display="1" />
-      <field name="SummaryData" indexed="1" stored="1" /> 
-    
-  
+      <field name="SummaryData" indexed="1" stored="1" />
+
+
   <table name="enarratives" type="attach">
-  
+
       <field name="irn" search="1" display="1" />
-      <field name="SummaryData" indexed="1" stored="1" /> 
-    
-  
-  <table name="ecatalogue" type="attach">  
-  
+      <field name="SummaryData" indexed="1" stored="1" />
+
+
+  <table name="ecatalogue" type="attach">
+
       <field name="irn" search="1" display="1" />
-      <field name="SummaryData" indexed="1" stored="1" /> 
+      <field name="SummaryData" indexed="1" stored="1" />
       <field name="DarCatalogNumberText" indexed="1" stored="1" />
       <field name="DarCatalogNumber" indexed="1" stored="1" />
       <field name="DarScientificNameAuthor" indexed="1" stored="1" />
-      <field name="DarHigherTaxon" indexed="1" stored="1" />      
-      
-  <table name="ebibliography" type="attach"> 
-  
+      <field name="DarHigherTaxon" indexed="1" stored="1" />
+
+  <table name="ebibliography" type="attach">
+
       <field name="irn" search="1" display="1" />
-      <field name="SummaryData" indexed="1" stored="1" /> 
-    
-  
-  
-  <table name="emultimedia" type="attach">  
-  
+      <field name="SummaryData" indexed="1" stored="1" />
+
+
+
+  <table name="emultimedia" type="attach">
+
       <field name="irn" search="1" display="1" />
-      <field name="SummaryData" indexed="1" stored="1" /> 
-    
-  
-  
-    
+      <field name="SummaryData" indexed="1" stored="1" />
+
+
+
+
   </table>
 
 </config>

@@ -6,7 +6,7 @@
     That is different for each server.  Use the template below to populate
     a new file with the appropriate data.
    -->
-  <xi:include xmlns:xi="http://www.w3.org/2003/XInclude" href="servers.xml" />
+<xi:include xmlns:xi="http://www.w3.org/2003/XInclude" href="../../servers.xml" />
   <!--
     <servers>
       <solr host="66.158.71.71" port="8080" core="kiwi" path="/emu0/core0" />
@@ -89,7 +89,7 @@
     <field name="irn" search="1" display="1" />
 
      <!-- Sample text field, single-value. -->
-    
+
     <field name="AquVolumeSampledOrig" indexed="1" stored="1" fulltext="1" sort="1" />
     <field name="AquWaterClarity" indexed="1" stored="1" fulltext="1" sort="1" />
     <field name="AquWaterHardness" indexed="1" stored="1" fulltext="1" sort="1" />
@@ -130,7 +130,7 @@
 
 
     <!-- Sample text field, multi-value. -->
-    
+
     <field name="ColBibliographic_tab" indexed="1" stored="1" fulltext="1" sort="1" />
     <field name="ColParticipantRole_tab" indexed="1" stored="1" fulltext="1" sort="1" />
     <field name="ColParticipant_tab" indexed="1" stored="1" fulltext="1" sort="1" />
@@ -152,7 +152,7 @@
 
 
     <!-- Sample date fields, single-value. -->
-    
+
     <field name="ColDateVisitedFrom" indexed="1" stored="1" fulltext="1" sort="1" />
     <field name="ColDateVisitedTo" indexed="1" stored="1" fulltext="1" sort="1" />
     <field name="ExpCompletionDate" indexed="1" stored="1" fulltext="1" sort="1" />
@@ -161,7 +161,7 @@
 
 
     <!-- Sample floating point field, single-value. -->
-    
+
    <field name="AquVolumeSampledFt" indexed="1" stored="1" fulltext="1" sort="1" />
    <field name="AquVolumeSampledMet" indexed="1" stored="1" fulltext="1" sort="1" />
    <field name="AquAirTemperatureCel" indexed="1" stored="1" fulltext="1" sort="1" />
@@ -191,8 +191,8 @@
 
     <field name="AquSalinity" indexed="1" stored="1" fulltext="1" sort="1" />
     <field name="ColSiteVisitNumber" indexed="1" stored="1" fulltext="1" sort="1" />
-    
-      <!-- Sample integer field, Nested. -->  
+
+      <!-- Sample integer field, Nested. -->
 
     <field name="MulHeight_nesttab" indexed="1" stored="1" fulltext="1" sort="1" />
     <field name="MulWidth_nesttab" indexed="1" stored="1" fulltext="1" sort="1" />
@@ -204,7 +204,7 @@
     <field name="ColCentroidLongitudeLocal" indexed="1" stored="1" fulltext="1" sort="0" /> -->
 
     <!-- Sample reference field, single-value. -->
-    
+
     <field name="ColBibliographicRef_tab" indexed="1" stored="1" fulltext="1" sort="1" />
     <field name="ColParticipantRef_tab" indexed="1" stored="1" fulltext="1" sort="1" />
     <field name="ColSiteRef" indexed="1" stored="1" fulltext="1" sort="1" />
@@ -222,9 +222,9 @@
   </table>
 
   <table name="esites" type="attach">
-  
+
     <field name="irn" search="1" display="1" />
-    <field name="SummaryData" indexed="1" stored="1" /> 
+    <field name="SummaryData" indexed="1" stored="1" />
        <field name="AquBottomDescription" indexed="1" stored="1" />
        <field name="AquDrainageCode" indexed="1" stored="1" />
        <field name="AquDrainageDivision" indexed="1" stored="1" />
@@ -375,7 +375,7 @@
    <field name="StrTermAuthorityLevel_tab" indexed="1" stored="1" />
    <field name="TerSoilType_tab" indexed="1" stored="1" />
    <field name="LatPreferredDetDate" indexed="1" stored="1" />
-   <field name="LatDetDate0" indexed="1" stored="1" />   
+   <field name="LatDetDate0" indexed="1" stored="1" />
   <field name="EraDepthFromFt" indexed="1" stored="1" />
   <field name="EraDepthFromMt" indexed="1" stored="1" />
   <field name="EraDepthToFt" indexed="1" stored="1" />
@@ -391,20 +391,20 @@
   <field name="LocElevationFromFt" indexed="1" stored="1" />
   <field name="LocElevationFromMt" indexed="1" stored="1" />
   <field name="LocElevationToFt" indexed="1" stored="1" />
-  <field name="LocElevationToMt" indexed="1" stored="1" />   
+  <field name="LocElevationToMt" indexed="1" stored="1" />
   <field name="LatCentroidLatitudeDec_tab" indexed="1" stored="1" />
   <field name="LatCentroidLongitudeDec_tab" indexed="1" stored="1" />
   <field name="LatRadiusNumeric_tab" indexed="1" stored="1" />
   <field name=""LatRadiusProbability_tab" indexed="1" stored="1" />
   <field name="LatLatitudeDecimal_nesttab" indexed="1" stored="1" />
-  <field name="LatLongitudeDecimal_nesttab" indexed="1" stored="1" />   
+  <field name="LatLongitudeDecimal_nesttab" indexed="1" stored="1" />
   <field name="LatLatitudeOrig_nesttab" indexed="1" stored="1" />
   <field name="LatLongitudeOrig_nesttab" indexed="1" stored="1" />
   <field name="LatUtmEast_nesttab" indexed="1" stored="1" />
   <field name="LatUtmNorth_nesttab" indexed="1" stored="1" />
   <field name="LatUtmZone_nesttab" indexed="1" stored="1" />
   <field name="MulHeight_nesttab" indexed="1" stored="1" />
-  <field name="MulWidth_nesttab" indexed="1" stored="1" /> 
+  <field name="MulWidth_nesttab" indexed="1" stored="1" />
   <field name="LatPreferredCentroidLatitude" indexed="1" stored="1" />
   <field name="LatCentroidLatitude0" indexed="1" stored="1" />
   <field name="LatLatitude_nesttab" indexed="1" stored="1" />
@@ -421,35 +421,35 @@
   <field name="SitBibliographicRef_tab" indexed="1" stored="1" />
   <field name="SitSiteOwnerRef_tab" indexed="1" stored="1" />
   <field name="MulMultiMediaRef_tab" indexed="1" stored="1" />
-  
+
       <table name="ebibliography" type="attach">
-      
+
       <field name="irn" search="1" display="1" />
-      <field name="SummaryData" indexed="1" stored="1" /> 
-      
+      <field name="SummaryData" indexed="1" stored="1" />
+
       <table name="eparties" type="attach">
-      
+
       <field name="irn" search="1" display="1" />
-      <field name="SummaryData" indexed="1" stored="1" /> 
-      
+      <field name="SummaryData" indexed="1" stored="1" />
+
       <table name="emultimedia" type="attach">
-      
+
       <field name="irn" search="1" display="1" />
-      <field name="SummaryData" indexed="1" stored="1" /> 
-      
+      <field name="SummaryData" indexed="1" stored="1" />
+
       <table name="enarratives" type="attach">
-      
+
       <field name="irn" search="1" display="1" />
-      <field name="SummaryData" indexed="1" stored="1" /> 
-      
+      <field name="SummaryData" indexed="1" stored="1" />
+
       <table name="ecatalogue" type="attach">
-      
+
       <field name="irn" search="1" display="1" />
-      <field name="SummaryData" indexed="1" stored="1" /> 
+      <field name="SummaryData" indexed="1" stored="1" />
       <field name="DarCatalogNumberText" indexed="1" stored="1" />
       <field name="DarCatalogNumber" indexed="1" stored="1" />
       <field name="DarScientificNameAuthor" indexed="1" stored="1" />
-      <field name="DarHigherTaxon" indexed="1" stored="1" />      
+      <field name="DarHigherTaxon" indexed="1" stored="1" />
   </table>
 
 </config>

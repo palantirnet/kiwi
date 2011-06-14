@@ -4,8 +4,8 @@
   <!-- This include specifies the file that defines the server configuration.
     That is different for each server.  Use the template below to populate
     a new file with the appropriate data.   -->
-  <xi:include xmlns:xi="http://www.w3.org/2003/XInclude" href="servers.xml" />
-  <!--    <servers>
+<xi:include xmlns:xi="http://www.w3.org/2003/XInclude" href="../../servers.xml" />
+<!--    <servers>
       <solr host="66.158.71.71" port="8080" core="kiwi" path="/emu0/core0" />
       <emu host="66.158.71.71" port="40000" reconnect-port="45000" />
     </servers>  -->
@@ -61,5 +61,5 @@
  <table name="ecatalogue" type="attach">
  	<field name="irn" indexed="1" stored="1" />
  	<field name="SummaryData" indexed="1" stored="1"/>
- </table>  
+ </table>
 </config>

@@ -4,7 +4,7 @@
   <!-- This include specifies the file that defines the server configuration.
     That is different for each server.  Use the template below to populate
     a new file with the appropriate data.   -->
-  <xi:include xmlns:xi="http://www.w3.org/2003/XInclude" href="servers.xml" />
+<xi:include xmlns:xi="http://www.w3.org/2003/XInclude" href="../../servers.xml" />
   <!--    <servers>
       <solr host="66.158.71.71" port="8080" core="kiwi" path="/emu0/core0" />
       <emu host="66.158.71.71" port="40000" reconnect-port="45000" />
@@ -37,13 +37,13 @@
   <filters>
     <filter name="AdmPublishWebNoPassword" value="Yes" />
     <!--filter name="SecDepartment" value="Zoology" operator="matches" -->
-     <filter name="ClaApplicableCode" value="ICZN" operator="matches" />   
+     <filter name="ClaApplicableCode" value="ICZN" operator="matches" />
    </filters>
 
  <table name="etaxonomy" type="attach">
    <!-- The PKey, which is also an integer field. -->
 	<field name="irn" search="1" display="1" />
-	
+
      <!-- Sample text field, single-value. -->
      <field name= "AdmPublishWebNoPassword" indexed="1" stored="1" fulltext="0" sort="0" />
      <field name= "AdmPublishWebPassword" indexed="1" stored="1" fulltext="0" sort="0" />
@@ -100,7 +100,7 @@
      <field name= "TaxValidityStatusAttribute" indexed="1" stored="1" fulltext="1" sort="1" />
 
      <!-- Sample text field, multi-value. -->
-     
+
      <field name= "AutBasionymAuthorsRole_tab" indexed="1" stored="1" fulltext="1" sort="1" />
      <field name= "AutCombAuthorsRole_tab" indexed="1" stored="1" fulltext="1" sort="1" />
      <field name= "CitLocality_tab" indexed="1" stored="1" fulltext="1" sort="1" />
@@ -140,15 +140,15 @@
      <field name= "TaxAvailabilityReason_tab" indexed="1" stored="1" fulltext="1" sort="1" />
      <field name= "TaxValidityComment_tab" indexed="1" stored="1" fulltext="1" sort="1" />
      <field name= "TaxValidityReason_tab" indexed="1" stored="1" fulltext="1" sort="1" />
-     
-     
+
+
     <!-- Sample text field, nested-value. -->
-    
+
     <field name= "CitTypeStatus_nesttab" indexed="1" stored="1" fulltext="1" sort="1" />
 
     <!-- Sample date fields, multi-value. -->
 
-            
+
              <field name= "CitVerifiedDate0" indexed="1" stored="1" fulltext="1" sort="1" />
 	     <field name= "HisAccDate0" indexed="1" stored="1" fulltext="1" sort="1" />
 	     <field name= "HisSynDate0" indexed="1" stored="1" fulltext="1" sort="1" />
@@ -156,16 +156,16 @@
 	     <field name= "TaxValidityDate0" indexed="1" stored="1" fulltext="1" sort="1" />
 
      <!-- Sample floating point field, single-value. -->
-     
+
      <field name= "ClaRankLevel" indexed="1" stored="1" fulltext="1" sort="1" />
      <field name= "ClaSequenceNumber" indexed="1" stored="1" fulltext="1" sort="1" />
-     
+
      <!-- Sample integer field, multi-value. -->
-     
+
      <field name= "SynTaxonomyRef_tab" indexed="1" stored="1" fulltext="1" sort="1" />
-     
+
       <!-- Sample reference field, single-value. -->
-      
+
       <field name= "AutBasionymAuthorsRef_tab" indexed="1" stored="1" fulltext="1" sort="1" />
       <field name= "AutCombAuthorsRef_tab" indexed="1" stored="1" fulltext="1" sort="1" />
       <field name= "CitCitedInRef_tab" indexed="1" stored="1" fulltext="1" sort="1" />
@@ -218,8 +218,8 @@
       <field name= "TaxValidityCommenterRef_tab" indexed="1" stored="1" fulltext="1" sort="1" />
       <field name= "TaxValidityCorrectNameRef_tab" indexed="1" stored="1" fulltext="1" sort="1" />
 
-     
-  
+
+
  </table>
 
  <table name="eparties" type="attach">
@@ -228,18 +228,18 @@
    <field name="NamBriefName" indexed="1" stored="1" fulltext="1" sort="1" />
    <field name="NamOrganisation" indexed="1" stored="1" fulltext="1" sort="1" />
    <field name="NamTaxonomicName" indexed="1" stored="1" fulltext="1" sort="1" />
- </table> 
+ </table>
 
  <table name="ecatalogue" type="attach">
     <field name="irn" indexed="1" stored="1" />
     <field name="SummaryData" indexed="1" stored="1"/>
- </table> 
- 
+ </table>
+
  <table name="egazetteer" type="attach">
     <field name="irn" indexed="1" stored="1" />
     <field name="SummaryData" indexed="1" stored="1"/>
- </table> 
- 
+ </table>
+
  <table name="emultimedia" type="attach">
     <field name="irn" indexed="1" stored="1" />
     <field name="SummaryData" indexed="1" stored="1" />
@@ -260,7 +260,7 @@
     <field name="irn" indexed="1" stored="1" />
     <field name="SummaryData" indexed="1" stored="1" />
  </table>
- 
+
  <table name="enarratives" type="attach">
      <field name="irn" indexed="1" stored="1" />
      <field name="SummaryData" indexed="1" stored="1" />
