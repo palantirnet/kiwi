@@ -48,7 +48,7 @@
   -->
   <filters>
     <filter name="AdmPublishWebNoPassword" value="Yes" />
-    <filter name="SecDepartment_tab" value="Zoology/>
+    <filter name="SecDepartment_tab" value="Zoology"/>
 <!--    <filter name="irn" value="2548884" />-->
     <filter name="CatDepartment" value="Zoology" operator="matches" />
 <!--    <filter name="ObjOtherNumbersNumber_tab" value="0" operator="&lt;>" />-->
@@ -322,7 +322,7 @@
   <field name="LatCentroidLatitudeDec_tab" indexed="1" stored="1" fulltext="1" sort="1" />
   <field name="LatCentroidLongitudeDec_tab" indexed="1" stored="1" fulltext="1" sort="1" />
   <field name="LatRadiusNumeric_tab" indexed="1" stored="1" fulltext="1" sort="1" />
-  <field name=""LatRadiusProbability_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+  <field name="LatRadiusProbability_tab" indexed="1" stored="1" fulltext="1" sort="1" />
   <field name="LatLatitudeDecimal_nesttab" indexed="1" stored="1" fulltext="1" sort="1" />
   <field name="LatLongitudeDecimal_nesttab" indexed="1" stored="1" fulltext="1" sort="1" />
 
@@ -399,12 +399,6 @@
     <!-- Sample reference field, nested-value. -->
 
     <field name="MulMultiMediaRef_tab" indexed="1" stored="1" fulltext="1" sort="1" />
-
-
-
-<!-- These fields are reporting not found in Emu for some reason.  -->
-<!--    <field name="PriCollectionDate" search="1" display="1" fulltext="1" sort="1" />-->
-<!--    <field name="PriSiteCEDateCollected" search="1" display="1" fulltext="1" sort="0" />-->
   </table>
 
   <table name="ecollectionevents" type="attach">
@@ -508,18 +502,18 @@
        <field name="NarNarrativesRef_tab" indexed="1" stored="1" />
        <field name="ObjObjectsRef_tab" indexed="1" stored="1" />
        <field name="SigSightedByRef_tab" indexed="1" stored="1" />
-
+  </table>
   <table name="eparties" type="attach">
 
       <field name="irn" search="1" display="1" />
       <field name="SummaryData" indexed="1" stored="1" />
-
+  </table>
 
   <table name="enarratives" type="attach">
 
       <field name="irn" search="1" display="1" />
       <field name="SummaryData" indexed="1" stored="1" />
-
+  </table>
 
   <table name="ecatalogue" type="attach">
 
@@ -529,22 +523,18 @@
       <field name="DarCatalogNumber" indexed="1" stored="1" />
       <field name="DarScientificNameAuthor" indexed="1" stored="1" />
       <field name="DarHigherTaxon" indexed="1" stored="1" />
-
+  </table>
   <table name="ebibliography" type="attach">
 
       <field name="irn" search="1" display="1" />
       <field name="SummaryData" indexed="1" stored="1" />
-
-
+  </table>
 
   <table name="emultimedia" type="attach">
 
       <field name="irn" search="1" display="1" />
       <field name="SummaryData" indexed="1" stored="1" />
-
-
-
-
   </table>
+
 
 </config>
