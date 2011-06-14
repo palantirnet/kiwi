@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<config name="emultimedia" full-rebuild="0">
+  <!-- This include specifies the file that defines the server configuration.
+    That is different for each server.  Use the template below to populate
+    a new file with the appropriate data.   -->
+  <xi:include xmlns:xi="http://www.w3.org/2003/XInclude" href="servers.xml" />
+  <!--    <servers>
+      <solr host="66.158.71.71" port="8080" core="kiwi" path="/emu0/core0" />
+      <emu host="66.158.71.71" port="40000" reconnect-port="45000" />
+    </servers>  -->
+
+  <!--   The configuration for each processor.  This does not affect the fields that
+    are retrieved.  -->
+  <processors count="1" batch-size="50" max-size="1000" />
+
+  <!--   The base table of this index.  This must be one of the tables listed below.  -->
+  <base-table name="emultimedia" />
+
+  <!--  The supported field types and the handler each one should use.  The default-hander
+    will be used for any field type not listed here.  Each handler name corresponds
+    to a PHP class.  -->
+  <field-types default-handler="NullHandler">
+    <field-type name="Text" handler="TextHandler" />
+    <field-type name="Integer" handler="IntegerHandler" />
+    <field-type name="Date" handler="DateHandler" />
+    <field-type name="Float" handler="FloatHandler" />
+    <field-type name="Currency" handler="FloatHandler" />
+    <field-type name="Latitude" handler="LatLongHandler" />
+    <field-type name="Longitude" handler="LatLongHandler" />
+    <field-type name="Attachment" handler="AttachmentReferenceHandler" fulltext="0" sort="0" />
+  </field-types>
+
+<!-- These filters apply to the base table when building the initial query.
+    Note: Always include the AdmPublishWebNoPassword filter.  Emu requires
+    that there always be at least one filter.  All other filters are optional.  -->
+  <filters>
+    <filter name="AdmPublishWebNoPassword" value="Yes" />
+    <filter name="SecDepartment" value="Botany" operator="matches" />
+  </filters>
+
+ <table name="emultimedia" type="attach">
+   <!-- The PKey, which is also an integer field. -->
+	<field name="irn" search="1" display="1" />
+<!--fields-columns  in alpha order -->
+	<field name="ChaFileSize" indexed="1" stored="1" />
+	<field name="ChaMediaForm" indexed="1" stored="1" />
+	<field name="DetDate0" indexed="1" stored="1"/>
+	<field name="DetRights" indexed="1" stored="1" />
+	<field name="DetSource" indexed="1" stored="1" />
+	<field name="DetSubject_tab" indexed="1" stored="1" />
+	<field name="MulCreator_tab" indexed="1" stored="1" />
+	<field name="MulDescription" indexed="1" stored="1" />
+	<field name="MulIdentifier" indexed="1" stored="1" />
+	<field name="MulMimeFormat" indexed="1" stored="1" />
+<!--	<field name="Multimedia" indexed="1" stored="1" />  -->
+	<field name="MulTitle" indexed="1" stored="1" />
+	<field name="ObjObjectsRef_tab" indexed="1" stored="1" />
+ </table>
+
+ <table name="ecatalogue" type="attach">
+ 	<field name="irn" indexed="1" stored="1" />
+ 	<field name="SummaryData" indexed="1" stored="1"/>
+ </table>  
+</config>

@@ -1,0 +1,346 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<config name="ebibliography" full-rebuild="0">
+  <!--
+    This include specifies the file that defines the server configuration.
+    That is different for each server.  Use the template below to populate
+    a new file with the appropriate data.
+   -->
+  <xi:include xmlns:xi="http://www.w3.org/2003/XInclude" href="servers.xml" />
+  <!--
+    <servers>
+      <solr host="66.158.71.71" port="8080" core="kiwi" path="/emu0/core0" />
+      <emu host="66.158.71.71" port="40000" reconnect-port="45000" />
+    </servers>
+  -->
+
+  <!--
+    The configuration for each processor.  This does not affect the fields that
+    are retrieved.
+  -->
+  <processors count="1" batch-size="1" max-size="100" />
+
+  <!--
+    The base table of this index.  This must be one of the tables listed below.
+  -->
+  <base-table name="ebibliography" />
+
+  <!--
+    The supported field types and the handler each one should use.  The default-hander
+    will be used for any field type not listed here.  Each handler name corresponds
+    to a PHP class.
+  -->
+  <field-types default-handler="NullHandler">
+    <field-type name="Text" handler="TextHandler" />
+    <field-type name="Integer" handler="IntegerHandler" />
+    <field-type name="Date" handler="DateHandler" />
+    <field-type name="Float" handler="FloatHandler" />
+    <field-type name="Currency" handler="FloatHandler" />
+    <field-type name="Latitude" handler="LatLongHandler" />
+    <field-type name="Longitude" handler="LatLongHandler" />
+    <field-type name="Attachment" handler="AttachmentReferenceHandler" fulltext="0" sort="0" />
+  </field-types>
+
+  <!--
+    These filters apply to the base table when building the initial query.
+    Note: Always include the AdmPublishWebNoPassword filter.  Emu requires
+    that there always be at least one filter.  All other filters are optional.
+  -->
+  <filters>
+    <filter name="AdmPublishWebNoPassword" value="Yes" />
+<!--    <filter name="irn" value="2548884" />-->
+    <filter name="SecDepartment_tab" value="Zoology" operator="matches" />
+<!--    <filter name="ObjOtherNumbersNumber_tab" value="0" operator="&lt;>" />-->
+<!--    <filter name="ColEarliestDateCollected" value="18/09/1939" />-->
+  </filters>
+
+
+  <!--
+    The table definitions are the "meat" of the configuration file.  Although
+    they can be included via an XInclude directive, don't bother for now.
+
+    Each <table> defines a name and its usage or "type".  For now, the only supported
+    type is "attach".  The name attribute is the name of the table in Emu.
+
+    Each <table> contains one or more <field> elements.  Each <field> element
+    represents a field in Emu in that table.  Each field has the following keys:
+      - name (required): The name of the field in Emu.
+      - fulltext: Whether or not to include this field in fulltext searches of
+          This record.  Specify 1 for true or 0 for false.  The default is false.
+      - sort: Whether or not this field should be sortable.  At this time, single-value
+          Text fields are always sortable.  Single-value Integer and Float fields
+          are sortable only if this value is 1.  All other fields are never sortable.
+          This may change later.
+      - indexed: Whether or not this field should be searchable. (Currently ignored.)
+      - stored: Whether or not this field should be displayable. (Currently ignored.)
+
+      For now, don't bother filling in "indexed" or "stored" as they don't do
+      anything.
+
+      For a typical field that does not need to be sorted, it is valid to specify
+      only the name, like so:
+
+      <field name="CatCatalogueNo" />
+
+  -->
+
+  <table name="ebibliography" type="attach">
+    <!-- The PKey, which is also an integer field. -->
+    <field name="irn" search="1" display="1" />
+
+    <!-- Sample text field, single-value. -->
+   <field name="CatPublicationDates" indexed="1" stored="1" fulltext="1" sort="1" />
+   <field name="CatPublicationLanguage" indexed="1" stored="1" fulltext="1" sort="1" />
+   <field name="CatReference" indexed="1" stored="1" fulltext="1" sort="1" />
+   <field name="CatReferenceType" indexed="1" stored="1" fulltext="1" sort="1" />
+   <field name="CatTitle" indexed="1" stored="1" fulltext="1" sort="1" />
+   <field name="ChaAuthorsEtAl" indexed="1" stored="1" fulltext="1" sort="1" />
+   <field name="ChaChapter" indexed="1" stored="1" fulltext="1" sort="1" />
+   <field name="ChaFiguresPlates" indexed="1" stored="1" fulltext="1" sort="1" />
+   <field name="ChaFilled" indexed="1" stored="1" fulltext="1" sort="1" />
+   <field name="ChaPages" indexed="1" stored="1" fulltext="1" sort="1" />
+   <field name="ChaPublicationDates" indexed="1" stored="1" fulltext="1" sort="1" />
+   <field name="ChaPublicationLanguage" indexed="1" stored="1" fulltext="1" sort="1" />
+   <field name="ChaReference" indexed="1" stored="1" fulltext="1" sort="1" />
+   <field name="ChaReferenceType" indexed="1" stored="1" fulltext="1" sort="1" />
+   <field name="ChaTitle" indexed="1" stored="1" fulltext="1" sort="1" />
+   <field name="ChaVolume" indexed="1" stored="1" fulltext="1" sort="1" />
+   <field name="CitAuthorsEtAl" indexed="1" stored="1" fulltext="1" sort="1" />
+   <field name="CitCitingText" indexed="1" stored="1" fulltext="1" sort="1" />
+   <field name="CitFiguresPlates" indexed="1" stored="1" fulltext="1" sort="1" />
+   <field name="CitFilled" indexed="1" stored="1" fulltext="1" sort="1" />
+   <field name="CitIssue" indexed="1" stored="1" fulltext="1" sort="1" />
+   <field name="CitPages" indexed="1" stored="1" fulltext="1" sort="1" />
+   <field name="CitPublicationDates" indexed="1" stored="1" fulltext="1" sort="1" />
+   <field name="CitPublicationLanguage" indexed="1" stored="1" fulltext="1" sort="1" />
+   <field name="CitReference" indexed="1" stored="1" fulltext="1" sort="1" />
+   <field name="CitReferenceType" indexed="1" stored="1" fulltext="1" sort="1" />
+   <field name="CitVolume" indexed="1" stored="1" fulltext="1" sort="1" />
+   <field name="SecRecordStatus" indexed="1" stored="1" fulltext="1" sort="1" />
+   <field name="SummaryData" indexed="1" stored="1" fulltext="1" sort="1" />
+   <field name="TheDepartment" indexed="1" stored="1" fulltext="1" sort="1" />
+   <field name="TheFilled" indexed="1" stored="1" fulltext="1" sort="1" />
+   <field name="TheInstitution" indexed="1" stored="1" fulltext="1" sort="1" />
+   <field name="ThePages" indexed="1" stored="1" fulltext="1" sort="1" />
+   <field name="ThePublicationLanguage" indexed="1" stored="1" fulltext="1" sort="1" />
+   <field name="WebTitle" indexed="1" stored="1" fulltext="1" sort="1" />
+   <field name="ArcAbbreviatedTitle" indexed="1" stored="1" fulltext="1" sort="1" />
+   <field name="ArcFilled" indexed="1" stored="1" fulltext="1" sort="1" />
+   <field name="ArcPublicationLanguage" indexed="1" stored="1" fulltext="1" sort="1" />
+   <field name="ArcResourceType" indexed="1" stored="1" fulltext="1" sort="1" />
+   <field name="ArcTitle" indexed="1" stored="1" fulltext="1" sort="1" />
+   <field name="ArtAuthorsEtAl" indexed="1" stored="1" fulltext="1" sort="1" />
+   <field name="ArtFiguresPlates" indexed="1" stored="1" fulltext="1" sort="1" />
+   <field name="ArtFilled" indexed="1" stored="1" fulltext="1" sort="1" />
+   <field name="ArtIssue" indexed="1" stored="1" fulltext="1" sort="1" />
+   <field name="ArtIssuePages" indexed="1" stored="1" fulltext="1" sort="1" />
+   <field name="ArtPages" indexed="1" stored="1" fulltext="1" sort="1" />
+   <field name="ArtPagesFlag" indexed="1" stored="1" fulltext="1" sort="1" />
+   <field name="ArtPublicationDates" indexed="1" stored="1" fulltext="1" sort="1" />
+   <field name="ArtPublicationLanguage" indexed="1" stored="1" fulltext="1" sort="1" />
+   <field name="ArtReference" indexed="1" stored="1" fulltext="1" sort="1" />
+   <field name="ArtReferenceType" indexed="1" stored="1" fulltext="1" sort="1" />
+   <field name="ArtTitle" indexed="1" stored="1" fulltext="1" sort="1" />
+   <field name="ArtVolume" indexed="1" stored="1" fulltext="1" sort="1" />
+   <field name="BooAbbreviatedTitle" indexed="1" stored="1" fulltext="1" sort="1" />
+   <field name="BooAbbreviatedTitleSource" indexed="1" stored="1" fulltext="1" sort="1" />
+   <field name="BooAuthorsEtAl" indexed="1" stored="1" fulltext="1" sort="1" />
+   <field name="BooEdition" indexed="1" stored="1" fulltext="1" sort="1" />
+   <field name="BooFiguresPlates" indexed="1" stored="1" fulltext="1" sort="1" />
+   <field name="BooFilled" indexed="1" stored="1" fulltext="1" sort="1" />
+   <field name="BooISBN" indexed="1" stored="1" fulltext="1" sort="1" />
+   <field name="BooPages" indexed="1" stored="1" fulltext="1" sort="1" />
+   <field name="BooPublicationCity" indexed="1" stored="1" fulltext="1" sort="1" />
+   <field name="BooPublicationDates" indexed="1" stored="1" fulltext="1" sort="1" />
+   <field name="BooPublicationLanguage" indexed="1" stored="1" fulltext="1" sort="1" />
+   <field name="BooReference" indexed="1" stored="1" fulltext="1" sort="1" />
+   <field name="BooReferenceType" indexed="1" stored="1" fulltext="1" sort="1" />
+   <field name="BooTitle" indexed="1" stored="1" fulltext="1" sort="1" />
+   <field name="BooVolume" indexed="1" stored="1" fulltext="1" sort="1" />
+   <field name="CatAbbreviatedTitle" indexed="1" stored="1" fulltext="1" sort="1" />
+   <field name="CatAuthorsEtAl" indexed="1" stored="1" fulltext="1" sort="1" />
+   <field name="CatFilled" indexed="1" stored="1" fulltext="1" sort="1" />
+   <field name="CatPages" indexed="1" stored="1" fulltext="1" sort="1" />
+   <field name="CatPublicationCity" indexed="1" stored="1" fulltext="1" sort="1" />
+   <field name="EleAbbreviatedTitle" indexed="1" stored="1" fulltext="1" sort="1" />
+   <field name="EleFilled" indexed="1" stored="1" fulltext="1" sort="1" />
+   <field name="EleIdentifier" indexed="1" stored="1" fulltext="1" sort="1" />
+   <field name="ElePublicationLanguage" indexed="1" stored="1" fulltext="1" sort="1" />
+   <field name="EleTitle" indexed="1" stored="1" fulltext="1" sort="1" />
+   <field name="ExtendedData" indexed="1" stored="1" fulltext="1" sort="1" />
+   <field name="JouAbbreviatedTitle" indexed="1" stored="1" fulltext="1" sort="1" />
+   <field name="JouAbbreviatedTitleSource" indexed="1" stored="1" fulltext="1" sort="1" />
+   <field name="JouAuthorsEtAl" indexed="1" stored="1" fulltext="1" sort="1" />
+   <field name="JouFilled" indexed="1" stored="1" fulltext="1" sort="1" />
+   <field name="JouISSN" indexed="1" stored="1" fulltext="1" sort="1" />
+   <field name="TheReference" indexed="1" stored="1" fulltext="1" sort="1" />
+   <field name="TheReferenceType" indexed="1" stored="1" fulltext="1" sort="1" />
+   <field name="TheThesisType" indexed="1" stored="1" fulltext="1" sort="1" />
+   <field name="TheTitle" indexed="1" stored="1" fulltext="1" sort="1" />
+   <field name="WebAbbreviatedTitle" indexed="1" stored="1" fulltext="1" sort="1" />
+   <field name="WebFilled" indexed="1" stored="1" fulltext="1" sort="1" />
+   <field name="WebIdentifier" indexed="1" stored="1" fulltext="1" sort="1" />
+   <field name="WebPublicationLanguage" indexed="1" stored="1" fulltext="1" sort="1" />
+   <field name="JouPages" indexed="1" stored="1" fulltext="1" sort="1" />
+   <field name="JouPagesFlag" indexed="1" stored="1" fulltext="1" sort="1" />
+   <field name="JouPublicationCity" indexed="1" stored="1" fulltext="1" sort="1" />
+   <field name="JouPublicationDates" indexed="1" stored="1" fulltext="1" sort="1" />
+   <field name="JouPublicationLanguage" indexed="1" stored="1" fulltext="1" sort="1" />
+   <field name="JouReference" indexed="1" stored="1" fulltext="1" sort="1" />
+   <field name="JouReferenceType" indexed="1" stored="1" fulltext="1" sort="1" />
+   <field name="JouTitle" indexed="1" stored="1" fulltext="1" sort="1" />
+   <field name="JouVolume" indexed="1" stored="1" fulltext="1" sort="1" />
+   <field name="NotNotes" indexed="1" stored="1" fulltext="1" sort="1" />
+   <field name="OthAbbreviatedTitle" indexed="1" stored="1" fulltext="1" sort="1" />
+   <field name="OthAuthorsEtAl" indexed="1" stored="1" fulltext="1" sort="1" />
+   <field name="OthFilled" indexed="1" stored="1" fulltext="1" sort="1" />
+   <field name="OthPages" indexed="1" stored="1" fulltext="1" sort="1" />
+   <field name="OthPublicationLanguage" indexed="1" stored="1" fulltext="1" sort="1" />
+   <field name="OthReference" indexed="1" stored="1" fulltext="1" sort="1" />
+   <field name="OthReferenceType" indexed="1" stored="1" fulltext="1" sort="1" />
+   <field name="OthTitle" indexed="1" stored="1" fulltext="1" sort="1" />
+
+    <!-- Sample text field, multi-value. -->
+    <field name="CatRefType_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+    <field name="CatRefValue_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+    <field name="CatRole_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+    <field name="ChaRefType_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+    <field name="ChaRefValue_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+    <field name="ChaRole_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+    <field name="CitRefType_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+    <field name="CitRefValue_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+    <field name="CitRole_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+    <field name="SecCanDisplay_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+    <field name="SecCanEdit_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+    <field name="SecDepartment_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+    <field name="WebRefType_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+    <field name="WebRefValue_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+    <field name="WebRole_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+    <field name="ArcRefType_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+    <field name="ArcRefValue_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+    <field name="ArcRole_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+    <field name="ArtRefType_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+    <field name="ArtRefValue_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+    <field name="ArtRole_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+    <field name="BooRefType_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+    <field name="BooRefValue_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+    <field name="BooRole_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+    <field name="EleRefType_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+    <field name="EleRefValue_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+    <field name="EleRole_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+    <field name="TheRefType_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+    <field name="TheRefValue_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+    <field name="JouRefType_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+    <field name="JouRefValue_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+    <field name="JouRole_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+    <field name="OthRefType_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+    <field name="OthRefValue_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+    <field name="OthRole_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+    <field name="SecCanDelete_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+
+
+
+    <!-- Sample date fields, single-value. -->
+    <field name="CatPublicationDate" indexed="1" stored="1" fulltext="1" sort="1" />
+    <field name="ChaPublicationDate" indexed="1" stored="1" fulltext="1" sort="1" />
+    <field name="CitPublicationDate" indexed="1" stored="1" fulltext="1" sort="1" />
+    <field name="ThePublicationDate" indexed="1" stored="1" fulltext="1" sort="1" />
+    <field name="ArcResourceDate" indexed="1" stored="1" fulltext="1" sort="1" />
+    <field name="ArtPublicationDate" indexed="1" stored="1" fulltext="1" sort="1" />
+    <field name="BooPublicationDate" indexed="1" stored="1" fulltext="1" sort="1" />
+    <field name="EleLastAccessDate" indexed="1" stored="1" fulltext="1" sort="1" />
+    <field name="ElePublicationDate" indexed="1" stored="1" fulltext="1" sort="1" />
+    <field name="WebLastAccessDate" indexed="1" stored="1" fulltext="1" sort="1" />
+    <field name="WebPublicationDate" indexed="1" stored="1" fulltext="1" sort="1" />
+    <field name="JouPublicationDate" indexed="1" stored="1" fulltext="1" sort="1" />
+
+<!--
+    <!-- Sample floating point field, single-value. -->
+    <field name="DarCoordinatePrecision" indexed="1" stored="1" fulltext="1" sort="0" />
+
+    <!-- Sample integer field, single-value. -->
+    <field name="CatCatalogueNo" indexed="1" stored="1" fulltext="1" sort="1" />
+
+    <!-- Sample latitude field, single value. -->
+    <field name="ColCentroidLatitudeLocal" indexed="1" stored="1" fulltext="1" sort="0" />
+
+    <!-- Sample longitude field, single value. -->
+    <field name="ColCentroidLongitudeLocal" indexed="1" stored="1" fulltext="1" sort="0" />
+-->
+    <!-- Sample reference field, single-value. -->
+    <field name="MulMultiMediaRef_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+    <field name="ArcLocationRef" indexed="1" stored="1" fulltext="1" sort="1" />
+    <field name="ArcParentRef" indexed="1" stored="1" fulltext="1" sort="1" />
+    <field name="ArtParentRef" indexed="1" stored="1" fulltext="1" sort="1" />
+    <field name="BooParentRef" indexed="1" stored="1" fulltext="1" sort="1" />
+    <field name="BooPublishedByRef" indexed="1" stored="1" fulltext="1" sort="1" />
+    <field name="CatParentRef" indexed="1" stored="1" fulltext="1" sort="1" />
+    <field name="CatPublishedByRef" indexed="1" stored="1" fulltext="1" sort="1" />
+    <field name="ChaParentRef" indexed="1" stored="1" fulltext="1" sort="1" />
+    <field name="CitParentRef" indexed="1" stored="1" fulltext="1" sort="1" />
+    <field name="EleParentRef" indexed="1" stored="1" fulltext="1" sort="1" />
+    <field name="ElePublishedByRef" indexed="1" stored="1" fulltext="1" sort="1" />
+    <field name="JouParentRef" indexed="1" stored="1" fulltext="1" sort="1" />
+    <field name="JouPublishedByRef" indexed="1" stored="1" fulltext="1" sort="1" />
+    <field name="OthParentRef" indexed="1" stored="1" fulltext="1" sort="1" />
+    <field name="TheAuthorsRef" indexed="1" stored="1" fulltext="1" sort="1" />
+    <field name="TheOrganisationRef" indexed="1" stored="1" fulltext="1" sort="1" />
+    <field name="TheParentRef" indexed="1" stored="1" fulltext="1" sort="1" />
+    <field name="WebParentRef" indexed="1" stored="1" fulltext="1" sort="1" />
+    <field name="WebPublishedByRef" indexed="1" stored="1" fulltext="1" sort="1" />
+    <field name="MulMultiMediaRef_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+    <field name="ArcAuthorsRef_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+    <field name="ArtAuthorsRef_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+    <field name="BooAuthorsRef_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+    <field name="CatAuthorsRef_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+    <field name="ChaAuthorsRef_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+    <field name="CitAuthorsRef_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+    <field name="ColCollectionEventRef_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+    <field name="EleAuthorsRef_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+    <field name="EveEventsRef_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+    <field name="JouAuthorsRef_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+    <field name="MulMultiMediaRef_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+    <field name="NarNarrativesRef_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+    <field name="ObjObjectsRef_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+    <field name="OthAuthorsRef_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+    <field name="TaxTaxonomyRef_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+    <field name="WebAuthorsRef_tab" indexed="1" stored="1" fulltext="1" sort="1" />
+
+
+<!-- These fields are reporting not found in Emu for some reason.  -->
+<!--    <field name="PriCollectionDate" search="1" display="1" fulltext="1" sort="1" />-->
+<!--    <field name="PriSiteCEDateCollected" search="1" display="1" fulltext="1" sort="0" />-->
+
+  </table>
+
+   <table name="ebibliography" type="attach">
+      <field name="SummaryData" indexed="1" stored="1" />  
+  
+    <table name="eparties" type="attach">
+    
+     <field name="SummaryData" indexed="1" stored="1" /> 
+     <field name="NamCitedName" indexed="1" stored="1" />
+     <field name="NamFullName" indexed="1" stored="1" />
+    
+    
+   <table name="emultimedia" type="attach">
+    <field name="DocHeight_tab" indexed="1" stored="1" /> 
+    <field name="DocIdentifier_tab" indexed="1" stored="1" /> 
+    <field name="DocWidth_tab" indexed="1" stored="1" /> 
+    <field name="MulCreator_tab" indexed="1" stored="1" /> 
+    <field name="SummaryData" indexed="1" stored="1" /> 
+    <field name="MulDescription" indexed="1" stored="1" /> 
+    <field name="MulDocumentType" indexed="1" stored="1" /> 
+    <field name="MulIdentifier" indexed="1" stored="1" /> 
+    <field name="MulMimeFormat" indexed="1" stored="1" /> 
+    <field name="MulMimeType" indexed="1" stored="1" /> 
+    <field name="MulTitle" indexed="1" stored="1" /> 
+  
+  
+  <table name="enarratives" type="attach">
+    <field name="SummaryData" indexed="1" stored="1" /> 
+
+
+  </table>
+
+</config>
