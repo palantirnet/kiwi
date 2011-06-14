@@ -51,6 +51,9 @@ function kiwi_init() {
   includeSolr();
   includeKiwi();
   includeQueryPath();
+
+  date_default_timezone_set('America/Chicago');
+  set_error_handler('exceptions_error_handler');
 }
 
 /**
@@ -62,9 +65,6 @@ function main(KiwiInput $input = NULL, KiwiConfiguration $config = NULL) {
 
   IMuTrace::setFile('trace.txt');
   IMuTrace::setLevel(1);
-
-  date_default_timezone_set('America/Chicago');
-  set_error_handler('exceptions_error_handler');
 
   try {
 
