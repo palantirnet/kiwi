@@ -12,6 +12,9 @@ function includeEmu() {
   require_once IMu::$lib . '/trace.php';
 }
 
+/**
+ * Include the Kiwi libraries.
+ */
 function includeKiwi() {
   // Include the Kiwi libraries.
   foreach (glob('lib/*.inc') as $file) {
@@ -24,16 +27,25 @@ function includeKiwi() {
   }
 }
 
+/**
+ * Include QueryPath.
+ */
 function includeQueryPath() {
   require_once('QueryPath/QueryPath.php');
 }
 
+/**
+ * Include the ApacheSolr client library.
+ */
 function includeSolr() {
   require_once('SolrPhpClient/Apache/Solr/Service.php');
   require_once('SolrPhpClient/Apache/Solr/Document.php');
   require_once('SolrPhpClient/Apache/Solr/Response.php');
 }
 
+/**
+ * Initialize the system.
+ */
 function kiwi_init() {
   includeEmu();
   includeSolr();
