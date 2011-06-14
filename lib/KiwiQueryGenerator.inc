@@ -51,43 +51,4 @@ class KiwiQueryGenerator {
     // Return the module ID
     return $module->id;
   }
-
-}
-
-class EmuQuery {
-
-  /**
-   * The configuration object for this generator.
-   *
-   * @var KiwiConfiguration
-   */
-  protected $config;
-
-  /**
-   * The session against which to run a query.
-   *
-   * @var KiwiImuSession
-   */
-  protected $session;
-
-  public function __construct(KiwiImuSession $session, KiwiConfiguration $config) {
-    $this->session = $session;
-    $this->config = $config;
-
-    $base_table = $this->config->baseTable();
-    $this->module = new IMuModule($base_table['name'], $session);
-  }
-
-  public function addTerm($column, $term, $operator = '') {
-    if ($operator) {
-      $this->terms[] = array($column, $term, $operator);
-    }
-    else {
-      $this->terms[] = array($column, $term);
-    }
-  }
-
-  public function execute() {
-    $this->module->findTerms($this->terms);
-  }
 }
