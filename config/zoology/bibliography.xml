@@ -305,25 +305,19 @@
     <field name="OthAuthorsRef_tab" indexed="1" stored="1" fulltext="1" sort="1" />
     <field name="TaxTaxonomyRef_tab" indexed="1" stored="1" fulltext="1" sort="1" />
     <field name="WebAuthorsRef_tab" indexed="1" stored="1" fulltext="1" sort="1" />
-
-
-<!-- These fields are reporting not found in Emu for some reason.  -->
-<!--    <field name="PriCollectionDate" search="1" display="1" fulltext="1" sort="1" />-->
-<!--    <field name="PriSiteCEDateCollected" search="1" display="1" fulltext="1" sort="0" />-->
-
   </table>
 
    <table name="ebibliography" type="attach">
       <field name="SummaryData" indexed="1" stored="1" />
+  </table>
 
-    <table name="eparties" type="attach">
-
+  <table name="eparties" type="attach">
      <field name="SummaryData" indexed="1" stored="1" />
      <field name="NamCitedName" indexed="1" stored="1" />
      <field name="NamFullName" indexed="1" stored="1" />
+  </table>
 
-
-   <table name="emultimedia" type="attach">
+  <table name="emultimedia" type="attach">
     <field name="DocHeight_tab" indexed="1" stored="1" />
     <field name="DocIdentifier_tab" indexed="1" stored="1" />
     <field name="DocWidth_tab" indexed="1" stored="1" />
@@ -335,12 +329,10 @@
     <field name="MulMimeFormat" indexed="1" stored="1" />
     <field name="MulMimeType" indexed="1" stored="1" />
     <field name="MulTitle" indexed="1" stored="1" />
-
+  </table>
 
   <table name="enarratives" type="attach">
     <field name="SummaryData" indexed="1" stored="1" />
-
-
   </table>
 
 </config>
