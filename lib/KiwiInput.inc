@@ -35,12 +35,12 @@ class KiwiInput {
 
   public function defaultOptions() {
     $options['config'] = array(
-      'value' => 'config.xml',
-      'description' => 'The configuration file to process.  If a path is specified, it will be interpreted relative to the current working directory.',
+      'value' => '',
+      'description' => 'The configuration file to process.  If a path is specified, it will be interpreted relative to the current working directory. Either this directive or --directory must be specified.',
     );
     $options['directory'] = array(
       'value' => '',
-      'description' => 'A directory of files to process.  All .xml files in the specified directory will be processed sequentially. If specified, this value overrides the --config directive.',
+      'description' => 'A directory of files to process.  All .xml files in the specified directory will be processed sequentially. Either this directive or --config must be specified.  If specified, this value overrides the --config directive.',
     );
     $options['verbosity'] = array(
       'value' => LOG_INFO,
@@ -91,6 +91,10 @@ class KiwiInput {
 
     // Save the options, including defaults, to the object.
     $this->options = $options;
+
+    if (!($this->getOption('config') || $this->getOption('directory'))) {
+      throw new MissingConfigOptionException('Unable to continue.  At least one of --config or --directory must be specified.');
+    }
   }
 
   /**

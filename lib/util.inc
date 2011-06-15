@@ -86,3 +86,8 @@ class ConfigFileNotFoundException extends UnexpectedValueException {}
  * Exception for an invalid and unexpected command line switch.
  */
 class InvalidConfigOptionException extends UnexpectedValueException {}
+
+/**
+ * Exception for a missing required command line switch.
+ */
+class MissingConfigOptionException extends UnexpectedValueException {}
