@@ -81,7 +81,7 @@ class KiwiInput {
     foreach ($this->argv as $argument) {
       // Match long-form options.
       // This regex matches --<word>=<word allowing periods and forward slashes for file names>.
-      if (preg_match('/--(\w+)=([\w\.\/]+)/', $argument, $matches)) {
+      if (preg_match('/--([\w-]+)=([\/\w\.]+)/', $argument, $matches)) {
         if (in_array($matches[1], array_keys($options))) {
           $options[$matches[1]]['value'] = $matches[2];
         }
