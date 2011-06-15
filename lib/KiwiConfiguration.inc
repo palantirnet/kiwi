@@ -145,41 +145,22 @@ class KiwiConfiguration {
   }
 
   /**
-   * Returns the number of child processes we want to spawn for this batch.
+   * Returns various information about the processors that should run.
    *
-   * @return int
-   *   The number of child processes we want to spawn.
+   * @param string $property
+   *   The property to request.  Legal values are:
+   *   - count: The number of child processors to create.
+   *   - batch-size: The number of records to process into Solr documents at once.
+   *   - max-size: The number of records after which to stop processing.
+   * @return mixed
+   *   The value of the specified property.
    */
-  public function numChildProcesses() {
-    return $this->configFile->branch()->find('processors')->attr('count');
-  }
-
-  /**
-   * Returns the number of records to process into Solr documents at once.
-   *
-   * Solr supports sending multiple documents to it in a single command,
-   * so this is another performance dial to twiddle.
-   *
-   * @return int
-   */
-  public function numDocumentsPerBatch() {
-    return $this->configFile->branch()->find('processors')->attr('batch-size');
-  }
-
-  /**
-   * Returns the maximum number of records each processor will process.
-   *
-   * This is mostly for debug purposes, but allows a maximum size to be enforced
-   * on an index.
-   *
-   * @return int
-   */
-  public function maxRecordsPerProcessor() {
-    $max = $this->configFile->branch()->find('processors')->attr('max-size');
-    if (!$max) {
-      $max = PHP_INT_MAX;
+  public function processorInfo($property) {
+    $value = $this->configFile->branch()->find('processors')->attr($property);
+    if ($property == 'max-size' && !$value) {
+      $value = PHP_INT_MAX;
     }
-    return $max;
+    return $value;
   }
 
   /**

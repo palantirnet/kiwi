@@ -103,7 +103,7 @@ function main(KiwiInput $input = NULL, KiwiConfiguration $config = NULL) {
     $children = array();
 
     // Spawn off children to do work.
-    for ($child_id = 1, $num_processors = $config->numChildProcesses(); $child_id <= $num_processors; ++$child_id) {
+    for ($child_id = 1, $num_processors = $config->processorInfo('count'); $child_id <= $num_processors; ++$child_id) {
       $pid = pcntl_fork();
       if ($pid == -1) {
         die('could not fork');

@@ -74,8 +74,9 @@ class KiwiQueryProcessor {
 
     $position = 'current';
     $offset = 0;
-    $count = $this->config->numDocumentsPerBatch();
-    $max_records = $this->config->maxRecordsPerProcessor();
+    $count = $this->config->processorInfo('count');
+    $max_records = $this->config->processorInfo('max-size');
+      //maxRecordsPerProcessor();
 
     // Build a list of all of the fields we are going to retrieve at once from
     // attachment tables.  We need to retrieve a field if we are using it for
