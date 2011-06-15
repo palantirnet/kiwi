@@ -156,7 +156,10 @@ class KiwiConfiguration {
    *   The value of the specified property.
    */
   public function processorInfo($property) {
-    $value = $this->configFile->branch()->find('processors')->attr($property);
+    $value = $this->input->getOption('processor-' . $property);
+    if (!$value) {
+      $value = $this->configFile->branch()->find('processors')->attr($property);
+    }
     if ($property == 'max-size' && !$value) {
       $value = PHP_INT_MAX;
     }

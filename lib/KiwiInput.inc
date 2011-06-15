@@ -46,6 +46,18 @@ class KiwiInput {
       'value' => LOG_INFO,
       'description' => 'The level of output verbosity. To increase it, specify -v, -vv, -vvv, etc. to increase the verbosity.',
     );
+    $options['processor-count'] = array(
+      'value' => '',
+      'description' => 'Optional.  Specifies the number of processors to run at once.  If specified, the value in the configuration file is ignored.',
+    );
+    $options['processor-batch-size'] = array(
+      'value' => '',
+      'description' => 'Optional.  Specifies the number of records to process at once.  More is generally faster but leads to higher memory usage.  If specified, the value in the configuration file is ignored.',
+    );
+    $options['processor-max-size'] = array(
+      'value' => '',
+      'description' => 'Optional.  Specifies the number of records after which each processor should stop processing.  If specified, the value in the configuration file is ignored.  If neither this directive nor the configuration file specify a limit, the default is the maximum interger size in PHP (several billion on most systems, so effectively unlimited).',
+    );
 
     return $options;
   }
@@ -123,11 +135,11 @@ class KiwiInput {
   public function getInstructions() {
     $output = array();
 
-    $columns['option'] = 10;
-    $columns['default'] = 15;
+    $columns['option'] = 22;
+    $columns['default'] = 10;
     $columns['description'] = self::$instructionWidth - $columns['option'] - $columns['default'];
 
-    $output[] = sprintf("%-{$columns['option']}s%-{$columns['default']}s%-{$columns['description']}s", 'Option', 'Default value', 'Description');
+    $output[] = sprintf("%-{$columns['option']}s%-{$columns['default']}s%-{$columns['description']}s", 'Option', 'Default', 'Description');
     $output[] = str_repeat('-', self::$instructionWidth);
 
     $break = PHP_EOL . str_repeat(' ', $columns['option'] + $columns['default']);
