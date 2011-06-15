@@ -214,13 +214,3 @@ class KiwiImuSession extends IMuSession {
   }
 }
 
-/**
- * Exception for connection errors from Emu.
- */
-class KiwiEmuConnectionException extends Exception {}
-
-/**
- * Exception for a missing Field in the schema.
- */
-class KiwiEmuFieldNotFoundException extends Exception {}
-
