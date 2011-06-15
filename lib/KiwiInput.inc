@@ -135,6 +135,11 @@ class KiwiInput {
   public function getInstructions() {
     $output = array();
 
+    $output[] = <<<END
+example: kiwi.php --directory=config_files
+
+END;
+
     $columns['option'] = 22;
     $columns['default'] = 10;
     $columns['description'] = self::$instructionWidth - $columns['option'] - $columns['default'];
