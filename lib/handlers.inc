@@ -114,7 +114,7 @@ class IntegerHandler extends FieldHandlerBase {
     if ($field_info->isSortable() && !($force_multi ||$field_info->isMultiValue())) {
       return 'sint';
     }
-    parent::getTypePrefix($field_info);
+    return parent::getTypePrefix($field_info);
   }
 }
 
@@ -131,7 +131,7 @@ class FloatHandler extends FieldHandlerBase {
     if ($field_info->isSortable() && !($force_multi || $field_info->isMultiValue())) {
       return 'sfloat';
     }
-    parent::getTypePrefix($field_info);
+    return parent::getTypePrefix($field_info);
   }
 }
 
