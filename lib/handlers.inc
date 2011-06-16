@@ -198,8 +198,15 @@ class NesttabHandler extends TextHandler {
       // together into a multi-value text field.  That's useful for searching
       // but not really for display.  If we want a display-useful field, we
       // will have to write our own handler and assign it to that one field.
+
+      // In the special case that a nesttab field only has one single value,
+      // we'll avoid quoting it and let it behave as if it were a string value.
       foreach ($value as $v) {
-        $data[] = '"' . recursive_implode($this->separator, $v) . '"';
+        $string = recursive_implode($this->separator, $v);
+        if (strpos($string, $this->separator) !== FALSE) {
+          $string = '"' . $string . '"';
+        }
+        $data[] = $string;
       }
 
       parent::map($field_info, $data, $document, $field_prefix);
