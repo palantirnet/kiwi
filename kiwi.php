@@ -15,7 +15,7 @@ function kiwi() {
 
     // Allow for parsing of an entire directory or just an individual file.
     if ($directory = $input->getOption('directory')) {
-      foreach (glob($directory . '/*.xml') as $file) {
+      foreach (glob($directory . '*.xml') as $file) {
         KiwiOutput::info("Parsing {$file} for processing.\n");
         main($input, new KiwiConfiguration($input, $file));
       }
