@@ -196,7 +196,7 @@
 
     <field name="MulHeight_nesttab" indexed="1" stored="1" fulltext="1" sort="1" />
     <field name="MulWidth_nesttab" indexed="1" stored="1" fulltext="1" sort="1" />
-<!--
+
     <!-- Sample latitude field, single value. -->
     <field name="ColCentroidLatitudeLocal" indexed="1" stored="1" fulltext="1" sort="0" />
 
@@ -214,242 +214,236 @@
     <field name="NarNarrativesRef_tab" indexed="1" stored="1" fulltext="1" sort="1" />
     <field name="ObjObjectsRef_tab" indexed="1" stored="1" fulltext="1" sort="1" />
     <field name="SigSightedByRef_tab" indexed="1" stored="1" fulltext="1" sort="1" />
-
-
-<!-- These fields are reporting not found in Emu for some reason.  -->
-<!--    <field name="PriCollectionDate" search="1" display="1" fulltext="1" sort="1" />-->
-<!--    <field name="PriSiteCEDateCollected" search="1" display="1" fulltext="1" sort="0" />-->
   </table>
 
   <table name="esites" type="attach">
-
     <field name="irn" search="1" display="1" />
     <field name="SummaryData" indexed="1" stored="1" />
-       <field name="AquBottomDescription" indexed="1" stored="1" />
-       <field name="AquDrainageCode" indexed="1" stored="1" />
-       <field name="AquDrainageDivision" indexed="1" stored="1" />
-       <field name="AquRiverBasin" indexed="1" stored="1" />
-       <field name="AquRiverCode" indexed="1" stored="1" />
-       <field name="CulCulturalRegion" indexed="1" stored="1" />
-       <field name="EraAge1" indexed="1" stored="1" />
-       <field name="EraAge2" indexed="1" stored="1" />
-       <field name="EraDepthDeterminationMethod" indexed="1" stored="1" />
-       <field name="EraDepthFromOrig" indexed="1" stored="1" />
-       <field name="EraDepthToOrig" indexed="1" stored="1" />
-       <field name="EraEra" indexed="1" stored="1" />
-       <field name="EraSiteDescription" indexed="1" stored="1" />
-       <field name="ExtendedData" indexed="1" stored="1" />
-       <field name="HabHabitatRemarks" indexed="1" stored="1" />
-       <field name="LatPreferredDatum" indexed="1" stored="1" />
-       <field name="LatPreferredDetermination" indexed="1" stored="1" />
-       <field name="LatPreferredDeterminedBy" indexed="1" stored="1" />
-       <field name="LatPreferredDetSource" indexed="1" stored="1" />
-       <field name="LatPreferredGeometry" indexed="1" stored="1" />
-       <field name="LatPreferredGeoreferencingNotes" indexed="1" stored="1" />
-       <field name="LatPreferredRadiusUnit" indexed="1" stored="1" />
-       <field name="LatPreferredRadiusVerbatim" indexed="1" stored="1" />
-       <field name="LocCatalog" indexed="1" stored="1" />
-       <field name="LocDeterminationMethod" indexed="1" stored="1" />
-       <field name="LocDeterminationMethodASL" indexed="1" stored="1" />
-       <field name="LocDrainageBasin" indexed="1" stored="1" />
-       <field name="LocElevationASLFromOrig" indexed="1" stored="1" />
-       <field name="LocElevationASLToOrig" indexed="1" stored="1" />
-       <field name="LocElevationFromOrig" indexed="1" stored="1" />
-       <field name="LocElevationToOrig" indexed="1" stored="1" />
-       <field name="LocIslandGrouping" indexed="1" stored="1" />
-       <field name="LocIslandName" indexed="1" stored="1" />
-       <field name="LocLocalityRemarks" indexed="1" stored="1" />
-       <field name="LocPreciseLocation" indexed="1" stored="1" />
-       <field name="LocReferencePoint" indexed="1" stored="1" />
-       <field name="LocSiteSize" indexed="1" stored="1" />
-       <field name="LocVerbatimLocality" indexed="1" stored="1" />
-       <field name="MapCentroidUTM" indexed="1" stored="1" />
-       <field name="MapDetermination" indexed="1" stored="1" />
-       <field name="MapName" indexed="1" stored="1" />
-       <field name="MapNumber" indexed="1" stored="1" />
-       <field name="MapScale" indexed="1" stored="1" />
-       <field name="MapType" indexed="1" stored="1" />
-       <field name="MapUTMDetermination" indexed="1" stored="1" />
-       <field name="NotNotes" indexed="1" stored="1" />
-       <field name="SitJurisdiction" indexed="1" stored="1" />
-       <field name="SitRecordClassification" indexed="1" stored="1" />
-       <field name="SitSiteNumber" indexed="1" stored="1" />
-       <field name="StrAge" indexed="1" stored="1" />
-       <field name="StrBed" indexed="1" stored="1" />
-       <field name="StrEpoch" indexed="1" stored="1" />
-       <field name="StrFacies" indexed="1" stored="1" />
-       <field name="StrFormation" indexed="1" stored="1" />
-       <field name="StrGroup" indexed="1" stored="1" />
-       <field name="StrLMA" indexed="1" stored="1" />
-       <field name="StrMember" indexed="1" stored="1" />
-       <field name="StrPeriod" indexed="1" stored="1" />
-       <field name="StrStratigraphyDetails" indexed="1" stored="1" />
-       <field name="StrSuperGroup" indexed="1" stored="1" />
-       <field name="StrZone" indexed="1" stored="1" />
-       <field name="SummaryData" indexed="1" stored="1" />
-       <field name="TerAspect" indexed="1" stored="1" />
-       <field name="TerEcologicalZone" indexed="1" stored="1" />
-       <field name="TerSedimentType" indexed="1" stored="1" />
-       <field name="TerSiteCondition" indexed="1" stored="1" />
-       <field name="TerTopography" indexed="1" stored="1" />
-       <field name="TerVegetation" indexed="1" stored="1" />
+    <field name="AquBottomDescription" indexed="1" stored="1" />
+    <field name="AquDrainageCode" indexed="1" stored="1" />
+    <field name="AquDrainageDivision" indexed="1" stored="1" />
+    <field name="AquRiverBasin" indexed="1" stored="1" />
+    <field name="AquRiverCode" indexed="1" stored="1" />
+    <field name="CulCulturalRegion" indexed="1" stored="1" />
+    <field name="EraAge1" indexed="1" stored="1" />
+    <field name="EraAge2" indexed="1" stored="1" />
+    <field name="EraDepthDeterminationMethod" indexed="1" stored="1" />
+    <field name="EraDepthFromOrig" indexed="1" stored="1" />
+    <field name="EraDepthToOrig" indexed="1" stored="1" />
+    <field name="EraEra" indexed="1" stored="1" />
+    <field name="EraSiteDescription" indexed="1" stored="1" />
+    <field name="ExtendedData" indexed="1" stored="1" />
+    <field name="HabHabitatRemarks" indexed="1" stored="1" />
+    <field name="LatPreferredDatum" indexed="1" stored="1" />
+    <field name="LatPreferredDetermination" indexed="1" stored="1" />
+    <field name="LatPreferredDeterminedBy" indexed="1" stored="1" />
+    <field name="LatPreferredDetSource" indexed="1" stored="1" />
+    <field name="LatPreferredGeometry" indexed="1" stored="1" />
+    <field name="LatPreferredGeoreferencingNotes" indexed="1" stored="1" />
+    <field name="LatPreferredRadiusUnit" indexed="1" stored="1" />
+    <field name="LatPreferredRadiusVerbatim" indexed="1" stored="1" />
+    <field name="LocCatalog" indexed="1" stored="1" />
+    <field name="LocDeterminationMethod" indexed="1" stored="1" />
+    <field name="LocDeterminationMethodASL" indexed="1" stored="1" />
+    <field name="LocDrainageBasin" indexed="1" stored="1" />
+    <field name="LocElevationASLFromOrig" indexed="1" stored="1" />
+    <field name="LocElevationASLToOrig" indexed="1" stored="1" />
+    <field name="LocElevationFromOrig" indexed="1" stored="1" />
+    <field name="LocElevationToOrig" indexed="1" stored="1" />
+    <field name="LocIslandGrouping" indexed="1" stored="1" />
+    <field name="LocIslandName" indexed="1" stored="1" />
+    <field name="LocLocalityRemarks" indexed="1" stored="1" />
+    <field name="LocPreciseLocation" indexed="1" stored="1" />
+    <field name="LocReferencePoint" indexed="1" stored="1" />
+    <field name="LocSiteSize" indexed="1" stored="1" />
+    <field name="LocVerbatimLocality" indexed="1" stored="1" />
+    <field name="MapCentroidUTM" indexed="1" stored="1" />
+    <field name="MapDetermination" indexed="1" stored="1" />
+    <field name="MapName" indexed="1" stored="1" />
+    <field name="MapNumber" indexed="1" stored="1" />
+    <field name="MapScale" indexed="1" stored="1" />
+    <field name="MapType" indexed="1" stored="1" />
+    <field name="MapUTMDetermination" indexed="1" stored="1" />
+    <field name="NotNotes" indexed="1" stored="1" />
+    <field name="SitJurisdiction" indexed="1" stored="1" />
+    <field name="SitRecordClassification" indexed="1" stored="1" />
+    <field name="SitSiteNumber" indexed="1" stored="1" />
+    <field name="StrAge" indexed="1" stored="1" />
+    <field name="StrBed" indexed="1" stored="1" />
+    <field name="StrEpoch" indexed="1" stored="1" />
+    <field name="StrFacies" indexed="1" stored="1" />
+    <field name="StrFormation" indexed="1" stored="1" />
+    <field name="StrGroup" indexed="1" stored="1" />
+    <field name="StrLMA" indexed="1" stored="1" />
+    <field name="StrMember" indexed="1" stored="1" />
+    <field name="StrPeriod" indexed="1" stored="1" />
+    <field name="StrStratigraphyDetails" indexed="1" stored="1" />
+    <field name="StrSuperGroup" indexed="1" stored="1" />
+    <field name="StrZone" indexed="1" stored="1" />
+    <field name="SummaryData" indexed="1" stored="1" />
+    <field name="TerAspect" indexed="1" stored="1" />
+    <field name="TerEcologicalZone" indexed="1" stored="1" />
+    <field name="TerSedimentType" indexed="1" stored="1" />
+    <field name="TerSiteCondition" indexed="1" stored="1" />
+    <field name="TerTopography" indexed="1" stored="1" />
+    <field name="TerVegetation" indexed="1" stored="1" />
     <field name="AquHabitat_tab" indexed="1" stored="1" />
-   <field name="AquSubstrateType_tab" indexed="1" stored="1" />
-   <field name="ColCollectionEvents_tab" indexed="1" stored="1" />
-   <field name="CulCulturalAffiliations_tab" indexed="1" stored="1" />
-   <field name="CulLanguageGroup_tab" indexed="1" stored="1" />
-   <field name="CulOccupationPeriod_tab" indexed="1" stored="1" />
-   <field name="CulScientificDates_tab" indexed="1" stored="1" />
-   <field name="CulSiteClassification_tab" indexed="1" stored="1" />
-   <field name="CulSiteFeatures_tab" indexed="1" stored="1" />
-   <field name="CulSiteType_tab" indexed="1" stored="1" />
-   <field name="EraBiozone_tab" indexed="1" stored="1" />
-   <field name="EraLithology_tab" indexed="1" stored="1" />
-   <field name="EraSedimentaryBasin_tab" indexed="1" stored="1" />
-   <field name="EraStratigraphicUnit_tab" indexed="1" stored="1" />
-   <field name="EraStructuralUnit_tab" indexed="1" stored="1" />
-   <field name="LatComment_nesttab" indexed="1" stored="1" />
-   <field name="LatDatum_tab" indexed="1" stored="1" />
-   <field name="LatDeriveCentroid_tab" indexed="1" stored="1" />
-   <field name="LatDeterminedBy_tab" indexed="1" stored="1" />
-   <field name="LatDetSource_tab" indexed="1" stored="1" />
-   <field name="LatGeometry_tab" indexed="1" stored="1" />
-   <field name="LatGeoreferencingNotes0" indexed="1" stored="1" />
-   <field name="LatLatitudeDecimal_nesttab" indexed="1" stored="1" />
-   <field name="LatLatitudeDM_nesttab" indexed="1" stored="1" />
-   <field name="LatLatitude_nesttab" indexed="1" stored="1" />
-   <field name="LatLatitudeOrig_nesttab" indexed="1" stored="1" />
-   <field name="LatLatitudeVerbatim_nesttab" indexed="1" stored="1" />
-   <field name="LatLatLongDetermination_tab" indexed="1" stored="1" />
-   <field name="LatLongitudeDecimal_nesttab" indexed="1" stored="1" />
-   <field name="LatLongitudeDM_nesttab" indexed="1" stored="1" />
-   <field name="LatLongitude_nesttab" indexed="1" stored="1" />
-   <field name="LatLongitudeOrig_nesttab" indexed="1" stored="1" />
-   <field name="LatLongitudeVerbatim_nesttab" indexed="1" stored="1" />
-   <field name="LatModifier_nesttab" indexed="1" stored="1" />
-   <field name="LatPreferred_tab" indexed="1" stored="1" />
-   <field name="LatRadiusUnit_tab" indexed="1" stored="1" />
-   <field name="LatRadiusVerbatim_tab" indexed="1" stored="1" />
-   <field name="LatUtmEast_nesttab" indexed="1" stored="1" />
-   <field name="LatUtmNorth_nesttab" indexed="1" stored="1" />
-   <field name="LatUtmZone_nesttab" indexed="1" stored="1" />
-   <field name="LocBaySound_tab" indexed="1" stored="1" />
-   <field name="LocContinent_tab" indexed="1" stored="1" />
-   <field name="LocCountry_tab" indexed="1" stored="1" />
-   <field name="LocDistrictCountyShire_tab" indexed="1" stored="1" />
-   <field name="LocNearestNamedPlace_tab" indexed="1" stored="1" />
-   <field name="LocOcean_tab" indexed="1" stored="1" />
-   <field name="LocProvinceStateTerritory_tab" indexed="1" stored="1" />
-   <field name="LocSeaGulf_tab" indexed="1" stored="1" />
-   <field name="LocSpecialGeographicUnit_tab" indexed="1" stored="1" />
-   <field name="LocTownship_tab" indexed="1" stored="1" />
-   <field name="MapAerialReference_tab" indexed="1" stored="1" />
-   <field name="MapEasting0" indexed="1" stored="1" />
-   <field name="MapNorthing0" indexed="1" stored="1" />
-   <field name="MapTRSNote_tab" indexed="1" stored="1" />
-   <field name="MapTRSPrimeMeridian_tab" indexed="1" stored="1" />
-   <field name="MapTRSQuarter_tab" indexed="1" stored="1" />
-   <field name="MapTRSRange_tab" indexed="1" stored="1" />
-   <field name="MapTRSSection_tab" indexed="1" stored="1" />
-   <field name="MapTRSTownship_tab" indexed="1" stored="1" />
-   <field name="MapUTM0" indexed="1" stored="1" />
-   <field name="MulCreator_nesttab" indexed="1" stored="1" />
-   <field name="MulDescription_tab" indexed="1" stored="1" />
-   <field name="MulDocumentType_tab" indexed="1" stored="1" />
-   <field name="MulFileName_nesttab" indexed="1" stored="1" />
-   <field name="MulHeight_nesttab" indexed="1" stored="1" />
-   <field name="MulIdentifier_tab" indexed="1" stored="1" />
-   <field name="MulMimeFormat_tab" indexed="1" stored="1" />
-   <field name="MulMimeType_tab" indexed="1" stored="1" />
-   <field name="MulTitle_tab" indexed="1" stored="1" />
-   <field name="MulWidth_nesttab" indexed="1" stored="1" />
-   <field name="NarNarratives" indexed="1" stored="1" />
-   <field name="ObjObjects_tab" indexed="1" stored="1" />
-   <field name="SitBibliographic_tab" indexed="1" stored="1" />
-   <field name="SitCatalog_tab" indexed="1" stored="1" />
-   <field name="SitSiteName_tab" indexed="1" stored="1" />
-   <field name="SitSiteOwner_tab" indexed="1" stored="1" />
-   <field name="StrAuthority_tab" indexed="1" stored="1" />
-   <field name="StrOtherTermsLevel_tab" indexed="1" stored="1" />
-   <field name="StrOtherTermsValue_tab" indexed="1" stored="1" />
-   <field name="StrTermAuthorityLevel_tab" indexed="1" stored="1" />
-   <field name="TerSoilType_tab" indexed="1" stored="1" />
-   <field name="LatPreferredDetDate" indexed="1" stored="1" />
-   <field name="LatDetDate0" indexed="1" stored="1" />
-  <field name="EraDepthFromFt" indexed="1" stored="1" />
-  <field name="EraDepthFromMt" indexed="1" stored="1" />
-  <field name="EraDepthToFt" indexed="1" stored="1" />
-  <field name="EraDepthToMt" indexed="1" stored="1" />
-  <field name="LatPreferredCentroidLatDec" indexed="1" stored="1" />
-  <field name="LatPreferredCentroidLongDec" indexed="1" stored="1" />
-  <field name="LatPreferredRadiusNumeric" indexed="1" stored="1" />
-  <field name="LatPreferredRadiusProbability" indexed="1" stored="1" />
-  <field name="LocElevationASLFromFt" indexed="1" stored="1" />
-  <field name="LocElevationASLFromMt" indexed="1" stored="1" />
-  <field name="LocElevationASLToFt" indexed="1" stored="1" />
-  <field name="LocElevationASLToMt" indexed="1" stored="1" />
-  <field name="LocElevationFromFt" indexed="1" stored="1" />
-  <field name="LocElevationFromMt" indexed="1" stored="1" />
-  <field name="LocElevationToFt" indexed="1" stored="1" />
-  <field name="LocElevationToMt" indexed="1" stored="1" />
-  <field name="LatCentroidLatitudeDec_tab" indexed="1" stored="1" />
-  <field name="LatCentroidLongitudeDec_tab" indexed="1" stored="1" />
-  <field name="LatRadiusNumeric_tab" indexed="1" stored="1" />
-  <field name=""LatRadiusProbability_tab" indexed="1" stored="1" />
-  <field name="LatLatitudeDecimal_nesttab" indexed="1" stored="1" />
-  <field name="LatLongitudeDecimal_nesttab" indexed="1" stored="1" />
-  <field name="LatLatitudeOrig_nesttab" indexed="1" stored="1" />
-  <field name="LatLongitudeOrig_nesttab" indexed="1" stored="1" />
-  <field name="LatUtmEast_nesttab" indexed="1" stored="1" />
-  <field name="LatUtmNorth_nesttab" indexed="1" stored="1" />
-  <field name="LatUtmZone_nesttab" indexed="1" stored="1" />
-  <field name="MulHeight_nesttab" indexed="1" stored="1" />
-  <field name="MulWidth_nesttab" indexed="1" stored="1" />
-  <field name="LatPreferredCentroidLatitude" indexed="1" stored="1" />
-  <field name="LatCentroidLatitude0" indexed="1" stored="1" />
-  <field name="LatLatitude_nesttab" indexed="1" stored="1" />
-  <field name="LatLatitudeDM_nesttab" indexed="1" stored="1" />
-  <field name="LatPreferredCentroidLongitude" indexed="1" stored="1" />
-  <field name="LatCentroidLongitude0" indexed="1" stored="1" />
-  <field name="LatLongitude_nesttab" indexed="1" stored="1" />
-  <field name="LatLongitudeDM_nesttab" indexed="1" stored="1" />
-  <field name="LatPreferredDeterminedByRef" indexed="1" stored="1" />
-  <field name="ColCollectionEventsRef_tab" indexed="1" stored="1" />
-  <field name="LatDeterminedByRef_tab" indexed="1" stored="1" />
-  <field name="NarNarrativesRef_tab" indexed="1" stored="1" />
-  <field name="ObjObjectsRef_tab" indexed="1" stored="1" />
-  <field name="SitBibliographicRef_tab" indexed="1" stored="1" />
-  <field name="SitSiteOwnerRef_tab" indexed="1" stored="1" />
-  <field name="MulMultiMediaRef_tab" indexed="1" stored="1" />
+    <field name="AquSubstrateType_tab" indexed="1" stored="1" />
+    <field name="ColCollectionEvents_tab" indexed="1" stored="1" />
+    <field name="CulCulturalAffiliations_tab" indexed="1" stored="1" />
+    <field name="CulLanguageGroup_tab" indexed="1" stored="1" />
+    <field name="CulOccupationPeriod_tab" indexed="1" stored="1" />
+    <field name="CulScientificDates_tab" indexed="1" stored="1" />
+    <field name="CulSiteClassification_tab" indexed="1" stored="1" />
+    <field name="CulSiteFeatures_tab" indexed="1" stored="1" />
+    <field name="CulSiteType_tab" indexed="1" stored="1" />
+    <field name="EraBiozone_tab" indexed="1" stored="1" />
+    <field name="EraLithology_tab" indexed="1" stored="1" />
+    <field name="EraSedimentaryBasin_tab" indexed="1" stored="1" />
+    <field name="EraStratigraphicUnit_tab" indexed="1" stored="1" />
+    <field name="EraStructuralUnit_tab" indexed="1" stored="1" />
+    <field name="LatComment_nesttab" indexed="1" stored="1" />
+    <field name="LatDatum_tab" indexed="1" stored="1" />
+    <field name="LatDeriveCentroid_tab" indexed="1" stored="1" />
+    <field name="LatDeterminedBy_tab" indexed="1" stored="1" />
+    <field name="LatDetSource_tab" indexed="1" stored="1" />
+    <field name="LatGeometry_tab" indexed="1" stored="1" />
+    <field name="LatGeoreferencingNotes0" indexed="1" stored="1" />
+    <field name="LatLatitudeDecimal_nesttab" indexed="1" stored="1" />
+    <field name="LatLatitudeDM_nesttab" indexed="1" stored="1" />
+    <field name="LatLatitude_nesttab" indexed="1" stored="1" />
+    <field name="LatLatitudeOrig_nesttab" indexed="1" stored="1" />
+    <field name="LatLatitudeVerbatim_nesttab" indexed="1" stored="1" />
+    <field name="LatLatLongDetermination_tab" indexed="1" stored="1" />
+    <field name="LatLongitudeDecimal_nesttab" indexed="1" stored="1" />
+    <field name="LatLongitudeDM_nesttab" indexed="1" stored="1" />
+    <field name="LatLongitude_nesttab" indexed="1" stored="1" />
+    <field name="LatLongitudeOrig_nesttab" indexed="1" stored="1" />
+    <field name="LatLongitudeVerbatim_nesttab" indexed="1" stored="1" />
+    <field name="LatModifier_nesttab" indexed="1" stored="1" />
+    <field name="LatPreferred_tab" indexed="1" stored="1" />
+    <field name="LatRadiusUnit_tab" indexed="1" stored="1" />
+    <field name="LatRadiusVerbatim_tab" indexed="1" stored="1" />
+    <field name="LatUtmEast_nesttab" indexed="1" stored="1" />
+    <field name="LatUtmNorth_nesttab" indexed="1" stored="1" />
+    <field name="LatUtmZone_nesttab" indexed="1" stored="1" />
+    <field name="LocBaySound_tab" indexed="1" stored="1" />
+    <field name="LocContinent_tab" indexed="1" stored="1" />
+    <field name="LocCountry_tab" indexed="1" stored="1" />
+    <field name="LocDistrictCountyShire_tab" indexed="1" stored="1" />
+    <field name="LocNearestNamedPlace_tab" indexed="1" stored="1" />
+    <field name="LocOcean_tab" indexed="1" stored="1" />
+    <field name="LocProvinceStateTerritory_tab" indexed="1" stored="1" />
+    <field name="LocSeaGulf_tab" indexed="1" stored="1" />
+    <field name="LocSpecialGeographicUnit_tab" indexed="1" stored="1" />
+    <field name="LocTownship_tab" indexed="1" stored="1" />
+    <field name="MapAerialReference_tab" indexed="1" stored="1" />
+    <field name="MapEasting0" indexed="1" stored="1" />
+    <field name="MapNorthing0" indexed="1" stored="1" />
+    <field name="MapTRSNote_tab" indexed="1" stored="1" />
+    <field name="MapTRSPrimeMeridian_tab" indexed="1" stored="1" />
+    <field name="MapTRSQuarter_tab" indexed="1" stored="1" />
+    <field name="MapTRSRange_tab" indexed="1" stored="1" />
+    <field name="MapTRSSection_tab" indexed="1" stored="1" />
+    <field name="MapTRSTownship_tab" indexed="1" stored="1" />
+    <field name="MapUTM0" indexed="1" stored="1" />
+    <field name="MulCreator_nesttab" indexed="1" stored="1" />
+    <field name="MulDescription_tab" indexed="1" stored="1" />
+    <field name="MulDocumentType_tab" indexed="1" stored="1" />
+    <field name="MulFileName_nesttab" indexed="1" stored="1" />
+    <field name="MulHeight_nesttab" indexed="1" stored="1" />
+    <field name="MulIdentifier_tab" indexed="1" stored="1" />
+    <field name="MulMimeFormat_tab" indexed="1" stored="1" />
+    <field name="MulMimeType_tab" indexed="1" stored="1" />
+    <field name="MulTitle_tab" indexed="1" stored="1" />
+    <field name="MulWidth_nesttab" indexed="1" stored="1" />
+    <field name="NarNarratives" indexed="1" stored="1" />
+    <field name="ObjObjects_tab" indexed="1" stored="1" />
+    <field name="SitBibliographic_tab" indexed="1" stored="1" />
+    <field name="SitCatalog_tab" indexed="1" stored="1" />
+    <field name="SitSiteName_tab" indexed="1" stored="1" />
+    <field name="SitSiteOwner_tab" indexed="1" stored="1" />
+    <field name="StrAuthority_tab" indexed="1" stored="1" />
+    <field name="StrOtherTermsLevel_tab" indexed="1" stored="1" />
+    <field name="StrOtherTermsValue_tab" indexed="1" stored="1" />
+    <field name="StrTermAuthorityLevel_tab" indexed="1" stored="1" />
+    <field name="TerSoilType_tab" indexed="1" stored="1" />
+    <field name="LatPreferredDetDate" indexed="1" stored="1" />
+    <field name="LatDetDate0" indexed="1" stored="1" />
+    <field name="EraDepthFromFt" indexed="1" stored="1" />
+    <field name="EraDepthFromMt" indexed="1" stored="1" />
+    <field name="EraDepthToFt" indexed="1" stored="1" />
+    <field name="EraDepthToMt" indexed="1" stored="1" />
+    <field name="LatPreferredCentroidLatDec" indexed="1" stored="1" />
+    <field name="LatPreferredCentroidLongDec" indexed="1" stored="1" />
+    <field name="LatPreferredRadiusNumeric" indexed="1" stored="1" />
+    <field name="LatPreferredRadiusProbability" indexed="1" stored="1" />
+    <field name="LocElevationASLFromFt" indexed="1" stored="1" />
+    <field name="LocElevationASLFromMt" indexed="1" stored="1" />
+    <field name="LocElevationASLToFt" indexed="1" stored="1" />
+    <field name="LocElevationASLToMt" indexed="1" stored="1" />
+    <field name="LocElevationFromFt" indexed="1" stored="1" />
+    <field name="LocElevationFromMt" indexed="1" stored="1" />
+    <field name="LocElevationToFt" indexed="1" stored="1" />
+    <field name="LocElevationToMt" indexed="1" stored="1" />
+    <field name="LatCentroidLatitudeDec_tab" indexed="1" stored="1" />
+    <field name="LatCentroidLongitudeDec_tab" indexed="1" stored="1" />
+    <field name="LatRadiusNumeric_tab" indexed="1" stored="1" />
+    <field name="LatRadiusProbability_tab" indexed="1" stored="1" />
+    <field name="LatLatitudeDecimal_nesttab" indexed="1" stored="1" />
+    <field name="LatLongitudeDecimal_nesttab" indexed="1" stored="1" />
+    <field name="LatLatitudeOrig_nesttab" indexed="1" stored="1" />
+    <field name="LatLongitudeOrig_nesttab" indexed="1" stored="1" />
+    <field name="LatUtmEast_nesttab" indexed="1" stored="1" />
+    <field name="LatUtmNorth_nesttab" indexed="1" stored="1" />
+    <field name="LatUtmZone_nesttab" indexed="1" stored="1" />
+    <field name="MulHeight_nesttab" indexed="1" stored="1" />
+    <field name="MulWidth_nesttab" indexed="1" stored="1" />
+    <field name="LatPreferredCentroidLatitude" indexed="1" stored="1" />
+    <field name="LatCentroidLatitude0" indexed="1" stored="1" />
+    <field name="LatLatitude_nesttab" indexed="1" stored="1" />
+    <field name="LatLatitudeDM_nesttab" indexed="1" stored="1" />
+    <field name="LatPreferredCentroidLongitude" indexed="1" stored="1" />
+    <field name="LatCentroidLongitude0" indexed="1" stored="1" />
+    <field name="LatLongitude_nesttab" indexed="1" stored="1" />
+    <field name="LatLongitudeDM_nesttab" indexed="1" stored="1" />
+    <field name="LatPreferredDeterminedByRef" indexed="1" stored="1" />
+    <field name="ColCollectionEventsRef_tab" indexed="1" stored="1" />
+    <field name="LatDeterminedByRef_tab" indexed="1" stored="1" />
+    <field name="NarNarrativesRef_tab" indexed="1" stored="1" />
+    <field name="ObjObjectsRef_tab" indexed="1" stored="1" />
+    <field name="SitBibliographicRef_tab" indexed="1" stored="1" />
+    <field name="SitSiteOwnerRef_tab" indexed="1" stored="1" />
+    <field name="MulMultiMediaRef_tab" indexed="1" stored="1" />
+  </table>
 
-      <table name="ebibliography" type="attach">
+  <table name="ebibliography" type="attach">
+    <field name="irn" search="1" display="1" />
+    <field name="SummaryData" indexed="1" stored="1" />
+  </table>
 
-      <field name="irn" search="1" display="1" />
-      <field name="SummaryData" indexed="1" stored="1" />
+  <table name="eparties" type="attach">
+    <field name="irn" search="1" display="1" />
+    <field name="SummaryData" indexed="1" stored="1" />
+  </table>
 
-      <table name="eparties" type="attach">
+  <table name="emultimedia" type="attach">
+    <field name="irn" search="1" display="1" />
+    <field name="SummaryData" indexed="1" stored="1" />
+  </table>
 
-      <field name="irn" search="1" display="1" />
-      <field name="SummaryData" indexed="1" stored="1" />
+  <table name="enarratives" type="attach">
+    <field name="irn" search="1" display="1" />
+    <field name="SummaryData" indexed="1" stored="1" />
+  </table>
 
-      <table name="emultimedia" type="attach">
-
-      <field name="irn" search="1" display="1" />
-      <field name="SummaryData" indexed="1" stored="1" />
-
-      <table name="enarratives" type="attach">
-
-      <field name="irn" search="1" display="1" />
-      <field name="SummaryData" indexed="1" stored="1" />
-
-      <table name="ecatalogue" type="attach">
-
-      <field name="irn" search="1" display="1" />
-      <field name="SummaryData" indexed="1" stored="1" />
-      <field name="DarCatalogNumberText" indexed="1" stored="1" />
-      <field name="DarCatalogNumber" indexed="1" stored="1" />
-      <field name="DarScientificNameAuthor" indexed="1" stored="1" />
-      <field name="DarHigherTaxon" indexed="1" stored="1" />
+  <table name="ecatalogue" type="attach">
+    <field name="irn" search="1" display="1" />
+    <field name="SummaryData" indexed="1" stored="1" />
+    <field name="DarCatalogNumberText" indexed="1" stored="1" />
+    <field name="DarCatalogNumber" indexed="1" stored="1" />
+    <field name="DarScientificNameAuthor" indexed="1" stored="1" />
+    <field name="DarHigherTaxon" indexed="1" stored="1" />
   </table>
 
 </config>

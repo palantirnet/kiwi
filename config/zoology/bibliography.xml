@@ -254,7 +254,7 @@
     <field name="WebPublicationDate" indexed="1" stored="1" fulltext="1" sort="1" />
     <field name="JouPublicationDate" indexed="1" stored="1" fulltext="1" sort="1" />
 
-<!--
+
     <!-- Sample floating point field, single-value. -->
     <field name="DarCoordinatePrecision" indexed="1" stored="1" fulltext="1" sort="0" />
 
@@ -266,7 +266,7 @@
 
     <!-- Sample longitude field, single value. -->
     <field name="ColCentroidLongitudeLocal" indexed="1" stored="1" fulltext="1" sort="0" />
--->
+
     <!-- Sample reference field, single-value. -->
     <field name="MulMultiMediaRef_tab" indexed="1" stored="1" fulltext="1" sort="1" />
     <field name="ArcLocationRef" indexed="1" stored="1" fulltext="1" sort="1" />
