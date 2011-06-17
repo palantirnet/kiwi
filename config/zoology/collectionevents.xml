@@ -1,45 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <config name="ecatalogue" full-rebuild="0">
-  <!--
-    This include specifies the file that defines the server configuration.
+  <!-- This include specifies the file that defines the server configuration.
     That is different for each server.  Use the template below to populate
-    a new file with the appropriate data.
-   -->
-<xi:include xmlns:xi="http://www.w3.org/2003/XInclude" href="../../servers.xml" />
-  <!--
-    <servers>
-      <solr host="66.158.71.71" port="8080" core="kiwi" path="/emu0/core0" />
-      <emu host="66.158.71.71" port="40000" reconnect-port="45000" />
-    </servers>
-  -->
+    a new file with the appropriate data.   -->
+  <xi:include xmlns:xi="http://www.w3.org/2003/XInclude" href="../servers.xml" />
 
-  <!--
-    The configuration for each processor.  This does not affect the fields that
-    are retrieved.
-  -->
-  <processors count="1" batch-size="1" max-size="100" />
+  <!--   The configuration for each processor.  This does not affect the fields that
+    are retrieved.  -->
+  <processors count="1" batch-size="50" max-size="1000" />
 
-  <!--
-    The base table of this index.  This must be one of the tables listed below.
-  -->
+  <!--   The base table of this index.  This must be one of the tables listed below.  -->
   <base-table name="ecollectionevents" />
 
   <!--
-    The supported field types and the handler each one should use.  The default-hander
-    will be used for any field type not listed here.  Each handler name corresponds
-    to a PHP class.
+    Include the common set of fields.
   -->
-  <field-types default-handler="NullHandler">
-    <field-type name="Text" handler="TextHandler" />
-    <field-type name="Integer" handler="IntegerHandler" />
-    <field-type name="Date" handler="DateHandler" />
-    <field-type name="Float" handler="FloatHandler" />
-    <field-type name="Currency" handler="FloatHandler" />
-    <field-type name="Latitude" handler="LatLongHandler" />
-    <field-type name="Longitude" handler="LatLongHandler" />
-    <field-type name="Attachment" handler="AttachmentReferenceHandler" fulltext="0" sort="0" />
-  </field-types>
+  <xi:include xmlns:xi="http://www.w3.org/2003/XInclude" href="../fields.xml" />
 
   <!--
     These filters apply to the base table when building the initial query.
