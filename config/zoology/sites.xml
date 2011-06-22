@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <config name="ecatalogue" full-rebuild="0">
-  <!-- This include specifies the file that defines the server configuration.
-    That is different for each server.  Use the template below to populate
-    a new file with the appropriate data.   -->
-  <xi:include xmlns:xi="http://www.w3.org/2003/XInclude" href="../servers.xml" />
+  <servers>
+    <solr host="66.158.71.71" port="8080" core="kiwi" path="/emu0/core0" />
+    <emu host="66.158.71.71" port="40000" />
+  </servers>
 
   <!--   The configuration for each processor.  This does not affect the fields that
     are retrieved.  -->
