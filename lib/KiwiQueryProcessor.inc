@@ -124,19 +124,19 @@ class KiwiQueryProcessor {
         KiwiOutput::info("Processor {$this->processorId}: Indexed $processed records.");
       }
       catch (ImuException $e) {
-        KiwiOutput::get()->writeMessage("Processor {$this->processorId}: Error connecting to Emu.", LOG_ERR);
+        KiwiOutput::get()->writeMessage("Processor {$this->processorId} while processing IRN {$row['irn']}: Error connecting to Emu.", LOG_ERR);
         // ImuException is buggy and returns an empty string for $e->getMessage().
         // Casting to a string, though, works.  Weird.
         KiwiOutput::get()->writeMessage(sprintf('%s in %s on line %s', (string)$e, $e->getFile(), $e->getLine()), LOG_ERR);
         break;
       }
       catch (KiwiSolrException $e) {
-        KiwiOutput::get()->writeMessage("Processor {$this->processorId}: Error processing Solr document.", LOG_ERR);
-        KiwiOutput::debug($e->getMessage(), 'Solr error');
+        KiwiOutput::get()->writeMessage("Processor {$this->processorId} while processing IRN {$row['irn']}: Error processing Solr document.", LOG_ERR);
+        KiwiOutput::get()->writeMessage($e->getMessage(), 'Solr error', LOG_ERR);
         KiwiOutput::debug($e->getSolrMessage(), 'Failing Solr message');
       }
       catch (ErrorException $e) {
-        KiwiOutput::get()->writeMessage("Processor {$this->processorId}: Generic PHP error.", LOG_ERR);
+        KiwiOutput::get()->writeMessage("Processor {$this->processorId} while processing IRN {$row['irn']}: Generic PHP error.", LOG_ERR);
         KiwiOutput::get()->writeMessage(sprintf('%s in %s on line %s', $e->getMessage(), $e->getFile(), $e->getLine()), LOG_ERR);
         break;
       }
