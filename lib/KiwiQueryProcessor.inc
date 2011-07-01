@@ -74,7 +74,7 @@ class KiwiQueryProcessor {
 
     $position = 'current';
     $offset = 0;
-    $count = $this->config->processorInfo('count');
+    $count = $this->config->processorInfo('batch-size');
     $max_records = $this->config->processorInfo('max-size');
       //maxRecordsPerProcessor();
 
