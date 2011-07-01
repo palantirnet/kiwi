@@ -132,7 +132,7 @@ class KiwiQueryProcessor {
       }
       catch (KiwiSolrException $e) {
         KiwiOutput::get()->writeMessage("Processor {$this->processorId} while processing IRN {$row['irn']}: Error processing Solr document.", LOG_ERR);
-        KiwiOutput::get()->writeMessage($e->getMessage(), 'Solr error', LOG_ERR);
+        KiwiOutput::get()->writeMessage('Solr error: ' . $e->getMessage(), LOG_ERR);
         KiwiOutput::debug($e->getSolrMessage(), 'Failing Solr message');
       }
       catch (ErrorException $e) {
