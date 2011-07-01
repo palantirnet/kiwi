@@ -257,6 +257,10 @@ class MergeReferenceHandler extends FieldHandlerBase {
       KiwiOutput::debug("\tThis field references: " . $ref_table->getName());
 
       foreach ($value as $i => $sub_record) {
+        if (! $sub_record) {
+          KiwiOutput::get()->writeMessage(sprintf('Missing sub-record in Merge field: %s in table %s', $field_info->columnName(), $ref_table->getName()), LOG_WARNING);
+          continue;
+        }
         foreach ($sub_record as $field_name => $v) {
 
           $ref_field = $ref_table->getField($field_name);
