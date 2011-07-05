@@ -162,7 +162,7 @@ class KiwiImuSession extends IMuSession {
         $this->tableInfo[$table] = $result['result'];
       }
       else {
-        throw new KiwiEmuConnectionException("Unable to retrieve table schema: {$able}", $result['status']);
+        throw new KiwiEmuConnectionException("Unable to retrieve table schema: {$table}", $result['status']);
       }
     }
 
