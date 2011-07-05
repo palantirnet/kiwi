@@ -536,7 +536,6 @@
     <field name="ComGeographicLocation_tab" indexed="1" stored="1"/>
     <field name="ComLanguage_tab" indexed="1" stored="1"/>
     <field name="ComComments_tab" indexed="1" stored="1"/>
-    <field name="ComReferenceRef_tab" indexed="1" stored="1"/>
   </table>
 
   <table name="emultimedia">
