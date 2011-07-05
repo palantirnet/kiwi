@@ -109,9 +109,21 @@ class KiwiOutput {
    */
   public function writeMessage($message, $level = LOG_INFO) {
     if ($level <= $this->threshold) {
-      fwrite($this->getStream($level), $this->formatMessage($message, $level). PHP_EOL);
+      fwrite($this->getStream($level), $this->formatMessage($message, $level) . PHP_EOL);
     }
     return $this;
+  }
+
+  /**
+   * Writes a message to standard out, without any prefixing.
+   *
+   * This is mostly useful for help text and similar instructions.
+   *
+   * @param string $message
+   *   The message to print.
+   */
+  public function write($message) {
+    fwrite($this->getStream(LOG_INFO), $message);
   }
 
   /**
