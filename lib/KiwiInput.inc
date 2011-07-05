@@ -171,6 +171,11 @@ example: kiwi.php --directory=config_files
 
 END;
 
+    return implode(PHP_EOL, $output);
+  }
+
+
+  public function getExtendedHelp() {
     $columns['option'] = 22;
     $columns['default'] = 10;
     $columns['description'] = self::$instructionWidth - $columns['option'] - $columns['default'];
@@ -186,5 +191,4 @@ END;
 
     return implode(PHP_EOL, $output);
   }
-
 }
