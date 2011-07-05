@@ -157,9 +157,7 @@ class KiwiInput {
   }
 
   /**
-   * Returns the summary table for all available options and what they do.
-   *
-   * The returned string is ready for user-consumtion.
+   * Returns general help text to help a user get started with the application.
    *
    * @return string
    */
@@ -182,7 +180,14 @@ END;
     return $output;
   }
 
-
+  /**
+   * Returns the summary table for all available options and what they do.
+   *
+   * The returned string is ready for user-consumtion.
+   *
+   * @return strig
+   *   Help text detailing all available options.
+   */
   public function getExtendedHelp() {
     $columns['option'] = 22;
     $columns['default'] = 10;
