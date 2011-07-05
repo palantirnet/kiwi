@@ -178,12 +178,13 @@ class KiwiImuSession extends IMuSession {
    * @param string $name
    *   The name of the table we want information about.
    * @return KiwiEmuTable
+   *   A table object, or NULL if it is not defined in this configuration.
    */
   public function getTable($name) {
     if (empty($this->tables[$name])) {
-      $this->tables[$name] = new KiwiEmuTable($this->config, $this, $this->getSchemaInfo($name));
+      $this->getTables();
     }
-    return $this->tables[$name];
+    return !empty($this->tables[$name]) ? $this->tables[$name] : NULL;
   }
 
   /**
@@ -193,11 +194,12 @@ class KiwiImuSession extends IMuSession {
    *   An array of all table objects for this processing run.
    */
   public function getTables() {
-    $tables = array();
-    foreach ($this->config->getTables() as $name) {
-      $tables[] = $this->getTable($name);
+    if (empty($this->tables)) {
+      foreach ($this->config->getTables() as $name) {
+        $this->tables[$name] = new KiwiEmuTable($this->config, $this, $this->getSchemaInfo($name));
+      }
     }
-    return $tables;
+    return $this->tables;
   }
 
   /**

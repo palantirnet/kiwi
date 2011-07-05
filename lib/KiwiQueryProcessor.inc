@@ -190,7 +190,9 @@ class KiwiQueryProcessor {
 
     foreach ($this->session->getTable($base_table['name']) as $field) {
       if ($field->isReferenceField()) {
-        $columns[] = $this->getNestedFetchSet($field, $base_table['name']);
+        if ($nested = $this->getNestedFetchSet($field, $base_table['name'])) {
+          $columns[] = $nested;
+        }
       }
       else {
         $columns[] = $field->columnName();
@@ -215,7 +217,13 @@ class KiwiQueryProcessor {
   protected function getNestedFetchSet(KiwiEmuField $field, $parent_table) {
     $columns = array();
     $table = $field->refTable();
+
     $ref_table = $this->session->getTable($table);
+    if (!$ref_table) {
+      $field_name = $field->columnName();
+      KiwiOutput::warn("The field {$field_name} in table '{$parent_table}' references the table '{$table}', which is not defined in the configuration file.");
+      return;
+    }
     foreach ($ref_table as $ref_field) {
       // A table can reference itself, which if we kept on going would result
       // in an infinite loop.  Instead, we check for a reference back to the
