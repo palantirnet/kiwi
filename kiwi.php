@@ -15,8 +15,8 @@ function kiwi() {
 
     // Allow for parsing of an entire directory or just an individual file.
     if ($input->getOption('help')) {
-      KiwiOutput::get()->write(PHP_EOL . PHP_EOL . $input->getInstructions());
-      KiwiOutput::get()->write(PHP_EOL . PHP_EOL . $input->getExtendedHelp());
+      KiwiOutput::get()->write(PHP_EOL . $input->getInstructions());
+      KiwiOutput::get()->write(PHP_EOL . $input->getExtendedHelp());
     }
     else if ($directory = $input->getOption('directory')) {
       foreach (glob($directory . '*.xml') as $file) {
@@ -29,12 +29,11 @@ function kiwi() {
     }
   }
   catch (InvalidConfigOptionException $e) {
-    KiwiOutput::get()->write($e->getMessage(), LOG_ERR);
-    KiwiOutput::get()->write(PHP_EOL . PHP_EOL . $input->getInstructions());
+    KiwiOutput::get()->writeMessage($e->getMessage(), LOG_ERR);
+    KiwiOutput::get()->write(PHP_EOL . $input->getInstructions());
   }
   catch (MissingConfigOptionException $e) {
-    KiwiOutput::get()->write($e->getMessage(), LOG_ERR);
-    KiwiOutput::get()->write(PHP_EOL . PHP_EOL . $input->getInstructions());
+    KiwiOutput::get()->write(PHP_EOL . $input->getInstructions());
   }
 }
 

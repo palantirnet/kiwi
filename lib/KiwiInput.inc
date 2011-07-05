@@ -166,12 +166,20 @@ class KiwiInput {
   public function getInstructions() {
     $output = array();
 
-    $output[] = <<<END
-example: kiwi.php --directory=config_files
+    $output = <<<END
+The Kiwi application processes data from an Emu database into a Solr search server.
+You must specify either a configuration file or a directory of configuration files
+in order to process data.  Either of the following styles is allowed:
+
+kiwi.php --config=myconfig.xml
+
+kiwi.php --directory=config_files
+
+For more options, run kiwi.php --help
 
 END;
 
-    return implode(PHP_EOL, $output);
+    return $output;
   }
 
 
