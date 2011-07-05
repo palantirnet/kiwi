@@ -186,6 +186,12 @@ class KiwiImuSession extends IMuSession {
     return $this->tables[$name];
   }
 
+  /**
+   * Returns a list of all tables in this processing run.
+   *
+   * @return array
+   *   An array of all table objects for this processing run.
+   */
   public function getTables() {
     $tables = array();
     foreach ($this->config->getTables() as $name) {
