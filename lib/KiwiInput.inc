@@ -72,6 +72,10 @@ class KiwiInput {
       'value' => '',
       'description' => 'Optional.  Specifies the number of records after which each processor should stop processing.  If specified, the value in the configuration file is ignored.  If neither this directive nor the configuration file specify a limit, the default is the maximum interger size in PHP (several billion on most systems, so effectively unlimited).',
     );
+    $options['help'] = array(
+      'value' => 0,
+      'description' => 'Show extended help information.',
+    );
 
     return $options;
   }
@@ -93,6 +97,19 @@ class KiwiInput {
 
     $matches = array();
     foreach ($this->argv as $argument) {
+      // Match value-less switches first, as that regex will match valued switches
+      // too.  We let the later regex override the former where appropriate.
+
+      // Match value-less switches.
+      if (preg_match('/--([\w-]+)/', $argument, $matches)) {
+        if (in_array($matches[1], array_keys($options))) {
+          $options[$matches[1]]['value'] = 1;
+        }
+        else {
+          throw new InvalidConfigOptionException("'{$matches[1]}' is not a valid configuration directive.");
+        }
+      }
+
       // Match long-form options.
       // This regex matches --<word>=<word allowing periods and forward slashes for file names>.
       if (preg_match('/--([\w-]+)=([\/\w\.]+)/', $argument, $matches)) {
@@ -118,7 +135,7 @@ class KiwiInput {
     // Save the options, including defaults, to the object.
     $this->options = $options;
 
-    if (!($this->getOption('config') || $this->getOption('directory'))) {
+    if (!$this->getOption('help') && !$this->getOption('config') && !$this->getOption('directory')) {
       throw new MissingConfigOptionException('Unable to continue.  At least one of --config or --directory must be specified.');
     }
   }
