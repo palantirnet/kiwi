@@ -33,6 +33,20 @@ class KiwiInput {
    */
   protected static $instructionWidth = 80;
 
+  /**
+   * Constructor.
+   */
+  public function __construct() {
+    // If we are able to detect the width of the screen, set our output to that
+    // size.  If not, just stick with the default.
+    // Note: If you want to have this value be available, you must use "export COLUMNS"
+    // before running this program.  Putting that in your bashrc file or similar
+    // is recommended.
+    if ($cols = getenv('COLUMNS')) {
+      self::$instructionWidth = $cols;
+    }
+  }
+
   public function defaultOptions() {
     $options['config'] = array(
       'value' => '',
