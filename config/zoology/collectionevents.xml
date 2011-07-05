@@ -61,7 +61,7 @@
 
   -->
 
-  <table name="ecollectionevents" type="attach">
+  <table name="ecollectionevents">
     <!-- The PKey, which is also an integer field. -->
     <field name="irn" search="1" display="1" />
 
@@ -193,7 +193,7 @@
     <field name="SigSightedByRef_tab" indexed="1" stored="1" fulltext="1" sort="1" />
   </table>
 
-  <table name="esites" type="attach">
+  <table name="esites">
     <field name="irn" search="1" display="1" />
     <field name="SummaryData" indexed="1" stored="1" />
     <field name="AquBottomDescription" indexed="1" stored="1" />
@@ -394,27 +394,27 @@
     <field name="MulMultiMediaRef_tab" indexed="1" stored="1" />
   </table>
 
-  <table name="ebibliography" type="attach">
+  <table name="ebibliography">
     <field name="irn" search="1" display="1" />
     <field name="SummaryData" indexed="1" stored="1" />
   </table>
 
-  <table name="eparties" type="attach">
+  <table name="eparties">
     <field name="irn" search="1" display="1" />
     <field name="SummaryData" indexed="1" stored="1" />
   </table>
 
-  <table name="emultimedia" type="attach">
+  <table name="emultimedia">
     <field name="irn" search="1" display="1" />
     <field name="SummaryData" indexed="1" stored="1" />
   </table>
 
-  <table name="enarratives" type="attach">
+  <table name="enarratives">
     <field name="irn" search="1" display="1" />
     <field name="SummaryData" indexed="1" stored="1" />
   </table>
 
-  <table name="ecatalogue" type="attach">
+  <table name="ecatalogue">
     <field name="irn" search="1" display="1" />
     <field name="SummaryData" indexed="1" stored="1" />
     <field name="DarCatalogNumberText" indexed="1" stored="1" />

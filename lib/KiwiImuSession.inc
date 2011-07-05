@@ -177,21 +177,19 @@ class KiwiImuSession extends IMuSession {
    *
    * @param string $name
    *   The name of the table we want information about.
-   * @param string $type
-   *   The type of table.  Values are attach, merge, or collapse.
    * @return KiwiEmuTable
    */
-  public function getTable($name, $type = 'attach') {
-    if (empty($this->tables[$name][$type])) {
-      $this->tables[$name][$type] = new KiwiEmuTable($this->config, $this, $this->getSchemaInfo($name), $type);
+  public function getTable($name) {
+    if (empty($this->tables[$name])) {
+      $this->tables[$name] = new KiwiEmuTable($this->config, $this, $this->getSchemaInfo($name));
     }
-    return $this->tables[$name][$type];
+    return $this->tables[$name];
   }
 
-  public function getTables($type) {
+  public function getTables() {
     $tables = array();
-    foreach ($this->config->getTables($type) as $name) {
-      $tables[] = $this->getTable($name, $type);
+    foreach ($this->config->getTables() as $name) {
+      $tables[] = $this->getTable($name);
     }
     return $tables;
   }

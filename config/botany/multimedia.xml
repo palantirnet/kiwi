@@ -26,7 +26,7 @@
     <filter name="SecDepartment" value="Botany" operator="matches" />
   </filters>
 
- <table name="emultimedia" type="attach">
+ <table name="emultimedia">
    <!-- The PKey, which is also an integer field. -->
 	<field name="irn" search="1" display="1" />
 <!--fields-columns  in alpha order -->
@@ -45,7 +45,7 @@
 	<field name="ObjObjectsRef_tab" indexed="1" stored="1" />
  </table>
 
- <table name="ecatalogue" type="attach">
+ <table name="ecatalogue">
  	<field name="irn" indexed="1" stored="1" />
  	<field name="SummaryData" indexed="1" stored="1"/>
  </table>

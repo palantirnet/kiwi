@@ -26,7 +26,7 @@
     <filter name="SecDepartment" value="Botany" operator="matches" />
   </filters>
 
- <table name="parties" type="attach">
+ <table name="parties">
    <!-- The PKey, which is also an integer field. -->
 	<field name="irn" search="1" display="1" />
 	<field name="SummaryData" indexed="1" stored="1" />
@@ -51,7 +51,7 @@
 	<field name="NamTaxonomicName" indexed="1" stored="1" fulltext="1" sort="1" />
  </table>
 
- <table name="emultimedia" type="attach">
+ <table name="emultimedia">
 	<field name="irn" indexed="1" stored="1" />
 	<field name="SummaryData" indexed="1" stored="1" />
 	<field name="MulCreator_tab" indexed="1" stored="1" />

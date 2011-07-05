@@ -126,22 +126,20 @@ class KiwiConfiguration {
   }
 
   /**
-   * Returns the names of all tables of the specified type.
+   * Returns the names of all tables in the configuration set.
    *
-   * @param string $type
-   *   The type of table to retrieve. Valid values are attach, merge, collapse.
    * @return array
    */
-  public function getTables($type) {
-    if (empty($this->tableNames[$type])) {
+  public function getTables() {
+    if (empty($this->tableNames)) {
       $names = array();
-      $tables = $this->configFile->branch()->find("table[type='{$type}']");
+      $tables = $this->configFile->branch()->find("table");
       foreach ($tables as $table) {
         $names[] = $table->attr('name');
       }
-      $this->tableNames[$type] = $names;
+      $this->tableNames = $names;
     }
-    return $this->tableNames[$type];
+    return $this->tableNames;
   }
 
   /**
@@ -180,23 +178,21 @@ class KiwiConfiguration {
    *     - fulltext: The field should be included in fulltext searches.
    *     - sort: The field is sortable in Solr.
    *     - all (default): Do not filter at all; return all fields for this table.
-   * @param string $table_type
-   *   The type of the table.  Legal values are attach, merge, and collapse.
-   * @return QuerPath
+   * @return QueryPath
    */
-  public function getFields($table, $use = 'all', $table_type = 'attach') {
-    if (empty($this->fieldTableInfo[$table][$table_type][$use])) {
-      $this->fieldTableInfo[$table][$table_type][$use] = array();
+  public function getFields($table, $use = 'all') {
+    if (empty($this->fieldTableInfo[$table][$use])) {
+      $this->fieldTableInfo[$table][$use] = array();
       $names = array();
-      $fields = $this->configFile->branch()->find("table[name='{$table}'][type='{$table_type}'] field");
+      $fields = $this->configFile->branch()->find("table[name='{$table}'] field");
       if ($use != 'all') {
         $fields->filter("[{$use}=1]");
       }
       foreach ($fields as $field) {
-        $this->fieldTableInfo[$table][$table_type][$use][] = $field->attr('name');
+        $this->fieldTableInfo[$table][$use][] = $field->attr('name');
       }
     }
-    return $this->fieldTableInfo[$table][$table_type][$use];
+    return $this->fieldTableInfo[$table][$use];
   }
 
   /**

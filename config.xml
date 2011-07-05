@@ -90,7 +90,7 @@
 
   -->
 
-  <table name="ecatalogue" type="attach">
+  <table name="ecatalogue">
     <!-- The PKey, which is also an integer field. -->
     <field name="irn" search="1" display="1" />
 
@@ -511,7 +511,7 @@
     <field name="XraXrayPreparedByRef_tab" indexed="1" stored="1" fulltext="1" sort="1" />
   </table>
 
-  <table name="ecollectionevents" type="attach">
+  <table name="ecollectionevents">
     <field name="ColDateVisitedFrom" indexed="1" stored="1"/>
     <field name="SummaryData" indexed="1" stored="1"/>
     <field name="ColParticipantLocal_tab" indexed="1" stored="1"/>
@@ -519,17 +519,17 @@
     <field name="ColSiteRef" indexed="1" stored="1"/>
   </table>
 
-  <table name="efmnhtransactions" type="attach">
+  <table name="efmnhtransactions">
     <field name="SummaryData" indexed="1" stored="1"/>
   </table>
 
-  <table name="eparties" type="attach">
+  <table name="eparties">
     <field name="SummaryData" indexed="1" stored="1"/>
     <field name="NamBriefName" indexed="1" stored="1"/>
     <field name="NamOrganisationAcronym" indexed="1" stored="1"/>
   </table>
 
-  <table name="etaxonomy" type="attach">
+  <table name="etaxonomy">
     <field name="SummaryData" indexed="1" stored="1"/>
     <field name="ClaFamilyNumber" indexed="1" stored="1"/>
     <field name="ComName_tab" indexed="1" stored="1"/>
@@ -539,7 +539,7 @@
     <field name="ComReferenceRef_tab" indexed="1" stored="1"/>
   </table>
 
-  <table name="emultimedia" type="attach">
+  <table name="emultimedia">
     <field name="irn" indexed="1" stored="1" />
     <field name="MulTitle" indexed="1" stored="1" />
     <field name="MulIdentifier" indexed="1" stored="1" />
@@ -550,7 +550,7 @@
     <field name="DetSubject_tab" indexed="1" stored="1" />
   </table>
 
-  <table name="esites" type="attach">
+  <table name="esites">
     <field name="irn" indexed="1" stroed="1"/>
     <field name="SummaryData" indexed="1" stored="1"/>
     <field name="LocProvinceStateTerritory_tab" indexed="1" stored="1"/>

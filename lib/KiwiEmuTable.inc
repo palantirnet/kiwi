@@ -46,13 +46,13 @@ class KiwiEmuTable implements IteratorAggregate {
    * @param array $schema
    *   The schema definition for this table.
    */
-  public function __construct(KiwiConfiguration $config, KiwiImuSession $session, $schema, $table_type = 'attach') {
+  public function __construct(KiwiConfiguration $config, KiwiImuSession $session, $schema) {
     $this->schema = $schema;
     $this->config = $config;
     $this->session = $session;
 
     // Split out our fields up front, since we're almost certain to need them.
-    foreach ($this->config->getFields($this->getName(), 'all', $table_type) as $field_name) {
+    foreach ($this->config->getFields($this->getName(), 'all') as $field_name) {
       if (isset($this->schema['columns'][$field_name])) {
         $this->fields[$field_name] = new KiwiEmuField($this->config, $this->session, $this->getName(), $this->schema['columns'][$field_name]);
       }

@@ -61,7 +61,7 @@
 
   -->
 
-  <table name="ebibliography" type="attach">
+  <table name="ebibliography">
     <!-- The PKey, which is also an integer field. -->
     <field name="irn" search="1" display="1" />
 
@@ -284,17 +284,17 @@
     <field name="WebAuthorsRef_tab" indexed="1" stored="1" fulltext="1" sort="1" />
   </table>
 
-   <table name="ebibliography" type="attach">
+   <table name="ebibliography">
       <field name="SummaryData" indexed="1" stored="1" />
   </table>
 
-  <table name="eparties" type="attach">
+  <table name="eparties">
      <field name="SummaryData" indexed="1" stored="1" />
      <field name="NamCitedName" indexed="1" stored="1" />
      <field name="NamFullName" indexed="1" stored="1" />
   </table>
 
-  <table name="emultimedia" type="attach">
+  <table name="emultimedia">
     <field name="DocHeight_tab" indexed="1" stored="1" />
     <field name="DocIdentifier_tab" indexed="1" stored="1" />
     <field name="DocWidth_tab" indexed="1" stored="1" />
@@ -308,7 +308,7 @@
     <field name="MulTitle" indexed="1" stored="1" />
   </table>
 
-  <table name="enarratives" type="attach">
+  <table name="enarratives">
     <field name="SummaryData" indexed="1" stored="1" />
   </table>
 

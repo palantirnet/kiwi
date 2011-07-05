@@ -27,7 +27,7 @@
     <filter name="SecDepartment" value="Botany" operator="matches" />
   </filters>
 
- <table name="etaxonomy" type="attach">
+ <table name="etaxonomy">
    <!-- The PKey, which is also an integer field. -->
 	<field name="irn" search="1" display="1" />
 <!--fields-columns  in alpha order -->
@@ -97,7 +97,7 @@
 	<field name="SynNameRef_tab" indexed="1" stored="1" />
  </table>
 
- <table name="eparties" type="attach">
+ <table name="eparties">
 	<field name="irn" indexed="1" stored="1" />
 	<field name="SummaryData" indexed="1" stored="1"/>
 	<field name="NamBriefName" indexed="1" stored="1" fulltext="1" sort="1" />
@@ -105,17 +105,17 @@
 	<field name="NamTaxonomicName" indexed="1" stored="1" fulltext="1" sort="1" />
  </table>
 
- <table name="ecatalogue" type="attach">
+ <table name="ecatalogue">
  	<field name="irn" indexed="1" stored="1" />
  	<field name="SummaryData" indexed="1" stored="1"/>
  </table>
 
- <table name="egazetteer" type="attach">
+ <table name="egazetteer">
  	<field name="irn" indexed="1" stored="1" />
  	<field name="SummaryData" indexed="1" stored="1"/>
  </table>
 
- <table name="emultimedia" type="attach">
+ <table name="emultimedia">
 	<field name="irn" indexed="1" stored="1" />
 	<field name="SummaryData" indexed="1" stored="1" />
 	<field name="MulCreator_tab" indexed="1" stored="1" />
@@ -125,7 +125,7 @@
 	<field name="MulTitle" indexed="1" stored="1" />
  </table>
 
- <table name="ebibliography" type="attach">
+ <table name="ebibliography">
 	<field name="irn" indexed="1" stored="1" />
 	<field name="SummaryData" indexed="1" stored="1" />
  </table>
