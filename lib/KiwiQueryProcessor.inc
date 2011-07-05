@@ -81,7 +81,7 @@ class KiwiQueryProcessor {
     // Build a list of all of the fields we are going to retrieve at once from
     // attachment tables.  We need to retrieve a field if we are using it for
     // any purpose whatsoever.
-    $this->module->addFetchSet('attachFields', $this->getAttachFetchSet());
+    $this->module->addFetchSet('attachFields', $this->getFetchSet());
 
     //$schema = $this->session->getTableSchema('ecatalogue');
     //debug(array_keys($schema['schema']['columns']));
@@ -184,7 +184,7 @@ class KiwiQueryProcessor {
    *
    * @return array
    */
-  protected function getAttachFetchSet() {
+  protected function getFetchSet() {
     $columns = array();
     $base_table = $this->config->baseTable();
 
