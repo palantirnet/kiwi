@@ -72,18 +72,13 @@ class KiwiQueryProcessor {
    */
   public function run() {
 
-    $position = 'current';
-    $offset = 0;
-    $count = $this->config->processorInfo('batch-size');
+    $batch_size = $this->config->processorInfo('batch-size');
     $max_records_to_process = $this->config->processorInfo('max-size');
 
     // Build a list of all of the fields we are going to retrieve at once from
     // attachment tables.  We need to retrieve a field if we are using it for
     // any purpose whatsoever.
     $this->module->addFetchSet('attachFields', $this->getFetchSet());
-
-    //$schema = $this->session->getTableSchema('ecatalogue');
-    //debug(array_keys($schema['schema']['columns']));
 
     // Spin through all records in the result until we run out or hit the max
     // processing limit, whichever comes first.  Emu doesn't actually tell you
@@ -94,14 +89,13 @@ class KiwiQueryProcessor {
     $counter = 1;
     while ($processed < $max_records_to_process) {
       try {
-        $result = $this->module->fetch($position, $offset, $count, 'attachFields');
+        $result = $this->module->fetch('current', 0, $batch_size, 'attachFields');
 
         // On the first run, print some helpful user information.  We can't do
         // this before the loop starts because we need the total number of records
         // in the result set.
         if (!$processed) {
-          $total_records = $result->hits;
-          $total_string = number_format($total_records);
+          $total_string = number_format($result->hits);
           $max_string = number_format($max_records_to_process);
           KiwiOutput::info("Processor {$this->processorId}: Approximately {$total_string} records to process.  Will process {$max_string} at most.");
         }
@@ -122,7 +116,7 @@ class KiwiQueryProcessor {
         }
 
         $this->solr->addDocuments($documents);
-        $processed += $count;
+        $processed += $batch_size;
         KiwiOutput::info("Processor {$this->processorId}: Indexed $processed records.");
       }
       catch (ImuException $e) {
