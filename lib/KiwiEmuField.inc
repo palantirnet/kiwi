@@ -170,7 +170,7 @@ class KiwiEmuField {
 
     // Reference fields are stored as integers, so we need to override the type
     // on those.
-     if ($this->isMergeField()) {
+    if ($this->isMergeField()) {
       $data_type = 'Merge';
     }
     else if ($this->isAttachmentField()) {
