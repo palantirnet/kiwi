@@ -97,6 +97,10 @@ class KiwiQueryProcessor {
     while ($processed < min($max_records, $total_records)) {
       try {
         $result = $this->module->fetch($position, $offset, $count, 'attachFields');
+
+        // On the first run, print some helpful user information.  We can't do
+        // this before the loop starts because we need the total number of records
+        // in the result set.
         if (!$processed) {
           $total_records = $result->hits;
           $total_string = number_format($total_records);
