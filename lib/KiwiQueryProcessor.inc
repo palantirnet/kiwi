@@ -75,8 +75,7 @@ class KiwiQueryProcessor {
     $position = 'current';
     $offset = 0;
     $count = $this->config->processorInfo('batch-size');
-    $max_records = $this->config->processorInfo('max-size');
-      //maxRecordsPerProcessor();
+    $max_records_to_process = $this->config->processorInfo('max-size');
 
     // Build a list of all of the fields we are going to retrieve at once from
     // attachment tables.  We need to retrieve a field if we are using it for
@@ -93,8 +92,7 @@ class KiwiQueryProcessor {
     $last_irn = 0;
     $processed = 0;
     $counter = 1;
-    $total_records = PHP_INT_MAX;
-    while ($processed < min($max_records, $total_records)) {
+    while ($processed < $max_records_to_process) {
       try {
         $result = $this->module->fetch($position, $offset, $count, 'attachFields');
 
@@ -104,7 +102,7 @@ class KiwiQueryProcessor {
         if (!$processed) {
           $total_records = $result->hits;
           $total_string = number_format($total_records);
-          $max_string = number_format($max_records);
+          $max_string = number_format($max_records_to_process);
           KiwiOutput::info("Processor {$this->processorId}: Approximately {$total_string} records to process.  Will process {$max_string} at most.");
         }
 
