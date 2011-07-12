@@ -80,13 +80,17 @@ class KiwiQueryProcessor {
     // any purpose whatsoever.
     $this->module->addFetchSet('attachFields', $this->getFetchSet());
 
+    // Processed increases with the number of records successfully turned into
+    // Solr documents, which if there is an error may be less than the number
+    // of records we've tried to process.  That's why these are separate variables.
+    $processed = 0;
+    $attempt_counter = 1;
+
     // Spin through all records in the result until we run out or hit the max
     // processing limit, whichever comes first.  Emu doesn't actually tell you
     // when you've reached the end of a result set, but just returns the last
     // record over and over again.  That's what all the $last_irn stuff is about.
     $last_irn = 0;
-    $processed = 0;
-    $counter = 1;
     while ($processed < $max_records_to_process) {
       try {
         $result = $this->module->fetch('current', 0, $batch_size, 'attachFields');
@@ -103,17 +107,23 @@ class KiwiQueryProcessor {
         $documents = array();
         foreach ($result->rows as $row) {
           //debug($row);
-          KiwiOutput::debug("Processor {$this->processorId}: Processing IRN #" . ($processed + 1) . ": " . $row['irn']);
+          KiwiOutput::debug("Processor {$this->processorId}: Processing IRN #" . $attempt_counter++ . ": " . $row['irn']);
           if ($last_irn == $row['irn']) {
             break 2;
           }
-          else {
+
+          // If there is an error processing this row, keep processing other rows.
+          try {
             $last_irn = $row['irn'];
+            $doc = $this->createSolrDocument($row);
+            $processed++;
+            //debug($this->solr->renderDocument($doc));
+            $documents[] = $doc;
           }
-          $doc = $this->createSolrDocument($row);
-          $processed++;
-          //debug($this->solr->renderDocument($doc));
-          $documents[] = $doc;
+          catch (ErrorException $e) {
+            KiwiOutput::get()->writeMessage("Processor {$this->processorId} while processing IRN {$row['irn']}: Generic PHP error.  Skipping this IRN.", LOG_ERR);
+            KiwiOutput::get()->writeMessage(sprintf('%s in %s on line %s', $e->getMessage(), $e->getFile(), $e->getLine()), LOG_ERR);
+          }
         }
 
         $this->solr->addDocuments($documents);
@@ -123,6 +133,9 @@ class KiwiQueryProcessor {
         KiwiOutput::get()->writeMessage("Processor {$this->processorId} while processing IRN {$row['irn']}: Error connecting to Emu.", LOG_ERR);
         // ImuException is buggy and returns an empty string for $e->getMessage().
         // Casting to a string, though, works.  Weird.
+        // Emu is also very fault-intolerant, so if there is an exception it is
+        // likely that Emu itself will jam.  We therefore break to avoid an
+        // infinite loop of fail.
         KiwiOutput::get()->writeMessage(sprintf('%s in %s on line %s', (string)$e, $e->getFile(), $e->getLine()), LOG_ERR);
         break;
       }
@@ -132,6 +145,8 @@ class KiwiQueryProcessor {
         KiwiOutput::debug($e->getSolrMessage(), 'Failing Solr message');
       }
       catch (ErrorException $e) {
+        // This is most likely caused by a failure that will result in an infinite
+        // loop, so we break out entirely.
         KiwiOutput::get()->writeMessage("Processor {$this->processorId} while processing IRN {$row['irn']}: Generic PHP error.", LOG_ERR);
         KiwiOutput::get()->writeMessage(sprintf('%s in %s on line %s', $e->getMessage(), $e->getFile(), $e->getLine()), LOG_ERR);
         break;
