@@ -194,11 +194,17 @@ class KiwiOutput {
    *   The active output object for chaining.
    */
   public static function debug($message, $label = '') {
+    // Since this is frequently called from within a long loop, bail out quickly
+    // and save several function calls.
+    $instance = self::get();
+    if (LOG_DEBUG > $instance->threshold) {
+      return $instance;
+    }
     $message = print_r($message, 1);
     if ($label) {
       $message = $label . ': ' . $message;
     }
-    return self::get()->writeMessage($message, LOG_DEBUG);
+    return $instance->writeMessage($message, LOG_DEBUG);
   }
 
   public static function warn($message) {
