@@ -103,7 +103,7 @@ class KiwiQueryProcessor {
         $documents = array();
         foreach ($result->rows as $row) {
           //debug($row);
-          KiwiOutput::debug("Processor {$this->processorId}: Processing IRN #" . $counter++ . ": " . $row['irn']);
+          KiwiOutput::debug("Processor {$this->processorId}: Processing IRN #" . ($processed + 1) . ": " . $row['irn']);
           if ($last_irn == $row['irn']) {
             break 2;
           }
@@ -111,12 +111,12 @@ class KiwiQueryProcessor {
             $last_irn = $row['irn'];
           }
           $doc = $this->createSolrDocument($row);
+          $processed++;
           //debug($this->solr->renderDocument($doc));
           $documents[] = $doc;
         }
 
         $this->solr->addDocuments($documents);
-        $processed += $batch_size;
         KiwiOutput::info("Processor {$this->processorId}: Indexed $processed records.");
       }
       catch (ImuException $e) {
