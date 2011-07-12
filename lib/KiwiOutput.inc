@@ -207,6 +207,14 @@ class KiwiOutput {
     return $instance->writeMessage($message, LOG_DEBUG);
   }
 
+  /**
+   * Writes an INFO level message.
+   *
+   * @param string $message
+   *   The message to record.
+   * @return KiwiOutput
+   *   The active output object for chaining.
+   */
   public static function warn($message) {
     self::get()->writeMessage($message, LOG_WARNING);
   }
