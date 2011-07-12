@@ -182,8 +182,6 @@ class KiwiOutput {
   /**
    * Writes a DEBUG level message.
    *
-   * This
-   *
    * @param mixed $string
    *   The message to record.  Alternatively, a non-string value (array or object)
    *   that will first be serialized for display.  That makes it useful for
@@ -194,14 +192,28 @@ class KiwiOutput {
    *   The active output object for chaining.
    */
   public static function debug($message, $label = '') {
+    // Since this is frequently called from within a long loop, bail out quickly
+    // and save several function calls.
+    $instance = self::get();
+    if (LOG_DEBUG > $instance->threshold) {
+      return $instance;
+    }
     $message = print_r($message, 1);
     if ($label) {
       $message = $label . ': ' . $message;
     }
-    return self::get()->writeMessage($message, LOG_DEBUG);
+    return $instance->writeMessage($message, LOG_DEBUG);
   }
 
+  /**
+   * Writes an INFO level message.
+   *
+   * @param string $message
+   *   The message to record.
+   * @return KiwiOutput
+   *   The active output object for chaining.
+   */
   public static function warn($message) {
-    self::get()->writeMessage($message, LOG_WARNING);
+    return self::get()->writeMessage($message, LOG_WARNING);
   }
 }
