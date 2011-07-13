@@ -43,6 +43,13 @@ class KiwiEmuField {
   protected $table;
 
   /**
+   * The name of the mapping class for this field.
+   *
+   * @var string
+   */
+  protected $handlerClass;
+
+  /**
    * Constructor.
    *
    * @param KiwiConfiguration $config
@@ -168,25 +175,28 @@ class KiwiEmuField {
    */
   public function getHandler() {
 
-    // Reference fields are stored as integers, so we need to override the type
-    // on those.
-    if ($this->isMergeField()) {
-      $data_type = 'Merge';
-    }
-    else if ($this->isAttachmentField()) {
-      $data_type = 'Attachment';
-    }
-    else if ($this->isNesttabField()) {
-      $data_type = 'Nesttab';
-    }
-    else {
-      $data_type = $this->dataType();
+    if (empty($this->handlerClass)) {
+      // Reference fields are stored as integers, so we need to override the type
+      // on those.
+      if ($this->isMergeField()) {
+        $data_type = 'Merge';
+      }
+      else if ($this->isAttachmentField()) {
+        $data_type = 'Attachment';
+      }
+      else if ($this->isNesttabField()) {
+        $data_type = 'Nesttab';
+      }
+      else {
+        $data_type = $this->dataType();
+      }
+
+      $field_options = $this->config->getFieldOptions($this->table, $this->columnName(), $data_type);
+      $this->handlerClass = $field_options['handler'];
     }
 
-    $field_options = $this->config->getFieldOptions($this->table, $this->columnName(), $data_type);
-    $class = $field_options['handler'];
     //debug($this->itemName() . ' maps to ' . $class);
-    return $this->session->getHandler($class);
+    return $this->session->getHandler($this->handlerClass);
   }
 
   /**
