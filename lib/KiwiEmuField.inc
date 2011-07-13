@@ -132,7 +132,7 @@ class KiwiEmuField {
    * @return boolean
    */
   public function isMergeField() {
-    return ($this->isMultiValue() && substr($this->schema['ColumnName'], -7) == 'Ref_tab');
+    return (substr($this->schema['ColumnName'], -7) == 'Ref_tab' && $this->isMultiValue());
   }
 
   /**
