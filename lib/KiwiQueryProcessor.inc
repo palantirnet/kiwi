@@ -142,6 +142,10 @@ class KiwiQueryProcessor {
       catch (KiwiSolrException $e) {
         KiwiOutput::get()->writeMessage("Processor {$this->processorId} while processing IRN #{$attempt_counter}: {$row['irn']}: Error processing Solr document.", LOG_ERR);
         KiwiOutput::get()->writeMessage('Solr error: ' . $e->getMessage(), LOG_ERR);
+        // @TODO Switch this back to just a debug call.  We just need the
+        // output with the error messages for a while to debug some weird Solr
+        // behavior.
+        KiwiOutput::get()->writeMessage($e->getSolrMessage(), 'Failing Solr message', LOG_ERR);
         KiwiOutput::debug($e->getSolrMessage(), 'Failing Solr message');
       }
       catch (ErrorException $e) {
