@@ -60,6 +60,13 @@ class KiwiEmuField {
   protected $dataType;
 
   /**
+   * Whether or not this field should be included in the fulltext index.
+   *
+   * @var boolean
+   */
+  protected $isFulltext;
+
+  /**
    * Constructor.
    *
    * @param KiwiConfiguration $config
@@ -79,6 +86,8 @@ class KiwiEmuField {
     // Precache this information, as it will never change.  Then we can always
     // use it just as a property on this object.
     $this->dataType = $this->dataType();
+
+    $this->isFulltext = in_array($this->columnName(), $this->config->getFields($this->table, 'fulltext'));
   }
 
   /**
@@ -218,7 +227,7 @@ class KiwiEmuField {
    * @return boolean
    */
   public function indexFulltext() {
-    return in_array($this->columnName(), $this->config->getFields($this->table, 'fulltext'));
+    return $this->isFulltext;
   }
 
   /**
