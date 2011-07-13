@@ -186,12 +186,13 @@ class KiwiQueryProcessor {
     $document->id = $row['irn'];
 
     foreach ($this->baseTable as $field) {
-      if (array_key_exists($field->columnName(), $row)) {
+      $column_name = $field->columnName();
+      if (array_key_exists($column_name, $row)) {
         $handler = $field->getHandler();
-        $handler->map($field, $row[$field->columnName()], $document);
+        $handler->map($field, $row[$column_name], $document);
       }
       else {
-        KiwiOutput::warn("Field not included in result set: " . $field->columnName());
+        KiwiOutput::warn("Field not included in result set: " . $column_name);
       }
     }
 
