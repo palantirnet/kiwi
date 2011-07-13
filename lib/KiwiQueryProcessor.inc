@@ -46,6 +46,15 @@ class KiwiQueryProcessor {
   protected $module;
 
   /**
+   * The base table object for this query.
+   *
+   * This never changes, so for performance we just request it once and store it.
+   *
+   * @var KiwiEmuTable
+   */
+  protected $baseTable;
+
+  /**
    * Constructor.
    *
    * @param int $processor_id
@@ -65,6 +74,9 @@ class KiwiQueryProcessor {
     $this->solr = $solr;
 
     $this->module = $this->session->resumeModuleHandler($module_id);
+
+    $base_table = $this->config->baseTable();
+    $this->baseTable = $this->session->getTable($base_table['name']);
   }
 
   /**
@@ -173,9 +185,7 @@ class KiwiQueryProcessor {
     $document = new Apache_Solr_Document();
     $document->id = $row['irn'];
 
-    $base_table = $this->config->baseTable();
-    $table = $this->session->getTable($base_table['name']);
-    foreach ($table as $field) {
+    foreach ($this->baseTable as $field) {
       if (array_key_exists($field->columnName(), $row)) {
         $handler = $field->getHandler();
         $handler->map($field, $row[$field->columnName()], $document);
@@ -203,7 +213,7 @@ class KiwiQueryProcessor {
     $columns = array();
     $base_table = $this->config->baseTable();
 
-    foreach ($this->session->getTable($base_table['name']) as $field) {
+    foreach ($this->baseTable as $field) {
       if ($field->isReferenceField()) {
         if ($nested = $this->getNestedFetchSet($field, $base_table['name'])) {
           $columns[] = $nested;
