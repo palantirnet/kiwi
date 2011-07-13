@@ -50,8 +50,12 @@ class KiwiEmuField {
   protected $handlerClass;
 
   /**
+   * The data type of this field.
    *
-   * @var type
+   * Note that this will usually map to an Emu type, such as Integer, but could
+   * be one of our custom types: Attachment, Merge, and Nesttab.
+   *
+   * @var string
    */
   protected $dataType;
 
