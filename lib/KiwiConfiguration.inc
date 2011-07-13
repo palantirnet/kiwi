@@ -41,6 +41,20 @@ class KiwiConfiguration {
   protected $input;
 
   /**
+   * Information about the processors to use for this run.
+   *
+   * @var array
+   */
+  protected $processorInformation;
+
+  /**
+   * The QueryPath fragment for the filters to apply to the query.
+   *
+   * @var QueryPath
+   */
+  protected $filters;
+
+  /**
    * Constructor.
    *
    * @param KiwiInput $input
@@ -154,14 +168,17 @@ class KiwiConfiguration {
    *   The value of the specified property.
    */
   public function processorInfo($property) {
-    $value = $this->input->getOption('processor-' . $property);
-    if (!$value) {
-      $value = $this->configFile->branch()->find('processors')->attr($property);
+    if (empty($this->processorInformation[$property])) {
+      $value = $this->input->getOption('processor-' . $property);
+      if (!$value) {
+        $value = $this->configFile->branch()->find('processors')->attr($property);
+      }
+      if ($property == 'max-size' && !$value) {
+        $value = PHP_INT_MAX;
+      }
+      $this->processorInformation[$property] = $value;
     }
-    if ($property == 'max-size' && !$value) {
-      $value = PHP_INT_MAX;
-    }
-    return $value;
+    return $this->processorInformation[$property];
   }
 
   /**
@@ -201,7 +218,10 @@ class KiwiConfiguration {
    * @return QueryPath
    */
   public function getFilters() {
-    return $this->configFile->branch()->find("filters filter");
+    if (empty($this->filters)) {
+      $this->filters = $this->configFile->branch()->find("filters filter");
+    }
+    return $this->filters;
   }
 
   /**
