@@ -50,6 +50,12 @@ class KiwiEmuField {
   protected $handlerClass;
 
   /**
+   *
+   * @var type
+   */
+  protected $dataType;
+
+  /**
    * Constructor.
    *
    * @param KiwiConfiguration $config
@@ -65,6 +71,10 @@ class KiwiEmuField {
     $this->session = $session;
     $this->schema = $schema;
     $this->table = $table;
+
+    // Precache this information, as it will never change.  Then we can always
+    // use it just as a property on this object.
+    $this->dataType = $this->dataType();
   }
 
   /**
@@ -165,7 +175,22 @@ class KiwiEmuField {
    * @return string
    */
   public function dataType() {
-    return $this->schema['DataType'];
+    // Reference fields are stored as integers, so we need to override the type
+    // on those.
+    if ($this->isMergeField()) {
+      $data_type = 'Merge';
+    }
+    else if ($this->isAttachmentField()) {
+      $data_type = 'Attachment';
+    }
+    else if ($this->isNesttabField()) {
+      $data_type = 'Nesttab';
+    }
+    else {
+      $data_type = $this->schema['DataType'];
+    }
+
+    return $data_type;
   }
 
   /**
@@ -174,24 +199,8 @@ class KiwiEmuField {
    * @return FieldHandlerInterface
    */
   public function getHandler() {
-
     if (empty($this->handlerClass)) {
-      // Reference fields are stored as integers, so we need to override the type
-      // on those.
-      if ($this->isMergeField()) {
-        $data_type = 'Merge';
-      }
-      else if ($this->isAttachmentField()) {
-        $data_type = 'Attachment';
-      }
-      else if ($this->isNesttabField()) {
-        $data_type = 'Nesttab';
-      }
-      else {
-        $data_type = $this->dataType();
-      }
-
-      $field_options = $this->config->getFieldOptions($this->table, $this->columnName(), $data_type);
+      $field_options = $this->config->getFieldOptions($this->table, $this->columnName(), $this->dataType);
       $this->handlerClass = $field_options['handler'];
     }
 
