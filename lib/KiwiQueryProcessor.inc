@@ -130,7 +130,7 @@ class KiwiQueryProcessor {
         KiwiOutput::info("Processor {$this->processorId}: Indexed $processed records.");
       }
       catch (ImuException $e) {
-        KiwiOutput::get()->writeMessage("Processor {$this->processorId} while processing IRN {$row['irn']}: Error connecting to Emu.", LOG_ERR);
+        KiwiOutput::get()->writeMessage("Processor {$this->processorId} while processing IRN #{$attempt_counter}: {$row['irn']}: Error connecting to Emu.", LOG_ERR);
         // ImuException is buggy and returns an empty string for $e->getMessage().
         // Casting to a string, though, works.  Weird.
         // Emu is also very fault-intolerant, so if there is an exception it is
@@ -140,14 +140,14 @@ class KiwiQueryProcessor {
         break;
       }
       catch (KiwiSolrException $e) {
-        KiwiOutput::get()->writeMessage("Processor {$this->processorId} while processing IRN {$row['irn']}: Error processing Solr document.", LOG_ERR);
+        KiwiOutput::get()->writeMessage("Processor {$this->processorId} while processing IRN #{$attempt_counter}: {$row['irn']}: Error processing Solr document.", LOG_ERR);
         KiwiOutput::get()->writeMessage('Solr error: ' . $e->getMessage(), LOG_ERR);
         KiwiOutput::debug($e->getSolrMessage(), 'Failing Solr message');
       }
       catch (ErrorException $e) {
         // This is most likely caused by a failure that will result in an infinite
         // loop, so we break out entirely.
-        KiwiOutput::get()->writeMessage("Processor {$this->processorId} while processing IRN {$row['irn']}: Generic PHP error.", LOG_ERR);
+        KiwiOutput::get()->writeMessage("Processor {$this->processorId} while processing IRN #{$attempt_counter}: {$row['irn']}: Generic PHP error.", LOG_ERR);
         KiwiOutput::get()->writeMessage(sprintf('%s in %s on line %s', $e->getMessage(), $e->getFile(), $e->getLine()), LOG_ERR);
         break;
       }
