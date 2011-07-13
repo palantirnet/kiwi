@@ -107,10 +107,10 @@ class KiwiQueryProcessor {
         $documents = array();
         foreach ($result->rows as $row) {
           //debug($row);
-          KiwiOutput::debug("Processor {$this->processorId}: Processing IRN #" . $attempt_counter++ . ": " . $row['irn']);
           if ($last_irn == $row['irn']) {
             break 2;
           }
+          KiwiOutput::debug("Processor {$this->processorId}: Processing IRN #" . $attempt_counter++ . ": " . $row['irn']);
 
           // If there is an error processing this row, keep processing other rows.
           try {
