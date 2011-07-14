@@ -97,7 +97,7 @@ class KiwiConfiguration {
    * @return array
    */
   public function getConfigInfo() {
-    return $this->configFile->branch()->find('config')->attr() + array(
+    return $this->configFile->branch()->top()->attr() + array(
       'name' => '',
       'full-rebuild' => 0,
       'debug' => LOG_INFO,
@@ -110,7 +110,7 @@ class KiwiConfiguration {
    * @return array
    */
   public function getSolrInfo() {
-    return $this->configFile->branch()->find('servers > solr')->attr() + array(
+    return $this->configFile->branch()->find('> servers > solr')->attr() + array(
       'host' => '',
       'port' => '',
       'path' => '',
@@ -123,7 +123,7 @@ class KiwiConfiguration {
    * @return array
    */
   public function getEmuInfo() {
-    return $this->configFile->branch()->find('servers > emu')->attr() + array(
+    return $this->configFile->branch()->find('> servers > emu')->attr() + array(
       'host' => 'localhost',
       'port' => 40000,
       'user' => '',
@@ -132,7 +132,7 @@ class KiwiConfiguration {
   }
 
   public function baseTable() {
-    $base_table = $this->configFile->branch()->find('base-table')->attr('name');
+    $base_table = $this->configFile->branch()->find('> base-table')->attr('name');
 
     return array(
       'name' => $base_table,
@@ -147,7 +147,7 @@ class KiwiConfiguration {
   public function getTables() {
     if (empty($this->tableNames)) {
       $names = array();
-      $tables = $this->configFile->branch()->find("table");
+      $tables = $this->configFile->branch()->find("> table");
       foreach ($tables as $table) {
         $names[] = $table->attr('name');
       }
@@ -171,7 +171,7 @@ class KiwiConfiguration {
     if (empty($this->processorInformation[$property])) {
       $value = $this->input->getOption('processor-' . $property);
       if (!$value) {
-        $value = $this->configFile->branch()->find('processors')->attr($property);
+        $value = $this->configFile->branch()->find('> processors')->attr($property);
       }
       if ($property == 'max-size' && !$value) {
         $value = PHP_INT_MAX;
@@ -202,10 +202,10 @@ class KiwiConfiguration {
       $this->fieldTableInfo[$table][$use] = array();
       $names = array();
       if ($use == 'all') {
-        $fields = $this->configFile->branch()->find("table[name='{$table}'] field");
+        $fields = $this->configFile->branch()->find("> table[name='{$table}'] field");
       }
       else {
-        $fields = $this->configFile->branch()->find("table[name='{$table}'][{$use}=1] field");
+        $fields = $this->configFile->branch()->find("> table[name='{$table}'][{$use}=1] field");
       }
       foreach ($fields as $field) {
         $this->fieldTableInfo[$table][$use][] = $field->attr('name');
@@ -221,7 +221,7 @@ class KiwiConfiguration {
    */
   public function getFilters() {
     if (empty($this->filters)) {
-      $this->filters = $this->configFile->branch()->find("filters filter");
+      $this->filters = $this->configFile->branch()->find("> filters > filter");
     }
     return $this->filters;
   }
@@ -242,14 +242,14 @@ class KiwiConfiguration {
   public function getFieldOptions($table, $field, $type) {
     if (empty($this->fieldOptions[$table][$field])) {
       // The specific field's definition:
-      $info = $this->configFile->branch()->find("table[name='{$table}'] field[name={$field}]")->attr();
+      $info = $this->configFile->branch()->find("> table[name='{$table}'] > field[name={$field}]")->attr();
 
       // Use any values defined for that field type as defaults.
-      $info += $this->configFile->branch()->find("field-types field-type[name={$type}]")->attr();
+      $info += $this->configFile->branch()->find("> field-types > field-type[name={$type}]")->attr();
 
       // The handler specifically has an extra default specification.
       if (!$info['handler']) {
-        $info['handler'] = $this->configFile->branch()->find("field-types")->attr('default-handler');
+        $info['handler'] = $this->configFile->branch()->find("> field-types")->attr('default-handler');
       }
 
       // And now hard-coded defaults:
