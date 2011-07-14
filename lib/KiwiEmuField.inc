@@ -100,19 +100,6 @@ class KiwiEmuField {
   }
 
   /**
-   * Returns true if this field is multi-value, false otherwise.
-   *
-   * Note that this depends on the Emu field schema, not on the number of values
-   * the field may actually have at any given time.
-   *
-   * @return boolean
-   */
-  public function isMultiValue() {
-    return ($this->schema['DataKind'] == 'dkTable');
-    //return (substr($this->schema['ColumnName'], -4) == '_tab');
-  }
-
-  /**
    * Returns the item name of the field.
    *
    * The item name is not always the same as the columnName. It may be missing
@@ -134,6 +121,19 @@ class KiwiEmuField {
    */
   public function columnName() {
     return $this->schema['ColumnName'];
+  }
+
+  /**
+   * Returns true if this field is multi-value, false otherwise.
+   *
+   * Note that this depends on the Emu field schema, not on the number of values
+   * the field may actually have at any given time.
+   *
+   * @return boolean
+   */
+  public function isMultiValue() {
+    return ($this->schema['DataKind'] == 'dkTable');
+    //return (substr($this->schema['ColumnName'], -4) == '_tab');
   }
 
   /**
@@ -164,6 +164,24 @@ class KiwiEmuField {
    */
   public function isNesttabField() {
     return ($this->schema['DataKind'] == 'dkNested');
+  }
+
+  /**
+   * Returns whether or not this field should be included in fulltext searches.
+   *
+   * @return boolean
+   */
+  public function indexFulltext() {
+    return $this->isFulltext;
+  }
+
+  /**
+   * Returns whether or not this field should be sortable.
+   *
+   * @return boolean
+   */
+  public function isSortable() {
+    return $this->sortable;
   }
 
   /**
@@ -228,24 +246,6 @@ class KiwiEmuField {
 
     //debug($this->itemName() . ' maps to ' . $class);
     return $this->session->getHandler($this->handlerClass);
-  }
-
-  /**
-   * Returns whether or not this field should be included in fulltext searches.
-   *
-   * @return boolean
-   */
-  public function indexFulltext() {
-    return $this->isFulltext;
-  }
-
-  /**
-   * Returns whether or not this field should be sortable.
-   *
-   * @return boolean
-   */
-  public function isSortable() {
-    return $this->sortable;
   }
 
   public function  __toString() {
