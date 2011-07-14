@@ -67,6 +67,13 @@ class KiwiEmuField {
   protected $isFulltext;
 
   /**
+   * Whether or not this field should be treated as sortable by Solr.
+   *
+   * @var boolean
+   */
+  protected $sortable;
+
+  /**
    * Constructor.
    *
    * @param KiwiConfiguration $config
@@ -88,6 +95,8 @@ class KiwiEmuField {
     $this->dataType = $this->dataType();
 
     $this->isFulltext = in_array($this->columnName(), $this->config->getFields($this->table, 'fulltext'));
+
+    $this->sortable = in_array($this->columnName(), $this->config->getFields($this->table, 'sort'));
   }
 
   /**
@@ -236,7 +245,7 @@ class KiwiEmuField {
    * @return boolean
    */
   public function isSortable() {
-    return in_array($this->columnName(), $this->config->getFields($this->table, 'sort'));
+    return $this->sortable;
   }
 
   public function  __toString() {
