@@ -157,7 +157,7 @@ class KiwiQueryProcessor {
         // @TODO Switch this back to just a debug call.  We just need the
         // output with the error messages for a while to debug some weird Solr
         // behavior.
-        KiwiOutput::get()->writeMessage($e->getSolrMessage(), 'Failing Solr message', LOG_ERR);
+        KiwiOutput::get()->writeMessage('Failing Solr message: ' . $e->getSolrMessage(), LOG_ERR);
         KiwiOutput::debug($e->getSolrMessage(), 'Failing Solr message');
       }
       catch (ErrorException $e) {
