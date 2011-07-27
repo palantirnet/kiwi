@@ -206,7 +206,9 @@ class NesttabHandler extends TextHandler {
         if (strpos($string, $this->separator) !== FALSE) {
           $string = '"' . $string . '"';
         }
-        $data[] = $string;
+        if ($string) {
+          $data[] = $string;
+        }
       }
 
       parent::map($field_info, $data, $document, $field_prefix);
