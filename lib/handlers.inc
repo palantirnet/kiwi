@@ -201,6 +201,7 @@ class NesttabHandler extends TextHandler {
 
       // In the special case that a nesttab field only has one single value,
       // we'll avoid quoting it and let it behave as if it were a string value.
+      $data = array();
       foreach ($value as $v) {
         $string = recursive_implode($this->separator, $v);
         if (strpos($string, $this->separator) !== FALSE) {
