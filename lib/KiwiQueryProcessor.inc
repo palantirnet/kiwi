@@ -294,14 +294,14 @@ interface FieldHandlerInterface {
    * handling is needed for them.  For some fields, though, like date, it may
    * be necessary to add special handling.  That is up to each field to figure out.
    *
-   * @param KiwiEmuField $field_info
+   * @param KiwiEmuField $field
    *   The Emu schema information for this field.
    * @param string $value
    *   The value of the field in Emu.
    * @param Apache_Solr_Document $document
    *   The Solr document to which to add the field.
    */
-  public function map(KiwiEmuField $field_info, $value, Apache_Solr_Document $document);
+  public function map(KiwiEmuField $field, $value, Apache_Solr_Document $document);
 
 }
 
@@ -344,21 +344,21 @@ class FieldHandlerBase implements FieldHandlerInterface {
     $this->session = $session;
   }
 
-  public function map(KiwiEmuField $field_info, $value, Apache_Solr_Document $document, $field_prefix = '', $force_multi = FALSE) {
+  public function map(KiwiEmuField $field, $value, Apache_Solr_Document $document, $field_prefix = '', $force_multi = FALSE) {
     // Some field types will die if there's no value specified, so skip empty
     // values entirely.
     if ($value) {
-      KiwiOutput::debug("\tMapping " . $field_info->columnName() . " using " . get_class($this));
+      KiwiOutput::debug("\tMapping " . $field->columnName() . " using " . get_class($this));
 
       $value = $this->normalizeCharset($value);
 
-      $prefix = $this->getTypePrefix($field_info, $force_multi);
-      $solr_field_name = $prefix . '_' . ($field_prefix ? ($field_prefix . '_') : '') . $field_info->itemName();
+      $prefix = $this->getTypePrefix($field, $force_multi);
+      $solr_field_name = $prefix . '_' . ($field_prefix ? ($field_prefix . '_') : '') . $field->itemName();
       $document->$solr_field_name = $value;
 
       // If appropriate, throw this field into the content solr field as well.  We
       // use that for all fulltext index searching.
-      if ($field_info->indexFulltext()) {
+      if ($field->indexFulltext()) {
         if (empty($document->content)) {
           $document->content = '';
         }
@@ -408,13 +408,13 @@ class FieldHandlerBase implements FieldHandlerInterface {
   /**
    * Returns the solr field prefix for the provided field.
    *
-   * @param KiwiEmuField $field_info
+   * @param KiwiEmuField $field
    *   The field for which we want to know the prefix.
    * @return string
    *   The prefix for this field type.  Note it does not include the trailing _,
    *   so you'll have to add it yourself.
    */
-  protected function getTypePrefix(KiwiEmuField $field_info, $force_multi = FALSE) {
-    return ($force_multi || $field_info->isMultiValue()) ? $this->prefix['multi'] : $this->prefix['single'];
+  protected function getTypePrefix(KiwiEmuField $field, $force_multi = FALSE) {
+    return ($force_multi || $field->isMultiValue()) ? $this->prefix['multi'] : $this->prefix['single'];
   }
 }
