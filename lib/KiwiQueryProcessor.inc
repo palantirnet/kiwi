@@ -143,7 +143,10 @@ class KiwiQueryProcessor {
           KiwiOutput::info("Processor {$this->processorId}: Indexed $processed records.");
         }
         catch (ErrorException $e) {
-          KiwiOutput::get()->writeMessage("Processor {$this->processorId} while processing IRN #{$attempt_counter}: {$row['irn']}: Generic PHP error.", LOG_ERR);
+          // This is most often caused by invalid characters in one of the strings
+          // being processed, which triggers a PHP warning.  We cannot add
+          // that batch to the index, but we don't have to stop processing.
+          KiwiOutput::get()->writeMessage("Processor {$this->processorId} while committing to Solr.  Last IRN in batch: {$row['irn']}. Note the actual error could be from another IRN in the same batch. Skipping this batch.", LOG_ERR);
           KiwiOutput::get()->writeMessage(sprintf('%s in %s on line %s', $e->getMessage(), $e->getFile(), $e->getLine()), LOG_ERR);
         }
       }
