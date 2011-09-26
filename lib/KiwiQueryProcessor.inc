@@ -138,8 +138,14 @@ class KiwiQueryProcessor {
           }
         }
 
-        $this->solr->addDocuments($documents);
-        KiwiOutput::info("Processor {$this->processorId}: Indexed $processed records.");
+        try {
+          $this->solr->addDocuments($documents);
+          KiwiOutput::info("Processor {$this->processorId}: Indexed $processed records.");
+        }
+        catch (ErrorException $e) {
+          KiwiOutput::get()->writeMessage("Processor {$this->processorId} while processing IRN #{$attempt_counter}: {$row['irn']}: Generic PHP error.", LOG_ERR);
+          KiwiOutput::get()->writeMessage(sprintf('%s in %s on line %s', $e->getMessage(), $e->getFile(), $e->getLine()), LOG_ERR);
+        }
       }
       catch (ImuException $e) {
         KiwiOutput::get()->writeMessage("Processor {$this->processorId} while processing IRN #{$attempt_counter}: {$row['irn']}: Error connecting to Emu.", LOG_ERR);
