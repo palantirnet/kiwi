@@ -144,8 +144,37 @@ class KiwiQueryProcessor {
         }
         catch (ErrorException $e) {
           // This is most often caused by invalid characters in one of the strings
-          // being processed, which triggers a PHP warning.  We cannot add
-          // that batch to the index, but we don't have to stop processing.
+          // that is being processed, which triggers a PHP warning. We cannot add
+          // that batch to the index, but we can report it and continue processing.
+          // We can do a reasonably good job of detecting if it's an invalid
+          // character error by digging through the backtrace, since we know
+          // where in the stack trace the error would be.
+          //
+          // If we are unable to reliably detect that error, then it's some other
+          // unknown error that we cannot handle cleanly.  Report it and hope
+          // the user can figure ito out.
+          //
+          $trace = $e->getTrace();
+          if ($trace[1]['function'] == 'htmlspecialchars') {
+            if (isset($trace[0]['args'][0])) {
+              $bad_string = $trace[0]['args'][0];
+            }
+            if (isset($trace[1]['args'][0]->id)) {
+              $bad_document = $trace[1]['args'][0];
+            }
+
+            if (isset($bad_string) && isset($bad_document)) {
+              $bad_fields = array();
+              foreach ($bad_document as $field => $value) {
+                if ($value == $trace[0]['args'][0]) {
+                  $bad_fields[] = $field;
+                }
+              }
+              $error = "Error processing field. It likely contains invalid UTF-8 characters.\nIRN: %s\nInvalid string: %s\nPossible fields: %s\nSkipping this batch.";
+              KiwiOutput::get()->writeMessage(sprintf($error, $bad_document->id, $bad_string, implode(', ', $bad_fields)), LOG_ERR);
+              continue;
+            }
+          }
           KiwiOutput::get()->writeMessage("Processor {$this->processorId} while committing to Solr.  Last IRN in batch: {$row['irn']}. Note the actual error could be from another IRN in the same batch. Skipping this batch.", LOG_ERR);
           KiwiOutput::get()->writeMessage(sprintf('%s in %s on line %s', $e->getMessage(), $e->getFile(), $e->getLine()), LOG_ERR);
         }
