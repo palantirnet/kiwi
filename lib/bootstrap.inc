@@ -4,7 +4,7 @@
 // Enable OCD pedantic error reporting.
 error_reporting(E_ALL | E_STRICT);
 
-function includeEmu() {
+function include_emu() {
   require_once 'emu/imu.php';
   require_once IMu::$lib . '/module.php';
   require_once IMu::$lib . '/modules.php';
@@ -15,7 +15,7 @@ function includeEmu() {
 /**
  * Include the Kiwi libraries.
  */
-function includeKiwi() {
+function include_kiwi() {
   // Include the Kiwi libraries.
   foreach (glob('lib/*.inc') as $file) {
     require_once($file);
@@ -30,14 +30,14 @@ function includeKiwi() {
 /**
  * Include QueryPath.
  */
-function includeQueryPath() {
+function include_querypath() {
   require_once('QueryPath/QueryPath.php');
 }
 
 /**
  * Include the ApacheSolr client library.
  */
-function includeSolr() {
+function include_solr() {
   require_once('SolrPhpClient/Apache/Solr/Service.php');
   require_once('SolrPhpClient/Apache/Solr/Document.php');
   require_once('SolrPhpClient/Apache/Solr/Response.php');
@@ -47,10 +47,12 @@ function includeSolr() {
  * Initialize the system.
  */
 function kiwi_init() {
-  includeEmu();
-  includeSolr();
-  includeKiwi();
-  includeQueryPath();
+  // Since we know we'll need all of these classes, it's not worth the effort
+  // to setup an autoloader.
+  include_emu();
+  include_solr();
+  include_kiwi();
+  include_querypath();
 
   date_default_timezone_set('America/Chicago');
   set_error_handler('exceptions_error_handler');
