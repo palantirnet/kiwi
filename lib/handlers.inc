@@ -114,7 +114,7 @@ class IntegerHandler extends FieldHandlerBase {
     if ($field->isSortable() && !($force_multi ||$field->isMultiValue())) {
       return 'sint';
     }
-    return parent::getTypePrefix($field);
+    return parent::getTypePrefix($field, $force_multi);
   }
 }
 
@@ -131,7 +131,7 @@ class FloatHandler extends FieldHandlerBase {
     if ($field->isSortable() && !($force_multi || $field->isMultiValue())) {
       return 'sfloat';
     }
-    return parent::getTypePrefix($field);
+    return parent::getTypePrefix($field, $force_multi);
   }
 }
 
@@ -154,7 +154,7 @@ class LatLongHandler extends FloatHandler {
           $value = $this->convertToFloat($value);
         }
       }
-      parent::map($field, $value, $document, $field_prefix);
+      parent::map($field, $value, $document, $field_prefix, $force_multi);
     }
   }
 
@@ -212,7 +212,7 @@ class NesttabHandler extends TextHandler {
         }
       }
 
-      parent::map($field, $data, $document, $field_prefix);
+      parent::map($field, $data, $document, $field_prefix, $force_multi);
     }
   }
 }
