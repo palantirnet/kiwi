@@ -94,9 +94,7 @@ class KiwiEmuField {
     // use it just as a property on this object.
     $this->dataType = $this->dataType();
 
-    $this->isFulltext = in_array($this->columnName(), $this->config->getFields($this->table, 'fulltext'));
-
-    $this->sortable = in_array($this->columnName(), $this->config->getFields($this->table, 'sort'));
+    $this->fieldOptions = $this->config->getFieldOptions($this->table, $this->columnName(), $this->dataType());
   }
 
   /**
@@ -172,7 +170,7 @@ class KiwiEmuField {
    * @return boolean
    */
   public function indexFulltext() {
-    return $this->isFulltext;
+    return $this->fieldOptions['fulltext'];
   }
 
   /**
@@ -181,7 +179,7 @@ class KiwiEmuField {
    * @return boolean
    */
   public function isSortable() {
-    return $this->sortable;
+    return $this->fieldOptions['sort'];
   }
 
   /**

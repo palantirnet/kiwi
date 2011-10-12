@@ -186,32 +186,18 @@ class KiwiConfiguration {
    *
    * @param string $table
    *   The name of the table for which we want to get a field list.
-   * @param string $use
-   *   The use of the field, e.g., sortable, displayable, etc.  If set, only
-   *   those fields that have the appropriate attribute set to 1 will be
-   *   returned.  Valid values are:
-   *     - indexed: The field should be searchable from Solr.
-   *     - stored: The field will be retrievable from Solr for display.
-   *     - fulltext: The field should be included in fulltext searches.
-   *     - sort: The field is sortable in Solr.
-   *     - all (default): Do not filter at all; return all fields for this table.
    * @return QueryPath
    */
-  public function getFields($table, $use = 'all') {
-    if (empty($this->fieldTableInfo[$table][$use])) {
-      $this->fieldTableInfo[$table][$use] = array();
+  public function getFields($table) {
+    if (empty($this->fieldTableInfo[$table])) {
+      $this->fieldTableInfo[$table] = array();
       $names = array();
-      if ($use == 'all') {
-        $fields = $this->configFile->branch()->find("> table[name='{$table}'] field");
-      }
-      else {
-        $fields = $this->configFile->branch()->find("> table[name='{$table}'][{$use}=1] field");
-      }
+      $fields = $this->configFile->branch()->find("> table[name='{$table}'] field");
       foreach ($fields as $field) {
-        $this->fieldTableInfo[$table][$use][] = $field->attr('name');
+        $this->fieldTableInfo[$table][] = $field->attr('name');
       }
     }
-    return $this->fieldTableInfo[$table][$use];
+    return $this->fieldTableInfo[$table];
   }
 
   /**
@@ -255,10 +241,8 @@ class KiwiConfiguration {
       // And now hard-coded defaults:
       $info += array(
         'handler' => 'NullHandler',
-        'indexed' => 0,
-        'stored' => 0,
         'fulltext' => 0,
-        'sorted' => 0,
+        'sort' => 0,
       );
 
       $this->fieldOptions[$table][$field] = $info;
