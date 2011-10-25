@@ -1,0 +1,29 @@
+Kiwi is a PHP command line application that maps data from KE Software's Emu collection management system into the Apache Solr search server.
+
+Kiwi is written for PHP 5.2.  It requires that your PHP server support process controls:
+
+http://www.php.net/pcntl
+
+Although not required, the Tidy extension is recommended for improved debugging:
+
+http://www.php.net/tidy
+
+Kiwi is released under the GNU General Public License, version 2 and later. See the included LICENSE.txt file for more information.
+
+Kiwi includes the following 3rd party libraries:
+
+QueryPath: http://www.querypath.org/
+
+QueryPath is an XML parsing library for PHP.  Think of it as jQuery for PHP. It
+is licensed under the LGPL.  See QueryPath/LGPL-2.1.txt for more information.
+
+SolrPhpClient: http://code.google.com/p/solr-php-client/
+
+SolrPhpClient is a PHP library for interfacing with an Apache Solr search server.
+It is licensed under the New BSD License.  See SolrPhpClient/COPYING for more
+information.
+
+
+Kiwi requires the separate installation of the Emu PHP library from KE Software.
+[ADD MORE INFORMATION HERE ONCE SHARON PROVIDES IT]
+
