@@ -370,7 +370,7 @@ class QueryPathCssEventHandler implements CssEventHandler {
         break;
       case 'nth-of-type':
         list($aVal, $bVal) = $this->parseAnB($value);
-        $this->nthOfTypeChild($aVal, $bVal);
+        $this->nthOfTypeChild($aVal, $bVal, FALSE);
         break;
       case 'nth-last-of-type':
         list($aVal, $bVal) = $this->parseAnB($value);
@@ -439,7 +439,6 @@ class QueryPathCssEventHandler implements CssEventHandler {
       case 'image':
       case 'reset':
       case 'button':
-      case 'submit':
         $this->attribute('type', $name);
         break;
 
@@ -593,7 +592,11 @@ class QueryPathCssEventHandler implements CssEventHandler {
     if (count($rule) == 0) {
       throw new CssParseException("nth-child value is invalid.");
     }
-    $aVal = (int)trim($rule[0]);
+    
+    
+    $aVal = trim($rule[0]);
+    $aVal = ($aVal == '-') ? -1 : (int)$aVal;
+    
     $bVal = !empty($rule[1]) ? (int)trim($rule[1]) : 0;
     return array($aVal, $bVal);
   }

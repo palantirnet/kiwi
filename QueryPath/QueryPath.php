@@ -37,16 +37,17 @@ function htmlqp($document = NULL, $selector = NULL, $options = array()) {
     'convert_from_encoding' => 'auto',
     
     'use_parser' => 'html',
-    'strip_low_ascii' => TRUE,
+    
+    
   );
   return @qp($document, $selector, $options);
 }
 
 
-class QueryPath implements IteratorAggregate {
+class QueryPath implements IteratorAggregate, Countable {
   
   
-  const VERSION = '2.1';
+  const VERSION = '2.1.1';
   
   
   const HTML_STUB = '<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -72,6 +73,11 @@ class QueryPath implements IteratorAggregate {
   
   const DEFAULT_PARSER_FLAGS = NULL;
   
+  const JS_CSS_ESCAPE_CDATA = '\\1';
+  const JS_CSS_ESCAPE_CDATA_CCOMMENT = '/* \\1 */';
+  const JS_CSS_ESCAPE_CDATA_DOUBLESLASH = '// \\1';
+  const JS_CSS_ESCAPE_NONE = '';
+  
   
   private $errTypes = 771; 
   
@@ -83,6 +89,7 @@ class QueryPath implements IteratorAggregate {
     'replace_entities' => FALSE,
     'exception_level' => 771, 
     'ignore_parser_warnings' => FALSE,
+    'escape_xhtml_js_css_sections' => self::JS_CSS_ESCAPE_CDATA_CCOMMENT,
   );
   
   protected $matches = array();
@@ -280,8 +287,14 @@ class QueryPath implements IteratorAggregate {
   }
   
   
-  public function xpath($query) {
+  public function xpath($query, $options = array()) {
     $xpath = new DOMXPath($this->document);
+    
+    
+    if (!empty($options['namespace_prefix']) && !empty($options['namespace_uri'])) {
+      $xpath->registerNamespace($options['namespace_prefix'], $options['namespace_uri']);
+    }
+    
     $found = new SplObjectStorage();
     foreach ($this->matches as $item) {
       $nl = $xpath->query($query, $item);
@@ -299,6 +312,11 @@ class QueryPath implements IteratorAggregate {
   }
   
   
+  public function count() {
+    return $this->matches->count();
+  }
+  
+  
   public function get($index = NULL, $asObject = FALSE) {
     if (isset($index)) {
       return ($this->size() > $index) ? $this->getNthMatch($index) : NULL;
@@ -311,6 +329,18 @@ class QueryPath implements IteratorAggregate {
     }
     return $this->matches;
   }
+  
+  
+  public function document() {
+    return $this->document;
+  }
+  
+  
+  public function xinclude() {
+    $this->document->xinclude();
+    return $this;
+  }
+  
   
   public function toArray() {
     return $this->get();
@@ -457,6 +487,31 @@ class QueryPath implements IteratorAggregate {
   }
   
   public function is($selector) {
+    
+    if (is_object($selector)) {
+      if ($selector instanceof DOMNode) {
+        return count($this->matches) == 1 && $selector->isSameNode($this->get(0));
+      }
+      elseif ($selector instanceof Traversable) {
+        if (count($selector) != count($this->matches)) {
+          return FALSE;
+        }
+        
+        
+        
+        $seen = new SplObjectStorage();
+        foreach ($selector as $item) {
+          if (!$this->matches->contains($item) || $seen->contains($item)) {
+            return FALSE;
+          }
+          $seen->attach($item);
+        }
+        return TRUE;
+      }
+      throw new Exception('Cannot compare an object to a QueryPath.');
+      return FALSE;
+    }
+    
     foreach ($this->matches as $m) {
       $q = new QueryPathCssEventHandler($m);
       if ($q->find($selector)->getMatches()->count()) {
@@ -815,7 +870,20 @@ class QueryPath implements IteratorAggregate {
     }
     return $this;
   }
-  
+  /**
+   * Wrap the child elements of each item in the list with the given markup.
+   *
+   * Markup is usually a string, but it can also be a DOMNode, a document
+   * fragment, a SimpleXMLElement, or another QueryPath object (in which case
+   * the first item in the list will be used.)
+   *
+   * @param string $markup 
+   *  Markup that will wrap children of each element in the current list.
+   * @return QueryPath
+   *  The QueryPath object with the wrapping changes made.
+   * @see wrap()
+   * @see wrapAll()
+   */
   public function wrapInner($markup) {
     $data = $this->prepareInsert($markup);
     
@@ -887,25 +955,7 @@ class QueryPath implements IteratorAggregate {
     return $current;
   }
   
-  /**
-   * Prepare an item for insertion into a DOM.
-   *
-   * This handles a variety of boilerplate tasks that need doing before an 
-   * indeterminate object can be inserted into a DOM tree.
-   * - If item is a string, this is converted into a document fragment and returned.
-   * - If item is a QueryPath, then the first item is retrieved and this call function
-   *   is called recursivel.
-   * - If the item is a DOMNode, it is imported into the current DOM if necessary.
-   * - If the item is a SimpleXMLElement, it is converted into a DOM node and then
-   *   imported.
-   *
-   * @param mixed $item
-   *  Item to prepare for insert.
-   * @return mixed
-   *  Returns the prepared item.
-   * @throws QueryPathException
-   *  Thrown if the object passed in is not of a supprted object type.
-   */
+  
   protected function prepareInsert($item) {
     if(empty($item)) {
       return;
@@ -956,18 +1006,25 @@ class QueryPath implements IteratorAggregate {
   }
   
   public function remove($selector = NULL) {
-    
-    if(!empty($selector))
-      $this->find($selector);
-    
+    if(!empty($selector)) {
+      
+      $query = new QueryPathCssEventHandler($this->matches);
+      $query->find($selector);
+      $matches = $query->getMatches();
+    }
+    else {
+      $matches = $this->matches;
+    }
+
     $found = new SplObjectStorage();
-    foreach ($this->matches as $item) {
+    foreach ($matches as $item) {
       
       
       $found->attach($item->parentNode->removeChild($item));
     }
-    $this->setMatches($found);
-    return $this;
+    
+    
+    return new QueryPath($found);
   }
   
   public function replaceAll($selector, DOMDocument $document) {
@@ -1041,6 +1098,7 @@ class QueryPath implements IteratorAggregate {
   public function contents() {
     $found = new SplObjectStorage();
     foreach ($this->matches as $m) {
+      if (empty($m->childNodes)) continue; 
       foreach ($m->childNodes as $c) {
         $found->attach($c);
       }
@@ -1248,6 +1306,11 @@ class QueryPath implements IteratorAggregate {
     return implode($sep, $tmp);
   }
   
+  function childrenText($separator = ' ') {
+    
+    return $this->branch()->xpath('descendant::text()')->textImplode($separator);
+  }
+  
   public function text($text = NULL) {
     if (isset($text)) {
       $this->removeChildren();
@@ -1332,9 +1395,32 @@ class QueryPath implements IteratorAggregate {
     
     if ($first instanceof DOMDocument || $first->isSameNode($first->ownerDocument->documentElement)) {
       
-      return  ($omit_xml_decl ? $this->document->saveXML($first->ownerDocument->documentElement, LIBXML_NOEMPTYTAG) : $this->document->saveXML(NULL, LIBXML_NOEMPTYTAG));
+      
+      
+      $text = $this->document->saveXML(NULL, LIBXML_NOEMPTYTAG);
     }
-    return $this->document->saveXML($first, LIBXML_NOEMPTYTAG);
+    else {
+      $text = $this->document->saveXML($first, LIBXML_NOEMPTYTAG);
+    }
+    
+    
+    
+    if ($omit_xml_decl) {
+      $text = preg_replace('/<\?xml\s[^>]*\?>/', '', $text);
+    }
+    
+    
+    
+    $unary = '/<(area|base|basefont|br|col|frame|hr|img|input|isindex|link|meta|param)(?(?=\s)([^>\/]+))><\/[^>]*>/i';
+    $text = preg_replace($unary, '<\\1\\2 />', $text);
+    
+    
+    
+    $cdata = '/(<!\[CDATA\[|\]\]>)/i';
+    $replace = $this->options['escape_xhtml_js_css_sections'];
+    $text = preg_replace($cdata, $replace, $text);
+    
+    return $text;
   }
   
   public function xml($markup = NULL) {
@@ -1938,7 +2024,24 @@ class QueryPath implements IteratorAggregate {
   
    
   
-  
+  /**
+   * Parse an XML or HTML file.
+   *
+   * This attempts to autodetect the type of file, and then parse it.
+   *
+   * @param string $filename
+   *  The file name to parse.
+   * @param int $flags
+   *  The OR-combined flags accepted by the DOM parser. See the PHP documentation
+   *  for DOM or for libxml.
+   * @param resource $context
+   *  The stream context for the file IO. If this is set, then an alternate 
+   *  parsing path is followed: The file is loaded by PHP's stream-aware IO
+   *  facilities, read entirely into memory, and then handed off to 
+   *  {@link parseXMLString()}. On large files, this can have a performance impact.
+   * @throws QueryPathParseException 
+   *  Thrown when a file cannot be loaded or parsed.
+   */
   private function parseXMLFile($filename, $flags = NULL, $context = NULL) {
     
     
