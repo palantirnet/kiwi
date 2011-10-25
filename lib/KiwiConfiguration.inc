@@ -77,7 +77,7 @@ class KiwiConfiguration {
 
       // Resolve XInclude directives so that config files can be broken up for
       // easier reuse.
-      $this->configFile->get(0)->ownerDocument->xinclude();
+      $this->configFile->xinclude();
     }
     else {
       throw new ConfigFileNotFoundException('Configuration file not found: ' . $file);
