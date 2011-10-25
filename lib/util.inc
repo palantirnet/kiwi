@@ -1,5 +1,14 @@
 <?php
 
+/*
+* This file is part of the Kiwi package.
+*
+* (c) Palantir.net <http://www.palantir.net/>
+*
+* For the full copyright and license information, please view the LICENSE.txt
+* file that was distributed with this source code.
+*/
+
 // Not part of RFC 3164, but useful for disabling output.
 define('LOG_SILENT', -1);
 

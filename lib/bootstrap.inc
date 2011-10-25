@@ -1,5 +1,13 @@
 <?php
 
+/*
+* This file is part of the Kiwi package.
+*
+* (c) Palantir.net <http://www.palantir.net/>
+*
+* For the full copyright and license information, please view the LICENSE.txt
+* file that was distributed with this source code.
+*/
 
 // Enable OCD pedantic error reporting.
 error_reporting(E_ALL | E_STRICT);
