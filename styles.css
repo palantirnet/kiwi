@@ -8,6 +8,7 @@ body {
   margin: 0 auto;
   max-width: 700px;
 }
+
 h1 {
   font-size: 3.8em;
   color: bisque;
@@ -49,6 +50,12 @@ a:hover {
 
 .download {
   float: right;
+}
+
+@media (max-width: 500px) {
+  .download {
+    display: none;
+  }
 }
 
 pre {
