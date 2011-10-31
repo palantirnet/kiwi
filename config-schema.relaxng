@@ -1,0 +1,81 @@
+<element name="config">
+  <attribute name="full-rebuild"><text /></attribute>
+
+  <element name="servers">
+    <interleave>
+      <element name="solr">
+        <attribute name="host"><text /></attribute>
+        <attribute name="port"><text /></attribute>
+        <attribute name="path"><text /></attribute>
+      </element>
+      <element name="emu">
+        <attribute name="host"><text /></attribute>
+        <attribute name="port"><text /></attribute>
+        <attribute name="path"><text /></attribute>
+        <optional>
+          <attribute name="user"><text /></attribute>
+          <attribute name="password"><text /></attribute>
+        </optional>
+      </element>
+    <interleave>
+  </element>
+
+  <element name="processors">
+    <optional>
+      <attribute name="count"><text /></attribute>
+      <attribute name="batch-size"><text /></attribute>
+      <attribute name="max-size"><text /></attribute>
+    </optional>
+  </element>
+
+  <element name="base-table">
+    <attribute name="ecatalogue" />
+  </element>
+
+  <element name="field-types">
+    <attribute name="default-handler" />
+    <oneOrMore>
+      <element name="field-type">
+        <attribute name="name" />
+        <optional>
+          <attribute name="handler" />
+        </optional>
+        <attribute name="fulltext"><text /></attribute>
+        <attribute name="sort"><text /></attribute>
+      </element>
+    </oneOrMore>
+  </element>
+
+  <element name="filters">
+    <oneOrMore>
+      <element name="filter">
+        <attribute name='name" />
+        <attribute name="value" />
+        <optional>
+          <attribute name="operator" />
+        </optional>
+      </element>
+    </oneOrMore>
+  </element>
+
+  <element name="table">
+    <attribute name="name" />
+    <interleave>
+      <zeroOrMore>
+        <element name="comment"><text /></element>
+      </zeroOrMore>
+      <oneOrMore>
+        <element name="field">
+          <attribute name="name" />
+          <optional>
+            <attribute name="fulltext"><text /></attribute>
+            <attribute name="sort"><text /></attribute>
+          </optional>
+        </element>
+      </oneOrMore>
+    </interleave>
+  </element>
+
+</element>
+
+
