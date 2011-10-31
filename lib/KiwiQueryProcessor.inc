@@ -84,8 +84,7 @@ class KiwiQueryProcessor {
 
     $this->module = $this->session->resumeModuleHandler($module_id);
 
-    $base_table = $this->config->baseTable();
-    $this->baseTable = $this->session->getTable($base_table['name']);
+    $this->baseTable = $this->session->getTable($this->config->baseTable());
   }
 
   /**
@@ -263,7 +262,7 @@ class KiwiQueryProcessor {
 
     foreach ($this->baseTable as $field) {
       if ($field->isReferenceField()) {
-        if ($nested = $this->getNestedFetchSet($field, $base_table['name'])) {
+        if ($nested = $this->getNestedFetchSet($field, $base_table)) {
           $columns[] = $nested;
         }
       }

@@ -140,12 +140,13 @@ class KiwiConfiguration {
     );
   }
 
+  /**
+   * Returns the name of the base table for this configuration.
+   *
+   * @return string
+   */
   public function baseTable() {
-    $base_table = $this->configFile->branch()->find('config')->attr('base-table');
-
-    return array(
-      'name' => $base_table,
-    );
+    return $this->configFile->branch()->find('config')->attr('base-table');
   }
 
   /**

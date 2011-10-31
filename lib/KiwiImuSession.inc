@@ -127,8 +127,7 @@ class KiwiImuSession extends IMuSession {
    * @return IMuModule
    */
   public function resumeModuleHandler($module_id) {
-    $base_table = $this->config->baseTable();
-    $module = new IMuModule($base_table['name'], $this);
+    $module = new IMuModule($this->config->baseTable(), $this);
 
     $module->id = $module_id;
 
