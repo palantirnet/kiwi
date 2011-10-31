@@ -1,5 +1,10 @@
 <element name="config" datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
-  <attribute name="full-rebuild"><data type="int" /></attribute>
+  <attribute name="full-rebuild">
+    <choice>
+      <value type="int">1</value>
+      <value type="int">0</value>
+    </choice>
+  </attribute>
 
   <element name="servers">
     <interleave>
