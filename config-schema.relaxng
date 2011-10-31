@@ -1,30 +1,30 @@
-<element name="config">
-  <attribute name="full-rebuild"><text /></attribute>
+<element name="config" datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
+  <attribute name="full-rebuild"><data type="int" /></attribute>
 
   <element name="servers">
     <interleave>
       <element name="solr">
         <attribute name="host"><text /></attribute>
-        <attribute name="port"><text /></attribute>
+        <attribute name="port"><data type="int" /></attribute>
         <attribute name="path"><text /></attribute>
       </element>
       <element name="emu">
         <attribute name="host"><text /></attribute>
-        <attribute name="port"><text /></attribute>
+        <attribute name="port"><data type="int" /></attribute>
         <attribute name="path"><text /></attribute>
         <optional>
           <attribute name="user"><text /></attribute>
           <attribute name="password"><text /></attribute>
         </optional>
       </element>
-    <interleave>
+    </interleave>
   </element>
 
   <element name="processors">
     <optional>
-      <attribute name="count"><text /></attribute>
-      <attribute name="batch-size"><text /></attribute>
-      <attribute name="max-size"><text /></attribute>
+      <attribute name="count"><data type="int" /></attribute>
+      <attribute name="batch-size"><data type="int" /></attribute>
+      <attribute name="max-size"><data type="int" /></attribute>
     </optional>
   </element>
 
@@ -40,8 +40,18 @@
         <optional>
           <attribute name="handler" />
         </optional>
-        <attribute name="fulltext"><text /></attribute>
-        <attribute name="sort"><text /></attribute>
+        <attribute name="fulltext">
+          <choice>
+            <value type="int">1</value>
+            <value type="int">0</value>
+          </choice>
+        </attribute>
+        <attribute name="sort">
+          <choice>
+            <value type="int">1</value>
+            <value type="int">0</value>
+          </choice>
+        </attribute>
       </element>
     </oneOrMore>
   </element>
@@ -49,7 +59,7 @@
   <element name="filters">
     <oneOrMore>
       <element name="filter">
-        <attribute name='name" />
+        <attribute name="name" />
         <attribute name="value" />
         <optional>
           <attribute name="operator" />
@@ -68,8 +78,18 @@
         <element name="field">
           <attribute name="name" />
           <optional>
-            <attribute name="fulltext"><text /></attribute>
-            <attribute name="sort"><text /></attribute>
+            <attribute name="fulltext">
+              <choice>
+                <value type="int">1</value>
+                <value type="int">0</value>
+              </choice>
+            </attribute>
+            <attribute name="sort">
+              <choice>
+                <value type="int">1</value>
+                <value type="int">0</value>
+              </choice>
+            </attribute>
           </optional>
         </element>
       </oneOrMore>
