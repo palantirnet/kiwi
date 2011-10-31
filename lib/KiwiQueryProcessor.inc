@@ -249,8 +249,6 @@ class KiwiQueryProcessor {
   /**
    * Returns an array of the tables/fields for the query.
    *
-   * @todo Handle reference fields properly.
-   *
    * The array returned by this method is safe to pass to
    * IMuModules::addFetchSet().
    *
