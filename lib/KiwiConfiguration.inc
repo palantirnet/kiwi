@@ -141,7 +141,7 @@ class KiwiConfiguration {
   }
 
   public function baseTable() {
-    $base_table = $this->configFile->branch()->find('> base-table')->attr('name');
+    $base_table = $this->configFile->branch()->find('config')->attr('base-table');
 
     return array(
       'name' => $base_table,

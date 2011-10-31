@@ -1,10 +1,13 @@
 <element name="config" datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
-  <attribute name="full-rebuild">
-    <choice>
-      <value type="int">1</value>
-      <value type="int">0</value>
-    </choice>
-  </attribute>
+  <attribute name="base-table" />
+  <optional>
+    <attribute name="full-rebuild">
+      <choice>
+        <value type="int">1</value>
+        <value type="int">0</value>
+      </choice>
+    </attribute>
+  </optional>
 
   <element name="servers">
     <interleave>
@@ -31,10 +34,6 @@
       <attribute name="batch-size"><data type="int" /></attribute>
       <attribute name="max-size"><data type="int" /></attribute>
     </optional>
-  </element>
-
-  <element name="base-table">
-    <attribute name="ecatalogue" />
   </element>
 
   <element name="field-types">

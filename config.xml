@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<config full-rebuild="1">
+<config full-rebuild="1" base-table="ecatalogue">
   <!--
     This include specifies the file that defines the server configuration.
     That is different for each server.  Use the template below to populate
@@ -19,11 +19,6 @@
     are retrieved.
   -->
   <processors count="1" batch-size="50" max-size="100" />
-
-  <!--
-    The base table of this index.  This must be one of the tables listed below.
-  -->
-  <base-table name="ecatalogue" />
 
   <!--
     The supported field types and the handler each one should use.  The default-hander
