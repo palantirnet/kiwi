@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  The <config> element defines the root of a Kiwi batch run.  It has one required
+  and one optional attribute.
+
+  - base-table:   This attribute must specify the name of the table in Emu that
+                  will be searched against.  All other tables will relate off
+                  of this table through an Attachment or Merge field. This
+                  attribute is required.
+  - full-rebuild: If this attribute is set to 1, Kiwi will delete all content
+                  in the targeted Solr core before importing new data. If it is
+                  omitted, existing data will be left in place and simply
+                  overwritten if appropriate.
+-->
+<config full-rebuild="1" base-table="ecatalogue">
+
+  <servers>
+
+    <!--
+      This element defines the Emu server from which we are reading.
+
+      - host: The host on which the Emu server resides.  This may be either an
+              IP address or a resolvable domain name.
+      - port: The port on the specified host on which Emu is listening. The
+              default is 40000.
+
+      Additionally, there are two other optional attributes that should only
+      be used if Emu requires user authentication.  Specifying these when Emu
+      is not configured to require a user login will cause the connection to
+      hang.
+
+      - user:     The username with which to authenticate against Emu.
+      - password: The password with which to authenticate against Emu.
+    -->
+    <emu host="1.2.3.4" port="40000" />
+
+    <!--
+      This element defines the Solr server to which we are writing.  It has three
+      required attributes:
+
+      - host: The host on which the Solr server resides.  This may be either an
+              IP address or a resolvable domain name.
+      - port: The port on the specified host on which Solr is listening. For most
+              servers this will be 8080.
+      - path: The path to the Solr core to use.  This value should have a leading
+              slash but no trailing slash.
+    -->
+    <solr host="1.2.3.4" port="8080" path="/mycore" />
+  </servers>
+
+  <!--
+    Kiwi may spin up multiple processes to multiplex incoming records.  The
+    <processors> element specifies how many processors to run and how each should
+    behave.  This element has three attributes.
+
+    - count:      The number of processors to run.  Each processor will run in
+                  its own system process.
+    - batch-size: The number of records to process per-batch.  Each batch will
+                  be read from Emu and sent to Solr as a set. Larger batches
+                  are generally faster, in exchange for higher memory usage.
+                  Also note that should a record be invalid for some reason,
+                  its entire batch may be discarded.  It is therefore recommended
+                  to set this value to 1 when trying to track down errors in
+                  data.
+    - max-size:   The maximum number of records that each processor will process
+                  before stopping.  Note that this value is for each processor,
+                  so if count specifies 4 processors and max-size is 50, then
+                  200 records will be processed.  If not specified, this value
+                  defaults to the maximum integer value in PHP.  On most systems
+                  that is several billion (effectively no limit).
+  -->
+  <processors count="1" batch-size="50" max-size="100" />
+
+  <!--
+    The <field-types> element contains a list of all Emu field types that we will
+    recognize.  It contains one required attribute:
+
+    - default-handler: This is the name of a handler class that will be used for
+                       any field type that is not recognized.  If not specified
+                       the default is NullHandler, which will simply ignore
+                       any field that uses it.
+
+    Each <field-type> element specifies one field type recognized by Kiwi. Any
+    field type encountered that is not specified will use the default-handler
+    above.  There are two special types of field that do not exist natively in
+    Emu: Attachment and Merge.
+
+    An Attachment field is a single-value reference field in Emu. That is, it
+    allows records from one table to be "attached" to the corresponding record
+    in the base table as part of a query.
+
+    A Merge field is a multi-value reference field in Emu. Because Solr supports
+    only one level of multi-value fields, records pointed to by a Merge field will
+    be appended to the field as multi-value fields.  Records that are on a second
+    level Merge from the base table will be collapsed into a single field.
+
+    For each field type, there are four attributes.
+
+    - name:     This required field is the name of the field type as defined by
+                Emu or one of Attachment or Merge.
+    - handler:  The PHP class that will be responsible for mapping this field
+                from Emu to Solr.  It may be any loaded PHP class that implements
+                FieldHandlerInterface. If not specified, default-handler will
+                be used.
+    - fulltext: Whether or not fields of this type should be available as part
+                of a fulltext search.  Set to 1 for yes, 0 for no.  The default
+                is 0.
+    - sort:     Whether or not fields of this type should be sortable.  Set to 1
+                for yes, 0 for no.  The default is 0.
+  -->
+  <field-types default-handler="NullHandler">
+    <field-type name="Text" handler="TextHandler" fulltext="1" sort="1" />
+    <field-type name="Integer" handler="IntegerHandler" fulltext="0" sort="1" />
+    <field-type name="Date" handler="DateHandler" fulltext="1" sort="1" />
+    <field-type name="Float" handler="FloatHandler" fulltext="0" sort="1" />
+    <field-type name="Currency" handler="FloatHandler" fulltext="0" sort="1" />
+    <field-type name="Latitude" handler="LatLongHandler" fulltext="1" sort="1" />
+    <field-type name="Longitude" handler="LatLongHandler" fulltext="1" sort="1" />
+    <field-type name="Nesttab" handler="NesttabHandler" fulltext="0" sort="0" />
+    <field-type name="Attachment" handler="AttachmentReferenceHandler" fulltext="0" sort="0" />
+    <field-type name="Merge" handler="MergeReferenceHandler" fulltext="0" sort="0" />
+  </field-types>
+
+  <!--
+    All queries must have at least one filter applied to the base table. Each
+    <filter> element specifies one filter.  It has three attributes:
+
+    - name:     The name of the field in the Emu base table on which to filter.
+    - value:    The value by which to filter.
+    - operator: The comparison operator to use for filtering, such as =, <, etc.
+                This field is optional. If not specified, the default is "matches"
+                which tells Emu to use its best judgment to determine an
+                appropriate operator.  In most cases, omitting the operator will
+                result in an equality comparison, which is fine. Consult the
+                Emu documentation for a full list of legal operators.
+
+                Note: because the operator is written in an XML file, it must
+                be a valid XML string.  That means certain characters must be
+                entity-encoded.  In particular, the less-than operator must be
+                written as &lt;, not <, and the greater-than operator must be
+                written as &gt;, not >.
+  -->
+  <filters>
+    <filter name="AdmPublishWebNoPassword" value="Yes" />
+  </filters>
+
+
+  <!--
+    The table definitions are the "meat" of the configuration file.  Although
+    they can be included via an XInclude directive, don't bother for now.
+
+    Each <table> defines a name and its usage or "type".  For now, the only supported
+    type is "attach".  The name attribute is the name of the table in Emu.
+
+    Each <table> contains one or more <field> elements.  Each <field> element
+    represents a field in Emu in that table.  Each field has the following keys:
+      - name (required): The name of the field in Emu.
+      - fulltext: Whether or not to include this field in fulltext searches of
+          This record.  Specify 1 for true or 0 for false.  The default is false.
+      - sort: Whether or not this field should be sortable.  At this time, single-value
+          Text fields are always sortable.  Single-value Integer and Float fields
+          are sortable only if this value is 1.  All other fields are never sortable.
+          This may change later.
+      - indexed: Whether or not this field should be searchable. (Currently ignored.)
+      - stored: Whether or not this field should be displayable. (Currently ignored.)
+
+      For now, don't bother filling in "indexed" or "stored" as they don't do
+      anything.
+
+      For a typical field that does not need to be sorted, it is valid to specify
+      only the name, like so:
+
+      <field name="CatCatalogueNo" />
+
+  -->
+
+  <!--
+    The main part of the configuration file is the table definitions. Each table
+    is enclosed in a <table> element with one attribute:
+
+    - name: The name of the table in Emu.
+
+    The base-table (specified in the <config> element) must be defined. It
+    must specify a field named "irn", which will be the primary identifier for
+    the resulting record in Solr.
+
+    A table contains one or more <field> elements, each of which defines a field
+    from that table in Emu that should be replicated into Solr.  It has a number
+    of attributes, most of them optional:
+
+    - name:     The name of the field in Emu.  This is the only required field and
+                in most cases the only one that needs to be specified.
+    - handler:  If specified, this class will be used to process this field rather
+                than the handler specified for its field type. If not specified,
+                Kiwi will determine the type of the field and use the appropriate
+                handler.
+    - fulltext: If specified, this value overrides the value of fulltext for
+                this field type.  Legal values are 1 (true) and 0 (false).
+    - sort:     If specified, this value overrides the value of sort for
+                this field type.  Legal values are 1 (true) and 0 (false).
+
+    <table> elements may also contain any number of <comment> elements. A comment
+    element is completely ignored by Kiwi.  It is provided as an alternative to
+    XML comments so that those may be used for hiding large numbers of fields
+    during development and testing.
+  -->
+
+  <table name="ecatalogue">
+    <comment>The Primary Key, which is also an integer field.</comment>
+    <field name="irn" />
+    <field name="CatCatalogSubset" />
+  </table>
+
+</config>
