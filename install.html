@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<!--[if IEMobile 7]><html class="iem7"  lang="en" dir="ltr"><![endif]-->
+<!--[if lte IE 6]><html class="ie6 ie6-7 ie6-8"  lang="en" dir="ltr"><![endif]-->
+<!--[if (IE 7)&(!IEMobile)]><html class="ie7 ie6-7 ie6-8"  lang="en" dir="ltr"><![endif]-->
+<!--[if IE 8]><html class="ie8 ie6-8"  lang="en" dir="ltr"><![endif]-->
+<!--[if (gte IE 9)|(gt IEMobile 7)]><!--><html lang="en" dir="ltr"><!--<![endif]-->
+<head>
+  <meta charset='utf-8'>
+  <meta name="viewport" content="width=device-width, target-densityDpi=160dpi, initial-scale=1">
+
+  <meta name="MobileOptimized" content="width" />
+  <meta name="HandheldFriendly" content="true" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta http-equiv="cleartype" content="on" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+
+  <title>Installation - Kiwi: The Emu-Solr bridge</title>
+
+  <link rel="stylesheet" href="styles.css" />
+
+</head>
+
+<body>
+
+  <div id="container">
+
+    <h1><a href="http://github.com/palantirnet/kiwi">Kiwi</a>
+    <span class="small">by <a href="http://www.palantir.net/">Palantir.net</a></span></h1>
+
+
+    <section>
+      <h1>Prerequisites</h1>
+
+      <p>Kiwi is a bridge system to map data from Emu into Solr.  It is therefore required
+         that you have a functional Emu server and Apache Solr server up and running first.</p>
+
+      <p>You must have a server running PHP 5.2 or later on which to install Kiwi.
+         That does not have to be the same server that Emu or Solr are on.  The
+         following PHP extensions are expected:</p>
+
+      <ul>
+        <li><a href="http://www.php.net/pcntl">ext/pcntl</a> - PHP Process Control</li>
+        <li><a href="http://www.php.net/tidy">ext/tidy</a> - HTML/XML formatter. This extension is optional but recommended for more useful debug output.</li>
+      </ul>
+
+    </section>
+
+    <section>
+      <h1>Download</h1>
+
+      <p>Download the latest stable release of Kiwi from the links on the front page.
+        uncompress the download and place the code somewhere on your server.</p>
+
+      <p>Download the Emu driver from KE.  Place it in the root of the Kiwi package.
+        (TODO: Update this.)</p>
+    </section>
+
+    <section>
+      <h1>Configure Solr</h1>
+
+      <ol>
+      <li>Set up a new, empty Solr core.  Consult the Solr documentation for how
+         to do so.</li>
+      <li>Copy the contents of the solr-conf directory to the conf directory of your
+        Solr core.</li>
+
+      <li>Restart your Solr server so that your changes will take effect.</li>
+      </ol>
+
+    </section>
+
+    <section>
+      <h1>Prepare your configuration file</h1>
+
+      <p>All control of Kiwi is managed via an XML configuration file.  Each
+        configuration file defines one mapping from Emu to a Solr core.</p>
+
+      <p>A Kiwi configuration file must conform to the RelaxNG schema defined in
+        the config-schema.rng file</p>
+
+      <p>See the included config-example.xml file for an example of the
+         configuration format. It is heavily documented.</p>
+
+      <p>Depending on your use case, you may write a single configuration file
+        or put multiple in a directory together.  Kiwi is able to batch-process
+        an entire directory's worth of configuration files at once.</p>
+
+      <p>If necessary, configuration files support the <a href="http://en.wikipedia.org/wiki/XInclude">XInclude standard</a>. That
+        is, portions of a config file that you want to write in an separate,
+        shared file may be referenced by any number of configuration files. That
+        can be especially useful for field type configuration.
+      </p>
+
+    </section>
+
+    <section>
+      <h1>Profit!</h1>
+
+      <p>You are now ready to <a href="run.html">Run Kiwi</a>.
+    </section>
+
+  </div>
+
+</body>
+
+
+</html>
