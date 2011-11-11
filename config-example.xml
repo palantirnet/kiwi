@@ -183,7 +183,7 @@
 
     The base-table (specified in the <config> element) must be defined. It
     must specify a field named "irn", which will be the primary identifier for
-    the resulting record in Solr.
+    the resulting record in Solr.  Any number of tables may be defined.
 
     A table contains one or more <field> elements, each of which defines a field
     from that table in Emu that should be replicated into Solr.  It has a number
