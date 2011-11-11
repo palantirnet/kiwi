@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<!--[if IEMobile 7]><html class="iem7"  lang="en" dir="ltr"><![endif]-->
+<!--[if lte IE 6]><html class="ie6 ie6-7 ie6-8"  lang="en" dir="ltr"><![endif]-->
+<!--[if (IE 7)&(!IEMobile)]><html class="ie7 ie6-7 ie6-8"  lang="en" dir="ltr"><![endif]-->
+<!--[if IE 8]><html class="ie8 ie6-8"  lang="en" dir="ltr"><![endif]-->
+<!--[if (gte IE 9)|(gt IEMobile 7)]><!--><html lang="en" dir="ltr"><!--<![endif]-->
+<head>
+  <meta charset='utf-8'>
+  <meta name="viewport" content="width=device-width, target-densityDpi=160dpi, initial-scale=1">
+
+  <meta name="MobileOptimized" content="width" />
+  <meta name="HandheldFriendly" content="true" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta http-equiv="cleartype" content="on" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+
+  <title>Running - Kiwi: The Emu-Solr bridge</title>
+
+  <link rel="stylesheet" href="styles.css" />
+
+</head>
+
+<body>
+
+  <div id="container">
+
+    <h1><a href="index.html">Kiwi</a>
+    <span class="small">by <a href="http://www.palantir.net/">Palantir.net</a></span></h1>
+
+
+    <section>
+      <h1>Running Kiwi</h1>
+
+      <p>To run Kiwi, you need only to run its PHP script from the command line
+        (or a batch script).  Change into the directory where you have Kiwi
+        installed and run this command:</p>
+
+      <pre>$ php ./kiwi.php</pre>
+
+      <p>(You may also set the kiwi.php script to be executable, and then omit the
+        "php" at the beginning.)</p>
+
+      <p>Running Kiwi without any command line switches will output brief help
+        text.  To process a specific configuration file, specify it with the
+        <code>--config</code> parameter:</p>
+
+      <pre>$ php ./kiwi.php --config=myconfig.xml</pre>
+
+      <p>That command will execute the configuration file <code>myconfig.xml</code>, in the
+        current directory, which conforms to the format specified by <code>config-schema.rng</code>
+        and <code>config-example.xml</code>.  See <code>config-example.xml</code> for further details on
+        how to structure the configuration file.</p>
+
+      <p>To execute all configuration files in a particular directory, use the
+        <code>--directory</code> parameter:</p>
+
+      <pre>$ php ./kiwi.php --directory=config_files</pre>
+
+      <p>That will iterate over all files in that directory and execute each of
+        them in turn as a configuration file.</p>
+
+      <p>For additional command line options, run</p>
+
+      <pre>$ php ./kiwi.php --help</pre>
+
+  </div>
+
+</body>
+
+
+</html>
