@@ -211,6 +211,6 @@ END;
       $output[] = sprintf("%-{$columns['option']}s%-{$columns['default']}s%-{$columns['description']}s", $option, $info['value'], wordwrap($info['description'], $columns['description'], $break, TRUE));
     }
 
-    return implode(PHP_EOL, $output);
+    return implode(PHP_EOL, $output) . PHP_EOL . PHP_EOL;
   }
 }
