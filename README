@@ -12,8 +12,8 @@ http://www.php.net/tidy
 Kiwi is released under the GNU General Public License, version 2 and later. See
 the included LICENSE.txt file for more information.
 
-Kiwi includes the following 3rd party libraries:
 
+Kiwi includes the following 3rd party libraries:
 
 ---QueryPath: http://www.querypath.org/
 
