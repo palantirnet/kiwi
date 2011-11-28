@@ -73,8 +73,8 @@ function kiwi_init() {
  */
 function main(KiwiInput $input = NULL, KiwiConfiguration $config = NULL) {
 
-  IMuTrace::setFile('trace.txt');
-  IMuTrace::setLevel(1);
+  //IMuTrace::setFile('trace.txt');
+  //IMuTrace::setLevel(1);
 
   try {
 
