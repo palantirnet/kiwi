@@ -281,7 +281,9 @@ class MergeReferenceHandler extends FieldHandlerBase {
             // rather than being folded.  Fortunately we know that Attachment
             // fields are single-value.  We need to include the _ in the prefix
             // though, because we're nesting prefixes here.
-            $ref_field->getHandler()->map($ref_field, $v, $document, $field_prefix . $field->itemName() . '_');
+            $handler = $ref_field->getHandler();
+            $handler->setRecord($this->record);
+            $handler->map($ref_field, $v, $document, $field_prefix . $field->itemName() . '_');
           }
           else {
             // If the sub-field is multi-value, it needs to get folded down to
@@ -299,6 +301,7 @@ class MergeReferenceHandler extends FieldHandlerBase {
       foreach ($fields as $field_name => $v) {
         $ref_field = $ref_table->getField($field_name);
         $handler = $ref_field->getHandler();
+        $handler->setRecord($fields);
         $handler->map($ref_field, $v, $document, $field_prefix . $field->itemName(), TRUE);
       }
     }

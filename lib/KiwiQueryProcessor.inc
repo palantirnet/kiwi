@@ -235,6 +235,7 @@ class KiwiQueryProcessor {
       $column_name = $field->columnName();
       if (array_key_exists($column_name, $row)) {
         $handler = $field->getHandler();
+        $handler->setRecord($row);
         $handler->map($field, $row[$column_name], $document);
       }
       else {
@@ -347,6 +348,16 @@ interface FieldHandlerInterface {
    */
   public function map(KiwiEmuField $field, $value, Apache_Solr_Document $document);
 
+  /**
+   * Set the record which this handler is processing.
+   *
+   * Note that in the case of a sub-record, the sub-record should be assigned
+   * here, not the parent record.
+   *
+   * @param array $record
+   */
+  public function setRecord(array $record);
+
 }
 
 
@@ -383,6 +394,13 @@ class FieldHandlerBase implements FieldHandlerInterface {
    */
   protected $separator = ' | ';
 
+  /**
+   * The record that this handler is processing.
+   *
+   * @var array
+   */
+  protected $record;
+
   public function __construct(KiwiConfiguration $config, KiwiImuSession $session) {
     $this->config = $config;
     $this->session = $session;
@@ -409,6 +427,10 @@ class FieldHandlerBase implements FieldHandlerInterface {
         $document->content .= $this->separator . (is_array($value) ? recursive_implode(', ', $value) : $value);
       }
     }
+  }
+
+  public function setRecord(array $record) {
+    $this->record = $record;
   }
 
   /**
