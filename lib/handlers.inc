@@ -307,3 +307,72 @@ class MergeReferenceHandler extends FieldHandlerBase {
     }
   }
 }
+
+/**
+ * Handler for media fields to support additional derived Solr fields.
+ */
+class MediaHandler extends TextHandler {
+
+  protected $pathChunkSize = 3;
+
+  public function map(KiwiEmuField $field, $value, Apache_Solr_Document $document, $field_prefix = '', $force_multi = FALSE) {
+    if ($value) {
+      // First process the field normally.
+      parent::map($field, $value, $document, $field_prefix, $force_multi);
+
+      // Then add a second field for the path prefix, based on the IRN.
+      $irns = $this->record['irn'];
+      if (!is_array($irns)) {
+        $irns = array($irns);
+      }
+
+      $values = array();
+      foreach ($irns as $irn) {
+        $values[] = $this->generatePathFragment($irn);
+      }
+
+      $prefix = $this->getTypePrefix($field, $force_multi);
+      $solr_field_name = $prefix . '_' . ($field_prefix ? ($field_prefix . '_') : '') . $field->itemName();
+      $solr_field_name .= '_path_prefix';
+
+      $document->$solr_field_name = $values;
+    }
+  }
+
+  /**
+   * Returns the path prefix for the given IRN's files.
+   *
+   * @param int $irn
+   *   The IRN of a record in Emu.
+   * @return string
+   *   The path from the media root to the directory where this media object's
+   *   files are stored.
+   */
+  protected function generatePathFragment($irn) {
+    // We're going to treat the IRN as a string, but string handling functions
+    // don't auto-cast an int to a string.  Sigh, PHP, Sigh.
+    $irn = (string)$irn;
+
+    $chunk_size = $this->pathChunkSize;
+
+    $fragment = '';
+
+    do {
+      if (strlen($irn) >= $chunk_size) {
+        $next = substr($irn, -$chunk_size);
+        $irn = substr($irn, 0, strlen($irn) - $chunk_size);
+      }
+      else {
+        $next = $irn;
+        $irn = '';
+      }
+      $fragment = $next . '/' . $fragment;
+    } while ($irn);
+
+    // We'll always end up with a trailing / with the above algorithm, so just
+    // strip that off.
+    $fragment = trim($fragment, '/');
+
+    return $fragment;
+  }
+}
