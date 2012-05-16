@@ -1,4 +1,4 @@
-Kiwi is a PHP command line application that maps data from KE Software's Emu
+Kiwi is a PHP command line application that maps data from KE Software's EMu
 collection management system into the Apache Solr search server.
 
 Kiwi is written for PHP 5.2.  It requires that your PHP server support process controls:
@@ -12,6 +12,7 @@ http://www.php.net/tidy
 Kiwi is released under the GNU General Public License, version 2 and later. See
 the included LICENSE.txt file for more information.
 
+Development of Kiwi is sponsored by the Field Museum of Natural History (http://fieldmuseum.org/) in Chicago, USA.
 
 Kiwi includes the following 3rd party libraries:
 
@@ -26,9 +27,9 @@ SolrPhpClient is a PHP library for interfacing with an Apache Solr search server
 It is licensed under the New BSD License.  See SolrPhpClient/COPYING for more
 information.
 
----Imu: http://www.kesoftware.com/
+---IMu: http://www.kesoftware.com/
 
-Imu is part of KE Software's Electronic Museum (EMu) collection management system.
+IMu is part of KE Software's Electronic Museum (EMu) collection management system.
 It provides web-based access to an EMu server. Kiwi (named in EMu's honor)
-includes the PHP connector library included with Imu under a BSD-style license.
+includes the PHP connector library included with IMu under a BSD-style license.
 See emu/LICENSE.txt for more information.
