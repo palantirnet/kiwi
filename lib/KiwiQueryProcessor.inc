@@ -442,7 +442,6 @@ class FieldHandlerBase implements FieldHandlerInterface {
    * make a good faith attempt to convert extended characters (accents, etc.)
    * to UTF-8.
    *
-   * @todo Verify that this still works with non-Latin input strings.
    * @param mixed $value
    *   The value to be normalized.  If it is an array, this method will be called
    *   recursively on each element.
@@ -455,18 +454,66 @@ class FieldHandlerBase implements FieldHandlerInterface {
       return array_map(array($this, 'normalizeCharset'), $value);
     }
 
-    // Convert any characters we possibly can to their HTML encoded entities.
-    // If we don't specify a character encoding then this should do at least
-    // a passingly decent job of detecting it, or at least doesn't care as much
-    // as other APIs do.  This won't catch every character, but should catch all
-    // normal accented characters at least.
-    $value = htmlentities($value, ENT_NOQUOTES);
+    $encoding = mb_detect_encoding($value);
 
-    // Now convert those HTML entities back into real characters, but this time
-    // insist on UTF-8.  If all goes well, this will at worst convert UTF-8
-    // characters back to UTF-8 and at best convert ISO-8859-1 characters to
-    // HTML entities and from HTML entities to UTF-8 characters.
-    $value = html_entity_decode($value, ENT_NOQUOTES, 'UTF-8');
+    // mb_detect_encoding() in most situations supports only two character sets,
+    // ASCII and UTF-8.  However, it is sadly not unusual for incoming data
+    // to be in Windows-1252, which is used by no software in the universe
+    // except Microsoft Word. We therefore guess that a false/not-found character
+    // set is Windows-1251, and try to convert that to UTF-8.
+    // Note: The odds of this breaking on some other character encoding besides
+    // those three is rather high.  The real fix is to fix Emu so that it
+    // doesn't output non-UTF-8.
+
+    $encoding = mb_detect_encoding($value);
+    switch ($encoding) {
+
+      // ASCCI strings are the only things that work properly without processing.
+      // It probably helps that ASCII is by definition a strict subset of UTF-8.
+      case 'ASCII':
+        break;
+
+      // I have absolutely no idea why UTF-8 strings need to be converted
+      // from UTF-8 to UTF-8, but if this code is removed many strings end up
+      // failing with invalid multi-byte encoding.  This also seems like a
+      // rather hacky way of doing it, but it seems to work. Best not to ask
+      // questions when character encoding is involved lest awaken
+      // the ancient sleeping deamons.
+      case 'UTF-8':
+        // Convert any characters we possibly can to their HTML encoded entities.
+        // If we don't specify a character encoding then this should do at least
+        // a passingly decent job of detecting it, or at least doesn't care as much
+        // as other APIs do.  This won't catch every character, but should catch all
+        // normal accented characters at least.
+        $value = htmlentities($value, ENT_NOQUOTES);
+
+        // Now convert those HTML entities back into real characters, but this time
+        // insist on UTF-8.  If all goes well, this will at worst convert UTF-8
+        // characters back to UTF-8 and at best convert ISO-8859-1 characters to
+        // HTML entities and from HTML entities to UTF-8 characters.
+        $value = html_entity_decode($value, ENT_NOQUOTES, 'UTF-8');
+        break;
+
+      // A False return from mb_detect_encoding() means that it couldn't
+      // figure out what the encoding is.  In a standard configuration mb_* only
+      // knows about ASCCI and UTF-8, so that's not especially useful. We will
+      // make an assumption that anything else is Windows-1252, aka "Microsoft's
+      // proprietary character encoding used by nothing in the universe except
+      // MS Word"  If correct, this will convert $value from Windows-1252 to
+      // UTF-8, transliterating where necessary rather than just failing. We
+      // also record a log entry about it so that we know that someone is using
+      // Word when they shouldn't.
+      case FALSE:
+        $value = iconv('Windows-1252', 'UTF-8//TRANSLIT', $value);
+        KiwiOutput::info("Detected Windows-1252 character encoding for string '{$value}'.  The use of that format is not recommended. Please ensure all incoming data is in UTF-8 encoding.");
+        break;
+
+      // This should only trigger if mb_detect_encoding() is configured to
+      // understand something other than UTF-8 and ASCII.  Simply flag that
+      // the system doesn't expect something even more esoteric than Windows-1252.
+      default:
+        KiwiOutput::warn("Unrecognized character encoding: '{$encoding}' for string '{$value}'.  Please ensure all data in Emu is in UTF-8 format.");
+    }
 
     return $value;
   }
