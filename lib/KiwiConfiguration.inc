@@ -101,6 +101,17 @@ class KiwiConfiguration {
   }
 
   /**
+   * Returns the file name to use for error logging.
+   */
+  public function getCustomErrorLog() {
+    $file = $this->input->getOption('errorlog');
+    if ($file) {
+      return $file;
+    }
+    return NULL;
+  }
+
+  /**
    * Returns general information about this configuration.
    *
    * @return array

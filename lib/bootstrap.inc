@@ -98,6 +98,17 @@ function main(KiwiInput $input = NULL, KiwiConfiguration $config = NULL) {
 
     KiwiOutput::get()->setThreshold($config->defaultVerbosity());
 
+    if ($file = $config->getCustomErrorLog()) {
+      $errstream = fopen($file, 'w');
+      $output = KiwiOutput::get();
+      $output->setStream(LOG_NOTICE, $errstream);
+      $output->setStream(LOG_WARNING, $errstream);
+      $output->setStream(LOG_ERR, $errstream);
+      $output->setStream(LOG_CRIT, $errstream);
+      $output->setStream(LOG_ALERT, $errstream);
+      $output->setStream(LOG_EMERG, $errstream);
+    }
+
     // Build the main query on the Emu server.
     $timer_generator = new KiwiTimer();
     $reconnect = main_generator($config, $imu_factory);

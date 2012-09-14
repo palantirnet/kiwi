@@ -69,6 +69,10 @@ class KiwiInput {
       'value' => LOG_INFO,
       'description' => 'The level of output verbosity. To increase it, specify -v, -vv, -vvv, etc. to increase the verbosity.',
     );
+    $options['errorlog'] = array(
+      'value' => '',
+      'description' => 'Optional. Specify a file name to use for error output. If not specified, STDERR will be used.',
+    );
     $options['processor-count'] = array(
       'value' => '',
       'description' => 'Optional.  Specifies the number of processors to run at once.  If specified, the value in the configuration file is ignored.',

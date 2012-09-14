@@ -104,6 +104,23 @@ class KiwiOutput {
   }
 
   /**
+   * Sets the stream to use for a given output level.
+   *
+   * @param int $level
+   *   One of the defiend message levels.
+   * @param stream $stream
+   *   An already-opened stream resource, or NULL to reset this level to default.
+   */
+  public function setStream($level, $stream = NULL) {
+    if (is_null($stream)) {
+      unset($this->streams[$level]);
+    }
+    else {
+      $this->streams[$level] = $stream;
+    }
+  }
+
+  /**
    * Writes a message out to the appropriate output.
    *
    * If the level of the message is not at least the current threshold, it will
