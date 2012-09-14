@@ -24,6 +24,10 @@ function include_emu() {
  * Include the Kiwi libraries.
  */
 function include_kiwi() {
+  require_once('lib/util.inc');
+  // Ensure that the processor file comes first, as it contains base classes
+  // used by handlers.inc and others.
+  require_once('lib/KiwiQueryProcessor.inc');
   // Include the Kiwi libraries.
   foreach (glob('lib/*.inc') as $file) {
     require_once($file);
