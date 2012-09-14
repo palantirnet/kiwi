@@ -101,6 +101,79 @@ class KiwiSolrService extends Apache_Solr_Service {
       throw $new_e;
     }
   }
+
+  /**
+   * Generate the XML serialization of a Solr document.
+   *
+   * This is overridden from the parent solely to set htmlspecialchars() to
+   * not force UTF-8.  For unknown reasons, even after a string has been
+   * normalized to UTF-8 by every possible mechanism it is still sometimes
+   * choking here.  However, Solr seems to accept it.  I don't know if Solr is
+   * to blame, or PHP, or the original author of the Apache Solr PHP library.
+   * In any event, removing that force-conversion here avoids warnings that
+   * cause exceptions to be thrown.
+   *
+   * Note: Yes, the coding style is wrong on this function because it's a trivial
+   *   update and I didn't feel like spending time just reformatting whitespace.
+   *
+   * @param Apache_Solr_Document $document
+   * @return type
+   */
+  protected function _documentToXmlFragment(Apache_Solr_Document $document) {
+          $xml = '<doc';
+
+          if ($document->getBoost() !== false)
+          {
+                  $xml .= ' boost="' . $document->getBoost() . '"';
+          }
+
+          $xml .= '>';
+
+          foreach ($document as $key => $value)
+          {
+                  $key = htmlspecialchars($key, ENT_QUOTES, 'UTF-8');
+                  $fieldBoost = $document->getFieldBoost($key);
+
+                  if (is_array($value))
+                  {
+                          foreach ($value as $multivalue)
+                          {
+                                  $xml .= '<field name="' . $key . '"';
+
+                                  if ($fieldBoost !== false)
+                                  {
+                                          $xml .= ' boost="' . $fieldBoost . '"';
+
+                                          // only set the boost for the first field in the set
+                                          $fieldBoost = false;
+                                  }
+
+                                  $multivalue = htmlspecialchars($multivalue, ENT_NOQUOTES);
+
+                                  $xml .= '>' . $multivalue . '</field>';
+                          }
+                  }
+                  else
+                  {
+                          $xml .= '<field name="' . $key . '"';
+
+                          if ($fieldBoost !== false)
+                          {
+                                  $xml .= ' boost="' . $fieldBoost . '"';
+                          }
+
+                          $value = htmlspecialchars($value, ENT_NOQUOTES);
+
+                          $xml .= '>' . $value . '</field>';
+                  }
+          }
+
+          $xml .= '</doc>';
+
+          // replace any control characters to avoid Solr XML parser exception
+          return $this->_stripCtrlChars($xml);
+  }
+
 }
 
 /**
