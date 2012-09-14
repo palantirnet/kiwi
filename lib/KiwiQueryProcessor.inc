@@ -454,8 +454,6 @@ class FieldHandlerBase implements FieldHandlerInterface {
       return array_map(array($this, 'normalizeCharset'), $value);
     }
 
-    $encoding = mb_detect_encoding($value);
-
     // mb_detect_encoding() in most situations supports only two character sets,
     // ASCII and UTF-8.  However, it is sadly not unusual for incoming data
     // to be in Windows-1252, which is used by no software in the universe
@@ -505,7 +503,7 @@ class FieldHandlerBase implements FieldHandlerInterface {
       // Word when they shouldn't.
       case FALSE:
         $value = iconv('Windows-1252', 'UTF-8//TRANSLIT', $value);
-        KiwiOutput::info("Detected Windows-1252 character encoding for string '{$value}'.  The use of that format is not recommended. Please ensure all incoming data is in UTF-8 encoding.");
+        KiwiOutput::warn("Detected Windows-1252 character encoding\nIRN: {$this->record['irn']}\nString: {$value}.\nThe use of that format is not recommended. Please ensure all incoming data is in UTF-8 encoding.\n");
         break;
 
       // This should only trigger if mb_detect_encoding() is configured to
